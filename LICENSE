@@ -19,10 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
-This license covers the code and texts written for this project (src/, js/, server/,
-tools/, deploy/, index.html, questions_extra.csv, README.md). It does not cover the
-original Honfoglaló materials (the game SWFs and the files built from them, archive/,
-dat/lang.json, questions_2013.csv, sounds/, favicon.ico, img/), which remain the
-property of their respective owners, nor Ruffle (vendor/ruffle/, MIT or Apache-2.0,
-see its own license files).
