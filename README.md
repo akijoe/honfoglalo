@@ -4,6 +4,10 @@ A honfoglalo.hu főoldalán 2009 októberétől 2013 májusáig futó Flash pró
 (a 2011. októberi mentésből), a [Ruffle](https://ruffle.rs) Flash-emulátorban, egy kis Go szerverrel a
 többjátékos szobákhoz. Hogy miből derül ki az időszak, lásd: [Mettől meddig volt ez a dizájn](#mettől-meddig-volt-ez-a-dizájn).
 
+Játszható: <https://honfoglalo.online>
+
+![A főmenü a magyar térképpel, bal oldalt a térképválasztó](docs/screenshot.webp)
+
 ## Indítás
 
 Go 1.22 vagy újabb kell hozzá. A projekt mappájából:
@@ -401,3 +405,13 @@ A `tools/fetch_archive.sh` mindent újra letölt, a `tools/fetch_ruffle.sh` a Ru
 - `extract_sounds.py` – hangok kibontása egy SWF-ből (ha az eredeti `sounds.swf` előkerülne)
 - `swfx.py`, `swftree.py`, `shape2svg.py`, `avm1.py`, `avm1dec.py` – SWF bontás és ActionScript-visszafejtés
 - `wb.sh`, `fetch_archive.sh`, `fetch_ruffle.sh` – letöltés
+
+## Licenc
+
+A projekthez írt kód és szöveg (`src/`, `js/`, `server/`, `tools/`, `deploy/`, `index.html`,
+`questions_extra.csv`, a README) MIT-licencű, lásd: [LICENSE](LICENSE).
+
+Nem tartozik alá, és a jogtulajdonosoké marad: az eredeti Honfoglaló-anyag – a játék SWF-jei és a
+belőlük készült fájlok (`swf/`, `img/maps/`), az `archive/` mappa, a `dat/lang.json`, a
+`questions_2013.csv`, a `sounds/`, a `favicon.ico` és az `img/bg.png`. A Ruffle (`vendor/ruffle/`) a
+saját licence (MIT vagy Apache-2.0) szerint használható.
