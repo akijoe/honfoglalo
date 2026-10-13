@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Honfoglaló</title>
+  <link rel="icon" href="favicon.ico">
+  <style>
+    :root { --side: 184px; --top: 0px; }
+    html, body { margin: 0; height: 100%; overflow: hidden; }
+    body { background: #000 url(img/bg.png) repeat-x 0 0; }
+    #game { position: fixed; top: var(--top); right: 0; bottom: 0; left: var(--side);
+            display: flex; align-items: center; justify-content: center; }
+    /* a testclient.swf színpada 600×500 – arányosan nagyítva */
+    #game > * { width: min(calc(100vw - var(--side)), calc((100vh - var(--top)) * 1.2));
+                height: min(calc((100vw - var(--side)) * 5 / 6), calc(100vh - var(--top))); }
+
+    /* térképválasztó (js/hf.js) */
+    #maps { position: fixed; top: 0; left: 0; bottom: 0; width: var(--side); box-sizing: border-box;
+            padding: 12px 8px; overflow-y: auto; background: rgba(0, 0, 0, .25);
+            border-right: 1px solid #6B4A24; font-family: 'Book Antiqua', Palatino, 'Palatino Linotype', Georgia, serif; }
+    #maps .side { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
+    #maps .side[hidden] { display: none; }
+    #maps #home { justify-content: center; border: 1px solid #C89B4A; background: #7A4E1D; color: #FFF3D0; font-weight: bold; }
+    #maps #home:hover { background: #A9732C; }
+    #maps #home[hidden], #maps #room[hidden] { display: none; }
+    #room { color: #F3DDB0; font-size: 14px; text-align: center; }
+    #room b { color: #FFE39A; letter-spacing: 1px; font-size: 16px; }
+    #maps #copy { display: inline; width: auto; padding: 1px 8px; margin-left: 4px; border: 1px solid #C89B4A;
+                  font-size: 12px; background: #5A3518; }
+    #maps h2 { margin: 0 0 8px; font-size: 18px; color: #FFE39A; text-align: center; font-weight: bold; }
+    #maps .list { display: flex; flex-direction: column; gap: 4px; }
+    #maps button { display: flex; align-items: center; gap: 8px; width: 100%; padding: 4px 6px; border: 1px solid transparent;
+                   border-radius: 8px; background: none; color: #F3DDB0; font: inherit; font-size: 14px; text-align: left; cursor: pointer; }
+    #maps button:hover:not(:disabled) { background: #5A3518; }
+    #maps button.on { background: #6E4219; border-color: #C89B4A; color: #FFE39A; font-weight: bold; }
+    #maps button:disabled { cursor: default; }
+    #maps.locked .list button:not(.on) { opacity: .45; }
+    #maps img { width: 56px; height: 40px; object-fit: contain; flex: none; }
+    #maps .note { margin: 10px 4px 0; font-size: 12px; line-height: 1.35; color: #C2A27A; text-align: center; }
+    #maps .note:empty { display: none; }
+
+    /* keskeny (álló) képernyőn a térképek felül, vízszintesen görgethető sávban */
+    @media (max-width: 700px) {
+      :root { --side: 0px; --top: 66px; }
+      #maps { right: 0; bottom: auto; width: auto; height: var(--top); padding: 4px 6px; display: flex;
+              align-items: center; gap: 8px; overflow-x: auto; overflow-y: hidden; border-right: 0;
+              border-bottom: 1px solid #6B4A24; }
+      #maps h2 { margin: 0; font-size: 15px; }
+      #maps .side { flex-direction: row; align-items: center; margin: 0; flex: none; }
+      #maps #home { white-space: nowrap; }
+      #maps .list { flex-direction: row; }
+      #maps button { flex-direction: column; gap: 0; width: auto; padding: 2px 4px; font-size: 11px; text-align: center; }
+      #maps img { width: 46px; height: 32px; }
+      #maps .note { margin: 0; min-width: 140px; }
+    }
+  </style>
+  <script src="vendor/ruffle/ruffle.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/hf.js"></script>
+</head>
+<body>
+  <nav id="maps" aria-label="Térkép">
+    <div class="side">
+      <button id="home" type="button" hidden>Főoldal</button>
+      <div id="room" hidden>Szoba: <b></b> <button id="copy" type="button" title="A meghívó link másolása">Link</button></div>
+    </div>
+    <h2>Térkép</h2>
+    <div class="list"></div>
+    <p class="note"></p>
+  </nav>
+  <div id="game"></div>
+</body>
+</html>

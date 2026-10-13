@@ -1,0 +1,85 @@
+===== gamedescr_0.html
+Honfoglaló 
+ BODY { 
+ SCROLLBAR-FACE-COLOR: #c0942c; SCROLLBAR-HIGHLIGHT-COLOR: #ffdc91; SCROLLBAR-SHADOW-COLOR: #bbbbbb; SCROLLBAR-3DLIGHT-COLOR: #028688; SCROLLBAR-ARROW-COLOR: #008080; SCROLLBAR-TRACK-COLOR: #ffdc91; SCROLLBAR-DARKSHADOW-COLOR: #ffffff 
+} 
+ Online játékosok: 224 
+ Online lista letöltése 
+ Honfoglaló kezdőlapnak | 
+ Kedvencek közé | 
+ Információk | 
+ Technikai segítség 
+ Ismertető 
+ Szabályok 
+ Etikai kódex 
+ Technikai információ 
+ Untitled Document 
+ Honfoglaló játékismertető
+ A Honfoglaló egy stratégiával ötvözött internetes kvízjáték, amelyet egyszerre
+ három játékos játszik.
+ A játékosoknak Magyarország megyéit kell elfoglalniuk úgy, hogy a feltett kérdésekre
+ helyesen válaszolnak.
+ A játék végén az nyer, akinek a legtöbb pontja van.
+ Kérdések
+ A játékban kétféle kérdés fordul elő: feleletválasztós kérdés és tippelős
+ kérdés . 
+ Feleletválasztós kérdések
+ A felkínált 4 válaszlehetőség közül kell kiválasztani a helyes választ.
+ Tippelős kérdések 
+ Itt mindig egy számérték a helyes válasz, amit a lehető legpontosabban kell
+ megtippelni (pl. "Mikor lépett trónra I. Lipót?"). A tippelős
+ kérdésben ketten vagy hárman vesznek részt. Ha a játékosok ugyanazt tippelik,
+ akkor a leggyorsabb lesz a nyertes.
+ Fordulók
+ A játék négy fordulóból áll:
+ I. Bázismegye választás 
+ II. Terjeszkedés 
+ III. A szabad területek felosztása 
+ IV. Háború 
+ I. forduló: Bázismegye választás
+ A játékosok egymás után választanak maguknak egy bázismegyét. A bázismegyék
+ nem lehetnek egymással szomszédosak és 1000 pontot érnek.
+ II. forduló: Terjeszkedés
+ A játékosok egymás után választanak egy szomszédos megyét, és ha jól felelnek
+ a feleletválasztós kérdésre, akkor a megyét elfoglalják. Az így megszerzett
+ megyék 200 pontot érnek. 
+ Ez a forduló maximum 6 körből áll. Az igazságosság kedvéért minden körben más
+ a játékosok sorrendje.
+ III. forduló: A szabad területek felosztása
+ Minden körben egy tippelős kérdést teszünk fel a három játékosnak. A nyertes
+ választhat megyét.
+ Az így megszerzett megyék 300 pontot érnek. Ez a forduló addig tart, amíg el
+ nem fogynak a szabad megyék.
+ IV. forduló: Háború
+ Minden körben minden játékos egyszer támadhat. A támadónak és a védőnek ugyanarra
+ a feleletválasztós kérdésre kell válaszolnia:
+ A védő nyer, ha a támadó nem találja el a helyes választ
+ A támadó nyer, ha ő eltalálja a helyes választ de a védő nem
+ Ha a támadó és a védő ugyancsak eltalálja a helyes választ, akkor egy
+ tippelős kérdéssel döntjük el a csatát
+ Ha a támadó nyer, akkor a megyét elfoglalja. A védőtől levonjuk a megye addigi
+ értékét, a megye értéke 400 pont lesz, amit a támadó megkap a megye elfoglalásáért.
+ Ha a védő úgy nyer, hogy eltalálta a helyes választ, a védő 100 pont védekezési bónuszt kap.
+ Ezt a védekezési bónuszt a játékos legyőzésével nem lehet megszerezni, ezért külön
+ feltüntetjük a játékban.
+ A támadásnak van két speciális esete: bázismegye támadás és várépítés .
+ Bázizmegye támadás 
+ Ekkor a támadónak le kell döntenie a bázismegyén álló vár mindhárom tornyát
+ (így egy támadáson belül három csata van). Amennyiben a támadó veszít, a támadás
+ befejeződik, de a ledöntött tornyokat a következő támadás során már nem kell
+ újra ledöntenie a támadónak.
+ Ha egy játékos bázismegyéjét elfoglalják, akkor az kiesik a játékból, a támadó
+ pedig megkapja összes megyéjét és a megyék összértékének megfelelő pontszámot.
+ Várépítés 
+ Lehetőség van a ledöntött tornyok felépítésére is, ilyenkor a saját bázismegyét
+ kell választani ("megtámadni").
+ A háború maximum 6 körből áll. A játékosok sorrendje (az igazságosság kedvéért)
+ minden körben más.
+ Eredményhirdetés
+ A játék végén a pontszámok szerint van első, második és harmadik helyezett.
+ Döntetlen nem lehetséges, mert ha a játék végén egyenlő pontszámok alakulnak
+ ki, akkor egy tippelős kérdéssel döntünk a sorrendről.
+ A szoftver üzemeltetője: © 2002 AB-MM Kft 
+ Impresszum | 
+ Médiaajánlat | 
+ Adatvédelem

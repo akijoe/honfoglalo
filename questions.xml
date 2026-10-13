@@ -1,0 +1,960 @@
+<TIPQUESTION QUESTION="Hány méter hosszú a Pentagon egy-egy oldala?" ANSWER="281" MINVAL="100" MAXVAL="500" CAT="foldrajz" />
+<TIPQUESTION QUESTION="Melyik évben nyílt meg Magyarországon az első földalatti kéregvasút?" ANSWER="1896" MINVAL="1820" MAXVAL="1950" CAT="foldrajz" />
+<TIPQUESTION QUESTION="Hány állomás van a budapesti 3-as (kék) metró vonalán?" ANSWER="20" MINVAL="5" MAXVAL="30" CAT="foldrajz" />
+<QUESTION QUESTION="Mi volt a foglalkozása Quasimodónak?" A1="harangozó" A2="pap" A3="sekrestyés" A4="katona" CAT="irodalom" />
+<QUESTION QUESTION="Mi volt J.K. Rowling első Harry Potter könyvének a címe?" A1="A Bölcsek Köve" A2="A Titkok Kamrája" A3="Az azkabani fogoly" A4="A Tűz Serlege" CAT="irodalom" />
+<QUESTION QUESTION="Milyen koporsóba tették Hófehérkét?" A1="üveg" A2="fa" A3="arany" A4="gyémánt" CAT="irodalom" />
+<QUESTION QUESTION="Melyik madár a természetvédelem címerállata?" A1="nagy kócsag" A2="bakcsó" A3="szajkó" A4="galamb" CAT="termtud" />
+<TIPQUESTION QUESTION="Hány lába van 20 bölömbikának?" ANSWER="40" MINVAL="20" MAXVAL="200" CAT="termtud" />
+<TIPQUESTION QUESTION="A Föld légkörének hány %-a oxigén?" ANSWER="21" MINVAL="0" MAXVAL="100" CAT="termtud" />
+<QUESTION QUESTION="Melyik NEM megújuló energiaforrás?" A1="atomenergia" A2="szélenergia" A3="geotermikus energia" A4="napenergia" CAT="matfiz" />
+<QUESTION QUESTION="Mi a sebességváltó feladata?" A1="nyomatékszabályzás" A2="hűtés" A3="légerő szabályzás" A4="üzemanyag tárolás" CAT="matfiz" />
+<TIPQUESTION QUESTION="Melyik évben lépett a Holdra Neil Amstrong?" ANSWER="1969" MINVAL="1900" MAXVAL="1980" CAT="matfiz" />
+<TIPQUESTION QUESTION="Mennyi 3333+5555?" ANSWER="8888" MINVAL="5555" MAXVAL="9999" CAT="matfiz" />
+<TIPQUESTION QUESTION="Melyik év volt a XXI. század első szökőéve?" ANSWER="2004" MINVAL="2000" MAXVAL="2009" CAT="matfiz" />
+<TIPQUESTION QUESTION="Hogy írjuk arab számmal a következő római számot: MCMLVI?" ANSWER="1956" MINVAL="1800" MAXVAL="2200" CAT="matfiz" />
+<TIPQUESTION QUESTION="Mennyi a VICC szóban szereplő római számok összege?" ANSWER="206" MINVAL="50" MAXVAL="500" CAT="matfiz" />
+<TIPQUESTION QUESTION="Hány órából áll 5 nap?" ANSWER="120" MINVAL="50" MAXVAL="500" CAT="matfiz" />
+<TIPQUESTION QUESTION="Hány méter hosszú volt a Titanic?" ANSWER="269" MINVAL="50" MAXVAL="500" CAT="matfiz" />
+<TIPQUESTION QUESTION="Melyik évben szabadalmaztatta Rubik Ernő a bűvös kockát?" ANSWER="1975" MINVAL="1950" MAXVAL="1988" CAT="matfiz" />
+<TIPQUESTION QUESTION="Hányféleképpen ülhet egymás mellé 4 ember egy padon?" ANSWER="24" MINVAL="10" MAXVAL="60" CAT="matfiz" />
+<TIPQUESTION QUESTION="Hányadik napja az évnek február elseje?" ANSWER="32" MINVAL="20" MAXVAL="50" CAT="matfiz" />
+<TIPQUESTION QUESTION="Ha Zolinak van 5 lány és 2 fiútestvére, akkor hányan vannak testvérek?" ANSWER="8" MINVAL="1" MAXVAL="20" CAT="matfiz" />
+<QUESTION QUESTION="Ki van az 500 forintos elején?" A1="II. Rákóczi Ferenc" A2="Bethlen Gábor" A3="Mátyás király" A4="Deák Ferenc" CAT="eletmod" />
+<QUESTION QUESTION="Milyen eredetű ital a Metaxa?" A1="görög" A2="portugál" A3="francia" A4="spanyol" CAT="eletmod" />
+<QUESTION QUESTION="Milyen módra készített az ananászos húsétel?" A1="hawaii módra" A2="Budapest módra" A3="Kedvessy módon" A4="udvarmester módra" CAT="eletmod" />
+<QUESTION QUESTION="Melyik jegy tart augusztus 24-től szeptember 23-ig?" A1="szűz" A2="skorpió" A3="ikrek" A4="halak" CAT="eletmod" />
+<QUESTION QUESTION="Hogy hívják az euró váltópénzét?" A1="cent" A2="pfenning" A3="penny" A4="groschen" CAT="eletmod" />
+<QUESTION QUESTION="Mit csinál, aki rokkát hajt?" A1="fon" A2="kocsikázik" A3="vadászik" A4="őröl" CAT="eletmod" />
+<QUESTION QUESTION="Melyik jegy tart május 22-től június 21-ig?" A1="ikrek" A2="vízöntő" A3="nyilas" A4="rák" CAT="eletmod" />
+<QUESTION QUESTION="Melyik étel tartalmazza a legtöbb kalóriát?" A1="körözött" A2="eper" A3="meggy" A4="görögdinnye" CAT="eletmod" />
+<QUESTION QUESTION="Melyik NEM (volt) üdítőmárka?" A1="Pitralon" A2="Márka" A3="Sztár" A4="Bambi" CAT="eletmod" />
+<QUESTION QUESTION="Melyik magyar borvidék jellegzetes bora a bikavér?" A1="Eger" A2="Csongrád" A3="Somló" A4="Etyek" CAT="eletmod" />
+<QUESTION QUESTION="Melyik égitestről nevezték el a rómaiak a szombatot?" A1="Szaturnusz" A2="Hold" A3="Merkúr" A4="Vénusz" CAT="eletmod" />
+<QUESTION QUESTION="Hogyan nevezzük a sertés hússal fedett bordáit?" A1="oldalas" A2="hasaalja" A3="hosszú karaj" A4="lapocka" CAT="eletmod" />
+<QUESTION QUESTION="Mit jelent oroszul a vodka szó?" A1="vizecske" A2="víz" A3="varjú" A4="vár" CAT="eletmod" />
+<QUESTION QUESTION="Ki volt eredetileg a léhűtő?" A1="sörfőzőinas" A2="ügyvédbojtár" A3="újságíró" A4="cipész" CAT="eletmod" />
+<QUESTION QUESTION="Mi a puliszka alapanyaga?" A1="kukorica" A2="rozs" A3="rizs" A4="búza" CAT="eletmod" />
+<QUESTION QUESTION="A hét melyik napját nevezték el a rómaiak a Napról?" A1="vasárnap" A2="hétfő" A3="péntek" A4="szerda" CAT="eletmod" />
+<QUESTION QUESTION="Milyen világnap van április 22-én?" A1="Föld napja" A2="anyák napja" A3="gyereknap" A4="tánc napja" CAT="eletmod" />
+<QUESTION QUESTION="Melyik az a két egymást követő hónap, amelyik 31 napos?" A1="július-augusztus" A2="január-február" A3="szeptember-október" A4="június-július" CAT="eletmod" />
+<QUESTION QUESTION="Melyik étel tartalmazza a legkevesebb kalóriát?" A1="sóska" A2="trappista sajt" A3="méz" A4="kaviár" CAT="eletmod" />
+<QUESTION QUESTION="Kik használták a &quot;Jó szerencsét!&quot; köszönést?" A1="a bányászok" A2="a pilóták" A3="a vasutasok" A4="a földművesek" CAT="eletmod" />
+<QUESTION QUESTION="Melyik NEM állatövi jegy a horoszkópban?" A1="juh" A2="bak" A3="kos" A4="rák" CAT="eletmod" />
+<QUESTION QUESTION="Melyik NEM kelt tésztából készül?" A1="linzer" A2="bukta" A3="aranygaluska" A4="fánk" CAT="eletmod" />
+<QUESTION QUESTION="Hol dolgozik a krupié?" A1="kaszinó" A2="étterem" A3="színház" A4="tőzsde" CAT="eletmod" />
+<QUESTION QUESTION="A mobiltelefon 5-ös gombjához az ABC mely betűi tartoznak?" A1="JKL" A2="KLM" A3="IJK" A4="GHI" CAT="eletmod" />
+<QUESTION QUESTION="Milyen eredetű étel a pozsonyi kocka?" A1="magyar" A2="cseh" A3="orosz" A4="kínai" CAT="eletmod" />
+<QUESTION QUESTION="Milyen állat látható a Lamborghini logóján?" A1="bika" A2="elefánt" A3="kecske" A4="béka" CAT="eletmod" />
+<QUESTION QUESTION="Kim nekem az ángyom?" A1="férfirokonom felesége" A2="anyám" A3="nagymamám" A4="nővérem" CAT="eletmod" />
+<QUESTION QUESTION="Kiről nevezték el a Jókai-bablevest?" A1="egy íróról" A2="egy mesterszakácsról" A3="egy nagyétkű főúrról" A4="egy huszárkapitányról" CAT="eletmod" />
+<QUESTION QUESTION="Melyik mozgó ünnep?" A1="húsvét" A2="karácsony" A3="vízkereszt" A4="halottak napja" CAT="eletmod" />
+<QUESTION QUESTION="Ki NEM nőrokon?" A1="ipa" A2="meny" A3="ángy" A4="napa" CAT="eletmod" />
+<TIPQUESTION QUESTION="Hányszor van 29-e egy szökőévben?" ANSWER="12" MINVAL="1" MAXVAL="12" CAT="eletmod" />
+<TIPQUESTION QUESTION="Legkevesebb hány forgalmi érmével fizethető ki pontosan 705 forint?" ANSWER="5" MINVAL="1" MAXVAL="20" CAT="eletmod" />
+<TIPQUESTION QUESTION="Melyik évben szabadalmaztatta Johan Vaaler a gemkapcsot?" ANSWER="1901" MINVAL="1750" MAXVAL="1990" CAT="eletmod" />
+<TIPQUESTION QUESTION="Melyik évben tették kötelezővé a rendszámtáblát Magyarországon?" ANSWER="1901" MINVAL="1850" MAXVAL="1980" CAT="eletmod" />
+<TIPQUESTION QUESTION="Melyik évben jelent meg az első dobozos Coca-Cola?" ANSWER="1950" MINVAL="1920" MAXVAL="1980" CAT="eletmod" />
+<TIPQUESTION QUESTION="Hány éves koruktól mehetnek férjhez a kínai nők?" ANSWER="20" MINVAL="15" MAXVAL="25" CAT="eletmod" />
+<TIPQUESTION QUESTION="Hány pontjuk volt az úttörőknek?" ANSWER="12" MINVAL="5" MAXVAL="20" CAT="eletmod" />
+<TIPQUESTION QUESTION="Június hányadik napján van Szent Iván-éj?" ANSWER="24" MINVAL="1" MAXVAL="30" CAT="eletmod" />
+<TIPQUESTION QUESTION="Hány forinttal ér többet legnagyobb címletű papírpénzünk a legkisebbnél?" ANSWER="19500" MINVAL="10000" MAXVAL="20000" CAT="eletmod" />
+<TIPQUESTION QUESTION="Hány 30 napos hónap van egy naptári évben?" ANSWER="4" MINVAL="1" MAXVAL="12" CAT="eletmod" />
+<TIPQUESTION QUESTION="Melyik évben jelent meg a Trabant 600?" ANSWER="1962" MINVAL="1940" MAXVAL="1970" CAT="eletmod" />
+<TIPQUESTION QUESTION="Hány forintom van, ha minden forgalomban levő érméből van egy nálam?" ANSWER="385" MINVAL="111" MAXVAL="1111" CAT="eletmod" />
+<TIPQUESTION QUESTION="Hányadik házassági évfordulón ünneplik a gyémántlakodalmat?" ANSWER="60" MINVAL="1" MAXVAL="100" CAT="eletmod" />
+<QUESTION QUESTION="Ki a macskák réme?" A1="Frakk" A2="Lassie" A3="Bogáncs" A4="Vahúr" CAT="szorakozas" />
+<QUESTION QUESTION="Milyen fajta hal &quot;Némó&quot;?" A1="Bohóchal" A2="Sügér" A3="Ponty" A4="Bálna" CAT="szorakozas" />
+<QUESTION QUESTION="Ki Garfield gazdija?" A1="Jon" A2="Ubul" A3="Nermál" A4="Luka" CAT="szorakozas" />
+<QUESTION QUESTION="Milyen néven vált ismertté Allen Stewart Konigsberg?" A1="Woody Allen" A2="Fred Astaire" A3="Bob Dylan" A4="Tony Curtis" CAT="szorakozas" />
+<QUESTION QUESTION="Milyen lény Shrek?" A1="ogre" A2="sárkány" A3="manó" A4="ember" CAT="szorakozas" />
+<QUESTION QUESTION="Milyen színű Hófehérke haja?" A1="ébenfekete" A2="szőkésbarna" A3="hamvasszőke" A4="lángvörös" CAT="szorakozas" />
+<QUESTION QUESTION="Milyen nemzetiségű Kylie Minogue?" A1="ausztrál" A2="francia" A3="kanadai" A4="angol" CAT="szorakozas" />
+<QUESTION QUESTION="Hol dolgozik Al Bundy?" A1="cipőboltban" A2="atomerőműben" A3="orvosi rendelőben" A4="szállodában" CAT="szorakozas" />
+<QUESTION QUESTION="Kinek a hangján szólal meg a Szamár a Shrek-filmekben?" A1="Eddie Murphy" A2="John Cleese" A3="Antonio Banderas" A4="Mike Myers" CAT="szorakozas" />
+<QUESTION QUESTION="Melyik egy híres rapper neve?" A1="50 cent" A2="1 dollar" A3="50 font" A4="100 euro" CAT="szorakozas" />
+<QUESTION QUESTION="Ki nem játszott James Bondot az alábbi színészek közül?" A1="Joseph Barbera" A2="Timothy Dalton" A3="Roger Moore" A4="Sean Connery" CAT="szorakozas" />
+<QUESTION QUESTION="Mi a Pókember neve a civil életben?" A1="Peter Parker" A2="Karel" A3="Clark Kent" A4="Bruce Wayne" CAT="szorakozas" />
+<QUESTION QUESTION="Ki NEM volt Beatles-tag?" A1="Steve Morse" A2="Paul McCartney" A3="John Lennon" A4="Ringo Starr" CAT="szorakozas" />
+<QUESTION QUESTION="Milyen állat Diego a Jégkorszak című animációs filmben?" A1="kardfogú tigris" A2="lajhár" A3="oposszum" A4="mamut" CAT="szorakozas" />
+<QUESTION QUESTION="Mi volt Antal Imre eredeti foglalkozása?" A1="zongoraművész" A2="énekes" A3="rendező" A4="karmester" CAT="szorakozas" />
+<QUESTION QUESTION="Melyik színésznő méretei kapcsán híresült el a számsor: 90-60-90?" A1="Marilyn Monroe" A2="Greta Garbo" A3="Karády Katalin" A4="Dobó Kata" CAT="szorakozas" />
+<QUESTION QUESTION="Ki volt a Playboy történetének első címlaplánya?" A1="Marilyn Monroe" A2="Rena Heffner" A3="Bo Derek" A4="Eldon Sellers" CAT="szorakozas" />
+<QUESTION QUESTION="Hogy hívják a családfőt a Besenyő családban?" A1="Pista bácsi" A2="Bandi bácsi" A3="Jani bácsi" A4="Lajos bácsi" CAT="szorakozas" />
+<QUESTION QUESTION="Hogy hívják James Bond főnökét?" A1="M" A2="C" A3="K" A4="CS" CAT="szorakozas" />
+<QUESTION QUESTION="Milyen színű tengeralattjáróról énekelt a Beatles?" A1="sárga" A2="kék" A3="vörös" A4="zöld" CAT="szorakozas" />
+<TIPQUESTION QUESTION="Melyik évben született Natalie Portman színésznő?" ANSWER="1981" MINVAL="1960" MAXVAL="1990" CAT="szorakozas" />
+<TIPQUESTION QUESTION="Melyik évben jelent meg Michael Jackson Off the Wall című albuma?" ANSWER="1979" MINVAL="1970" MAXVAL="1999" CAT="szorakozas" />
+<TIPQUESTION QUESTION="Melyik évben született híres színészünk, Bodrogi Gyula?" ANSWER="1934" MINVAL="1920" MAXVAL="1960" CAT="szorakozas" />
+<TIPQUESTION QUESTION="Hányadik adással ért véget a Szabó család című rádiós sorozat?" ANSWER="2500" MINVAL="500" MAXVAL="3500" CAT="szorakozas" />
+<TIPQUESTION QUESTION="Melyik évben kezdte meg adását a Music Television?" ANSWER="1981" MINVAL="1960" MAXVAL="1999" CAT="szorakozas" />
+<TIPQUESTION QUESTION="Melyik évben született híres színészünk, Bujtor István?" ANSWER="1942" MINVAL="1920" MAXVAL="1960" CAT="szorakozas" />
+<TIPQUESTION QUESTION="Hány feje van Süsünek, a sárkánynak?" ANSWER="1" MINVAL="1" MAXVAL="10" CAT="szorakozas" />
+<TIPQUESTION QUESTION="Hányas számú úton &quot;várhatsz rám dideregve&quot; a Republic dala szerint?" ANSWER="67" MINVAL="1" MAXVAL="100" CAT="szorakozas" />
+<TIPQUESTION QUESTION="Melyik évben indult útjára a Szomszédok című sorozat?" ANSWER="1987" MINVAL="1960" MAXVAL="1990" CAT="szorakozas" />
+<QUESTION QUESTION="Milyen nyelven beszélnek Brazíliában?" A1="portugálul" A2="spanyolul" A3="franciául" A4="angolul" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik országban áll a Colosseum?" A1="Olaszország" A2="Görögország" A3="Spanyolország" A4="Törökország" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik városban áll a Big Ben?" A1="London" A2="Edinburgh" A3="Dublin" A4="Manchester" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik városban áll a Szabadság-szobor?" A1="New York" A2="Washington" A3="Boston" A4="Philadelphia" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik a legnagyobb óceán?" A1="Csendes-óceán" A2="Atlanti-óceán" A3="Indiai-óceán" A4="Északi-Jeges-tenger" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik országot nevezik a felkelő nap országának?" A1="Japán" A2="Kína" A3="Korea" A4="Thaiföld" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik hegységben van a Kékes?" A1="Mátra" A2="Bükk" A3="Zemplén" A4="Börzsöny" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik megye székhelye Pécs?" A1="Baranya" A2="Tolna" A3="Somogy" A4="Zala" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik megye székhelye Kecskemét?" A1="Bács-Kiskun" A2="Pest" A3="Csongrád-Csanád" A4="Jász-Nagykun-Szolnok" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik megye székhelye Szekszárd?" A1="Tolna" A2="Baranya" A3="Fejér" A4="Somogy" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik megye székhelye Zalaegerszeg?" A1="Zala" A2="Vas" A3="Veszprém" A4="Somogy" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik megye székhelye Salgótarján?" A1="Nógrád" A2="Heves" A3="Borsod-Abaúj-Zemplén" A4="Pest" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik város NEM a Balaton partján fekszik?" A1="Tapolca" A2="Siófok" A3="Keszthely" A4="Balatonfüred" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik folyónak a leghosszabb a magyarországi szakasza?" A1="Tiszának" A2="Dunának" A3="Rábának" A4="Drávának" CAT="foldrajz" />
+<QUESTION QUESTION="Mi Magyarország legmagasabb pontja?" A1="Kékes" A2="Galya-tető" A3="Istállós-kő" A4="Dobogó-kő" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik városban van a Zsolnay Kulturális Negyed?" A1="Pécs" A2="Győr" A3="Szeged" A4="Debrecen" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik városban áll a Fogadalmi templom, amely előtt szabadtéri játékokat tartanak?" A1="Szeged" A2="Debrecen" A3="Eger" A4="Pécs" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik várost nevezik kálvinista Rómának?" A1="Debrecent" A2="Sárospatakot" A3="Pápát" A4="Kecskemétet" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik ország fővárosa Canberra?" A1="Ausztrália" A2="Új-Zéland" A3="Kanada" A4="Dél-Afrika" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik ország fővárosa Ottawa?" A1="Kanada" A2="Egyesült Államok" A3="Ausztrália" A4="Írország" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik ország fővárosa Ankara?" A1="Törökország" A2="Görögország" A3="Irán" A4="Szíria" CAT="foldrajz" />
+<QUESTION QUESTION="Mi Szlovákia fővárosa?" A1="Pozsony" A2="Kassa" A3="Nyitra" A4="Besztercebánya" CAT="foldrajz" />
+<QUESTION QUESTION="Mi Horvátország fővárosa?" A1="Zágráb" A2="Split" A3="Eszék" A4="Fiume" CAT="foldrajz" />
+<QUESTION QUESTION="Mi Szlovénia fővárosa?" A1="Ljubljana" A2="Maribor" A3="Koper" A4="Bled" CAT="foldrajz" />
+<QUESTION QUESTION="Mi Svájc fővárosa?" A1="Bern" A2="Zürich" A3="Genf" A4="Bázel" CAT="foldrajz" />
+<QUESTION QUESTION="Mi Brazília fővárosa?" A1="Brasília" A2="Rio de Janeiro" A3="Sao Paulo" A4="Salvador" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik folyót tartják hagyományosan a világ leghosszabbjának?" A1="Nílus" A2="Amazonas" A3="Jangce" A4="Mississippi" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik a Föld legnagyobb forró sivataga?" A1="Szahara" A2="Góbi" A3="Kalahári" A4="Atacama" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik országban található Machu Picchu?" A1="Peru" A2="Bolívia" A3="Chile" A4="Mexikó" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik országban található Petra sziklavárosa?" A1="Jordánia" A2="Egyiptom" A3="Izrael" A4="Szíria" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik ország része Grönland?" A1="Dánia" A2="Norvégia" A3="Izland" A4="Kanada" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik ország NEM szomszédja Magyarországnak?" A1="Csehország" A2="Szlovénia" A3="Ukrajna" A4="Szerbia" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik tengerbe ömlik a Duna?" A1="a Fekete-tengerbe" A2="az Adriai-tengerbe" A3="az Égei-tengerbe" A4="az Északi-tengerbe" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik országban ered a Duna?" A1="Németországban" A2="Ausztriában" A3="Svájcban" A4="Szlovákiában" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik országban ered a Tisza?" A1="Ukrajnában" A2="Romániában" A3="Szlovákiában" A4="Lengyelországban" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik a világ legnagyobb területű országa?" A1="Oroszország" A2="Kanada" A3="Kína" A4="Egyesült Államok" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik a világ legkisebb független állama?" A1="Vatikán" A2="Monaco" A3="San Marino" A4="Liechtenstein" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik város NEM a Duna partján fekszik?" A1="Prága" A2="Bécs" A3="Pozsony" A4="Belgrád" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik folyó partján fekszik Szeged?" A1="Tisza" A2="Maros" A3="Duna" A4="Körös" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik folyó partján fekszik Párizs?" A1="Szajna" A2="Loire" A3="Rajna" A4="Rhone" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik budapesti híd hídfőit őrzik kőoroszlánok?" A1="Széchenyi lánchíd" A2="Erzsébet híd" A3="Szabadság híd" A4="Margit híd" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik budapesti hegyen áll a Szabadság-szobor?" A1="Gellért-hegy" A2="Várhegy" A3="János-hegy" A4="Rózsadomb" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik budapesti hegyen áll az Erzsébet-kilátó?" A1="János-hegy" A2="Gellért-hegy" A3="Hármashatár-hegy" A4="Széchenyi-hegy" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik fürdő található a Városligetben?" A1="Széchenyi fürdő" A2="Gellért fürdő" A3="Rudas fürdő" A4="Lukács fürdő" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik budapesti téren áll a Millenniumi emlékmű?" A1="a Hősök terén" A2="a Kossuth téren" A3="a Szabadság téren" A4="a Deák téren" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik városban áll Magyarország legnagyobb temploma?" A1="Esztergomban" A2="Budapesten" A3="Egerben" A4="Kalocsán" CAT="foldrajz" />
+<QUESTION QUESTION="Hol van a világ legnagyobb, fürdésre alkalmas természetes termáltava?" A1="Hévízen" A2="Harkányban" A3="Zalakaroson" A4="Bükfürdőn" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik barlang bejárata van Aggteleken?" A1="Baradla" A2="Pál-völgyi" A3="Abaligeti" A4="Lóczy" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik nemzeti parkban áll a Kilenclyukú híd?" A1="Hortobágyi" A2="Kiskunsági" A3="Bükki" A4="Aggteleki" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik fa levele látható Kanada zászlaján?" A1="a juharé" A2="a tölgyé" A3="a nyíré" A4="a hársé" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik város jelképe a Manneken Pis?" A1="Brüsszel" A2="Amszterdam" A3="Bécs" A4="Koppenhága" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik város jelképe a Kis hableány szobra?" A1="Koppenhága" A2="Oslo" A3="Stockholm" A4="Helsinki" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik nép építette Machu Picchut?" A1="az inkák" A2="az aztékok" A3="a maják" A4="az olmékok" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik tengerszoros választja el Európát Ázsiától Isztambulnál?" A1="Boszporusz" A2="Gibraltári-szoros" A3="Messinai-szoros" A4="Kercsi-szoros" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik országban áll Angkor Vat templomegyüttese?" A1="Kambodzsában" A2="Thaiföldön" A3="Vietnámban" A4="Laoszban" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik országban ered a Rajna?" A1="Svájcban" A2="Németországban" A3="Ausztriában" A4="Franciaországban" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik ország fővárosa Ulánbátor?" A1="Mongólia" A2="Kazahsztán" A3="Kirgizisztán" A4="Nepál" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik ország fővárosa Reykjavík?" A1="Izland" A2="Norvégia" A3="Feröer" A4="Írország" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik ország fővárosa Wellington?" A1="Új-Zéland" A2="Ausztrália" A3="Kanada" A4="Dél-Afrika" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik ország fővárosa Asztana?" A1="Kazahsztán" A2="Üzbegisztán" A3="Kirgizisztán" A4="Türkmenisztán" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik ország fővárosa Taskent?" A1="Üzbegisztán" A2="Kazahsztán" A3="Tádzsikisztán" A4="Azerbajdzsán" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik ország fővárosa Addisz-Abeba?" A1="Etiópia" A2="Kenya" A3="Szomália" A4="Eritrea" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik ország fővárosa Hanoi?" A1="Vietnám" A2="Laosz" A3="Kambodzsa" A4="Thaiföld" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik ország fővárosa Katmandu?" A1="Nepál" A2="Bhután" A3="Banglades" A4="Mianmar" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik ország fővárosa Quito?" A1="Ecuador" A2="Kolumbia" A3="Peru" A4="Venezuela" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik ország fővárosa Montevideo?" A1="Uruguay" A2="Paraguay" A3="Argentína" A4="Chile" CAT="foldrajz" />
+<QUESTION QUESTION="Mi Bolívia alkotmányos fővárosa?" A1="Sucre" A2="La Paz" A3="Santa Cruz" A4="Cochabamba" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik ország NEM határos tengerrel?" A1="Bolívia" A2="Peru" A3="Chile" A4="Ecuador" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik Afrika legnagyobb tava?" A1="Viktória-tó" A2="Tanganyika-tó" A3="Malawi-tó" A4="Csád-tó" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik a világ legmélyebb tava?" A1="Bajkál-tó" A2="Tanganyika-tó" A3="Kaszpi-tenger" A4="Felső-tó" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik a világ legnagyobb területű tava?" A1="Kaszpi-tenger" A2="Felső-tó" A3="Viktória-tó" A4="Bajkál-tó" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik országban emelkedik a Kilimandzsáró?" A1="Tanzánia" A2="Kenya" A3="Uganda" A4="Etiópia" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik hegységet tekintik hagyományosan Európa és Ázsia határának?" A1="Urál" A2="Kaukázus" A3="Kárpátok" A4="Altaj" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik Európa legmagasabb csúcsa, ha a Kaukázust is ide számítjuk?" A1="Elbrusz" A2="Mont Blanc" A3="Matterhorn" A4="Kazbek" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik Európa leghosszabb folyója?" A1="Volga" A2="Duna" A3="Dnyeper" A4="Rajna" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik tengerbe ömlik a Volga?" A1="a Kaszpi-tengerbe" A2="a Fekete-tengerbe" A3="az Azovi-tengerbe" A4="a Balti-tengerbe" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik folyó ömlik a Fekete-tengerbe Ukrajnában?" A1="Dnyeper" A2="Volga" A3="Odera" A4="Visztula" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik szoros köti össze a Földközi-tengert az Atlanti-óceánnal?" A1="Gibraltári-szoros" A2="Boszporusz" A3="Dardanellák" A4="Messinai-szoros" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik csatorna köti össze a Földközi-tengert a Vörös-tengerrel?" A1="Szuezi-csatorna" A2="Panama-csatorna" A3="Korinthoszi-csatorna" A4="Kieli-csatorna" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik ország része Korzika?" A1="Franciaország" A2="Olaszország" A3="Spanyolország" A4="Görögország" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik ország része Mallorca?" A1="Spanyolország" A2="Olaszország" A3="Görögország" A4="Málta" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik a világ legnépesebb országa 2023 óta?" A1="India" A2="Kína" A3="Egyesült Államok" A4="Indonézia" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik Afrika legnagyobb területű országa?" A1="Algéria" A2="Kongói DK" A3="Szudán" A4="Líbia" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik várost becézik Nagy Almának?" A1="New York" A2="Chicago" A3="Los Angeles" A4="Boston" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik vármegyében van Hollókő?" A1="Nógrád" A2="Heves" A3="Borsod-Abaúj-Zemplén" A4="Pest" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik magyar város római kori neve Savaria?" A1="Szombathely" A2="Sopron" A3="Győr" A4="Pécs" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik magyar város római kori neve Sopianae?" A1="Pécs" A2="Szombathely" A3="Sopron" A4="Szekszárd" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik a legnagyobb területű magyar vármegye?" A1="Bács-Kiskun" A2="Pest" A3="Borsod-Abaúj-Zemplén" A4="Hajdú-Bihar" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik a legkisebb területű magyar vármegye?" A1="Komárom-Esztergom" A2="Nógrád" A3="Vas" A4="Tolna" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik hegységben van a Galyatető?" A1="Mátra" A2="Bükk" A3="Zempléni-hegység" A4="Börzsöny" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik hegységben van az Istállós-kő?" A1="Bükk" A2="Mátra" A3="Börzsöny" A4="Pilis" CAT="foldrajz" />
+<QUESTION QUESTION="Mi a Börzsöny legmagasabb csúcsa?" A1="Csóványos" A2="Nagy-Hideg-hegy" A3="Pilis-tető" A4="Dobogókő" CAT="foldrajz" />
+<TIPQUESTION QUESTION="Hány kerülete van Budapestnek?" ANSWER="23" MINVAL="5" MAXVAL="40" CAT="foldrajz" />
+<TIPQUESTION QUESTION="Hány megyéje van Magyarországnak?" ANSWER="19" MINVAL="5" MAXVAL="40" CAT="foldrajz" />
+<TIPQUESTION QUESTION="Hány országgal határos Magyarország?" ANSWER="7" MINVAL="3" MAXVAL="12" CAT="foldrajz" />
+<TIPQUESTION QUESTION="Hány csillag van az Egyesült Államok zászlaján?" ANSWER="50" MINVAL="10" MAXVAL="100" CAT="foldrajz" />
+<TIPQUESTION QUESTION="Hány méter magas a Kékes?" ANSWER="1014" MINVAL="500" MAXVAL="2000" CAT="foldrajz" />
+<TIPQUESTION QUESTION="Hány méter mély a Balaton legmélyebb pontja (egészre kerekítve)?" ANSWER="12" MINVAL="2" MAXVAL="50" CAT="foldrajz" />
+<TIPQUESTION QUESTION="Hány kilométer a Duna magyarországi szakasza (kb.)?" ANSWER="417" MINVAL="100" MAXVAL="1000" CAT="foldrajz" />
+<TIPQUESTION QUESTION="Hány kilométer a Tisza magyarországi szakasza (kb.)?" ANSWER="596" MINVAL="100" MAXVAL="1000" CAT="foldrajz" />
+<TIPQUESTION QUESTION="Melyik évben adták át a Széchenyi lánchidat?" ANSWER="1849" MINVAL="1800" MAXVAL="1900" CAT="foldrajz" />
+<TIPQUESTION QUESTION="Melyik évben egyesült Pest, Buda és Óbuda?" ANSWER="1873" MINVAL="1800" MAXVAL="1950" CAT="foldrajz" />
+<TIPQUESTION QUESTION="Melyik évben érte el Kolumbusz Amerikát?" ANSWER="1492" MINVAL="1400" MAXVAL="1600" CAT="foldrajz" />
+<TIPQUESTION QUESTION="Melyik évben jutott el először ember a Déli-sarkra?" ANSWER="1911" MINVAL="1850" MAXVAL="1950" CAT="foldrajz" />
+<TIPQUESTION QUESTION="Hány méter magas a Mount Everest (egészre kerekítve)?" ANSWER="8849" MINVAL="5000" MAXVAL="10000" CAT="foldrajz" />
+<TIPQUESTION QUESTION="Hány méter mély a Bajkál-tó legmélyebb pontja (kb.)?" ANSWER="1642" MINVAL="500" MAXVAL="3000" CAT="foldrajz" />
+<TIPQUESTION QUESTION="Hány méter magas a Mont Blanc (kb.)?" ANSWER="4808" MINVAL="3000" MAXVAL="6000" CAT="foldrajz" />
+<TIPQUESTION QUESTION="Hány kilométer hosszú a Nílus (kb.)?" ANSWER="6650" MINVAL="2000" MAXVAL="10000" CAT="foldrajz" />
+<TIPQUESTION QUESTION="Hány méterrel van a tengerszint alatt a Holt-tenger partja (kb.)?" ANSWER="430" MINVAL="100" MAXVAL="1000" CAT="foldrajz" />
+<TIPQUESTION QUESTION="Hány ország van Afrikában?" ANSWER="54" MINVAL="20" MAXVAL="80" CAT="foldrajz" />
+<TIPQUESTION QUESTION="Hány tagállama van az ENSZ-nek?" ANSWER="193" MINVAL="100" MAXVAL="250" CAT="foldrajz" />
+<TIPQUESTION QUESTION="Hány ezer négyzetkilométer Magyarország területe (kerekítve)?" ANSWER="93" MINVAL="50" MAXVAL="200" CAT="foldrajz" />
+<TIPQUESTION QUESTION="Hány négyzetkilométer a Balaton felülete (kb.)?" ANSWER="594" MINVAL="100" MAXVAL="2000" CAT="foldrajz" />
+<TIPQUESTION QUESTION="Hány méter magas a Kilimandzsáró (kb.)?" ANSWER="5895" MINVAL="3000" MAXVAL="8000" CAT="foldrajz" />
+<TIPQUESTION QUESTION="Hány méter mély a Mariana-árok legmélyebb pontja (kb.)?" ANSWER="11000" MINVAL="5000" MAXVAL="15000" CAT="foldrajz" />
+<TIPQUESTION QUESTION="Hány időzónája van Oroszországnak?" ANSWER="11" MINVAL="3" MAXVAL="20" CAT="foldrajz" />
+<TIPQUESTION QUESTION="Hány országgal határos Németország?" ANSWER="9" MINVAL="3" MAXVAL="15" CAT="foldrajz" />
+<TIPQUESTION QUESTION="Hány országgal határos Ausztria?" ANSWER="8" MINVAL="3" MAXVAL="15" CAT="foldrajz" />
+<TIPQUESTION QUESTION="Hány méter magas a Kárpátok legmagasabb csúcsa, a Gerlach (kb.)?" ANSWER="2655" MINVAL="1500" MAXVAL="4000" CAT="foldrajz" />
+<QUESTION QUESTION="Melyik sakkfigura lép L alakban?" A1="huszár" A2="futó" A3="bástya" A4="király" CAT="sport" />
+<QUESTION QUESTION="Melyik sportágban lett többszörös olimpiai bajnok Egerszegi Krisztina?" A1="úszásban" A2="vívásban" A3="kajak-kenuban" A4="öttusában" CAT="sport" />
+<QUESTION QUESTION="Melyik sportág legendája Papp László?" A1="ökölvívás" A2="birkózás" A3="vívás" A4="súlyemelés" CAT="sport" />
+<QUESTION QUESTION="Melyik sportágban lett többszörös olimpiai bajnok Gerevich Aladár?" A1="vívásban" A2="úszásban" A3="atlétikában" A4="cselgáncsban" CAT="sport" />
+<QUESTION QUESTION="Ki volt az Aranycsapat csapatkapitánya?" A1="Puskás Ferenc" A2="Bozsik József" A3="Kocsis Sándor" A4="Hidegkuti Nándor" CAT="sport" />
+<QUESTION QUESTION="Kitől kapott ki a magyar válogatott az 1954-es világbajnokság döntőjében?" A1="NSZK" A2="Brazília" A3="Uruguay" A4="Ausztria" CAT="sport" />
+<QUESTION QUESTION="Ki volt Magyarország első olimpiai bajnoka?" A1="Hajós Alfréd" A2="Papp László" A3="Gerevich Aladár" A4="Bauer Rudolf" CAT="sport" />
+<QUESTION QUESTION="Melyik városban rendezték az első újkori olimpiát 1896-ban?" A1="Athénban" A2="Párizsban" A3="Londonban" A4="Rómában" CAT="sport" />
+<QUESTION QUESTION="Melyik kerékpáros körverseny éllovasa visel sárga trikót?" A1="Tour de France" A2="Giro d'Italia" A3="Vuelta" A4="Párizs-Roubaix" CAT="sport" />
+<QUESTION QUESTION="Melyik sportágban olimpiai bajnok Szilágyi Áron?" A1="kardvívásban" A2="párbajtőrvívásban" A3="birkózásban" A4="kajakozásban" CAT="sport" />
+<QUESTION QUESTION="Melyik sportágban nyert olimpiai aranyérmet Milák Kristóf?" A1="úszásban" A2="kajakozásban" A3="vívásban" A4="öttusában" CAT="sport" />
+<QUESTION QUESTION="Milyen becenéven ismert Hosszú Katinka?" A1="Iron Lady" A2="Golden Girl" A3="Queen of Water" A4="Speedy" CAT="sport" />
+<QUESTION QUESTION="Melyik ország nyerte a 2018-as labdarúgó-világbajnokságot?" A1="Franciaország" A2="Horvátország" A3="Németország" A4="Brazília" CAT="sport" />
+<QUESTION QUESTION="Melyik ország nyerte a 2022-es labdarúgó-világbajnokságot?" A1="Argentína" A2="Franciaország" A3="Brazília" A4="Horvátország" CAT="sport" />
+<QUESTION QUESTION="Melyik ország válogatottja nyerte a legtöbb labdarúgó-világbajnokságot?" A1="Brazília" A2="Németország" A3="Olaszország" A4="Argentína" CAT="sport" />
+<QUESTION QUESTION="Ki szerezte a legtöbb gólt a labdarúgó-világbajnokságok történetében?" A1="Miroslav Klose" A2="Ronaldo" A3="Pelé" A4="Gerd Müller" CAT="sport" />
+<QUESTION QUESTION="Ki szerezte az „Isten keze” gólt 1986-ban?" A1="Diego Maradona" A2="Pelé" A3="Michel Platini" A4="Zico" CAT="sport" />
+<QUESTION QUESTION="Melyik országban rendezték az 1986-os labdarúgó-világbajnokságot?" A1="Mexikó" A2="Olaszország" A3="Spanyolország" A4="Argentína" CAT="sport" />
+<QUESTION QUESTION="Melyik klubban futballozott Puskás Ferenc Spanyolországban?" A1="Real Madrid" A2="FC Barcelona" A3="Atlético Madrid" A4="Sevilla" CAT="sport" />
+<QUESTION QUESTION="Melyik klubhoz igazolt Kocsis Sándor és Czibor Zoltán 1956 után?" A1="FC Barcelona" A2="Real Madrid" A3="Juventus" A4="AC Milan" CAT="sport" />
+<QUESTION QUESTION="Melyik klub stadionja az Anfield?" A1="Liverpool" A2="Everton" A3="Manchester United" A4="Arsenal" CAT="sport" />
+<QUESTION QUESTION="Melyik klub stadionja a Santiago Bernabéu?" A1="Real Madrid" A2="FC Barcelona" A3="Atlético Madrid" A4="Sevilla" CAT="sport" />
+<QUESTION QUESTION="Melyik város csapata az Ajax?" A1="Amszterdam" A2="Rotterdam" A3="Eindhoven" A4="Utrecht" CAT="sport" />
+<QUESTION QUESTION="Melyik budapesti klub színe a lila-fehér?" A1="Újpest" A2="Ferencváros" A3="MTK" A4="Vasas" CAT="sport" />
+<QUESTION QUESTION="Melyik városban van a Maracanã stadion?" A1="Rio de Janeiro" A2="São Paulo" A3="Buenos Aires" A4="Montevideo" CAT="sport" />
+<QUESTION QUESTION="Ki nyerte a legtöbb Aranylabdát?" A1="Lionel Messi" A2="Cristiano Ronaldo" A3="Michel Platini" A4="Johan Cruyff" CAT="sport" />
+<QUESTION QUESTION="Melyik teniszversenyt játsszák füves pályán?" A1="Wimbledon" A2="Roland Garros" A3="US Open" A4="Australian Open" CAT="sport" />
+<QUESTION QUESTION="Melyik Grand Slam-tornát játsszák salakon?" A1="Roland Garros" A2="Wimbledon" A3="US Open" A4="Australian Open" CAT="sport" />
+<QUESTION QUESTION="Ki nyerte a legtöbb Grand Slam-tornát a férfiak között?" A1="Novak Djokovic" A2="Rafael Nadal" A3="Roger Federer" A4="Pete Sampras" CAT="sport" />
+<QUESTION QUESTION="Melyik sportágban adják a Davis-kupát?" A1="tenisz" A2="golf" A3="vitorlázás" A4="asztalitenisz" CAT="sport" />
+<QUESTION QUESTION="Melyik sportágban adják a Ryder-kupát?" A1="golf" A2="tenisz" A3="vitorlázás" A4="krikett" CAT="sport" />
+<QUESTION QUESTION="Melyik sportágban rendezik az America's Cupot?" A1="vitorlázás" A2="evezés" A3="golf" A4="lovaglás" CAT="sport" />
+<QUESTION QUESTION="Melyik sportágban adják a Stanley-kupát?" A1="jégkorong" A2="kosárlabda" A3="baseball" A4="amerikai futball" CAT="sport" />
+<QUESTION QUESTION="Melyik sportág bajnoki döntője a Super Bowl?" A1="amerikai futball" A2="baseball" A3="kosárlabda" A4="jégkorong" CAT="sport" />
+<QUESTION QUESTION="Milyen sportverseny a Giro d'Italia?" A1="kerékpáros körverseny" A2="autóverseny" A3="motorverseny" A4="vitorlásverseny" CAT="sport" />
+<QUESTION QUESTION="Melyik országban rendezik a Dakar-ralit 2020 óta?" A1="Szaúd-Arábia" A2="Marokkó" A3="Argentína" A4="Szenegál" CAT="sport" />
+<QUESTION QUESTION="Hol rendezik a Forma–1-es Magyar Nagydíjat?" A1="Mogyoródon" A2="Zsámbékon" A3="Kakucson" A4="Győrben" CAT="sport" />
+<QUESTION QUESTION="Ki nyerte az első Forma–1-es Magyar Nagydíjat 1986-ban?" A1="Nelson Piquet" A2="Ayrton Senna" A3="Nigel Mansell" A4="Alain Prost" CAT="sport" />
+<QUESTION QUESTION="Melyik versenyző nyert Michael Schumacher mellett hét Forma–1-es világbajnokságot?" A1="Lewis Hamilton" A2="Sebastian Vettel" A3="Ayrton Senna" A4="Alain Prost" CAT="sport" />
+<QUESTION QUESTION="Ki volt az első magyar Forma–1-es versenyző?" A1="Baumgartner Zsolt" A2="Michelisz Norbert" A3="Kiss Norbert" A4="Talmácsi Gábor" CAT="sport" />
+<QUESTION QUESTION="Melyik sportágban lett világbajnok Talmácsi Gábor 2007-ben?" A1="gyorsasági motorozás" A2="autóverseny" A3="motokrossz" A4="rali" CAT="sport" />
+<QUESTION QUESTION="Melyik sportágban olimpiai bajnok Balczó András?" A1="öttusa" A2="vívás" A3="atlétika" A4="birkózás" CAT="sport" />
+<QUESTION QUESTION="Melyik sportágban olimpiai bajnok Kozák Danuta?" A1="kajak" A2="kenu" A3="evezés" A4="úszás" CAT="sport" />
+<QUESTION QUESTION="Melyik sportágban olimpiai bajnok Kolonics György?" A1="kenu" A2="kajak" A3="evezés" A4="úszás" CAT="sport" />
+<QUESTION QUESTION="Melyik sportágban olimpiai bajnok Keleti Ágnes?" A1="torna" A2="vívás" A3="úszás" A4="atlétika" CAT="sport" />
+<QUESTION QUESTION="Melyik sportágban olimpiai bajnok Pars Krisztián?" A1="kalapácsvetés" A2="súlylökés" A3="diszkoszvetés" A4="gerelyhajítás" CAT="sport" />
+<QUESTION QUESTION="Melyik sportágban olimpiai bajnok Zsivótzky Gyula?" A1="kalapácsvetés" A2="súlylökés" A3="gerelyhajítás" A4="diszkoszvetés" CAT="sport" />
+<QUESTION QUESTION="Melyik sportágban olimpiai bajnok Németh Miklós?" A1="gerelyhajítás" A2="kalapácsvetés" A3="diszkoszvetés" A4="súlylökés" CAT="sport" />
+<QUESTION QUESTION="Melyik sportágban olimpiai bajnok Kulcsár Győző?" A1="párbajtőrvívás" A2="kardvívás" A3="tőrvívás" A4="öttusa" CAT="sport" />
+<QUESTION QUESTION="Melyik sportágban olimpiai bajnok Elek Ilona?" A1="tőrvívás" A2="kardvívás" A3="párbajtőrvívás" A4="öttusa" CAT="sport" />
+<QUESTION QUESTION="Melyik sportágban olimpiai bajnok Szász Emese?" A1="párbajtőrvívás" A2="tőrvívás" A3="kardvívás" A4="öttusa" CAT="sport" />
+<QUESTION QUESTION="Melyik sportágban olimpiai bajnok Kovács Antal?" A1="cselgáncs" A2="birkózás" A3="ökölvívás" A4="súlyemelés" CAT="sport" />
+<QUESTION QUESTION="Melyik sportágban olimpiai bajnok Risztov Éva?" A1="nyíltvízi úszás" A2="öttusa" A3="kajak" A4="triatlon" CAT="sport" />
+<QUESTION QUESTION="Melyik sportágban olimpiai bajnok Kásás Tamás?" A1="vízilabda" A2="úszás" A3="kenu" A4="evezés" CAT="sport" />
+<QUESTION QUESTION="Melyik szeren nyert olimpiai aranyat Csollány Szilveszter?" A1="gyűrű" A2="nyújtó" A3="lólengés" A4="korlát" CAT="sport" />
+<QUESTION QUESTION="Melyik szeren nyert olimpiai aranyat Berki Krisztián?" A1="lólengés" A2="gyűrű" A3="nyújtó" A4="talaj" CAT="sport" />
+<QUESTION QUESTION="Melyik úszásnemben nyert olimpiai aranyat Milák Kristóf Tokióban?" A1="pillangóúszás" A2="gyorsúszás" A3="hátúszás" A4="mellúszás" CAT="sport" />
+<QUESTION QUESTION="Melyik úszásnemben nyert olimpiai aranyat Gyurta Dániel?" A1="mellúszás" A2="pillangóúszás" A3="hátúszás" A4="vegyes úszás" CAT="sport" />
+<QUESTION QUESTION="Melyik úszásnemben nyert olimpiai aranyat Darnyi Tamás?" A1="vegyes úszás" A2="mellúszás" A3="hátúszás" A4="pillangóúszás" CAT="sport" />
+<QUESTION QUESTION="Melyik úszásnemben nyert olimpiai aranyat Egerszegi Krisztina 1988-ban?" A1="hátúszás" A2="vegyes úszás" A3="pillangóúszás" A4="gyorsúszás" CAT="sport" />
+<QUESTION QUESTION="Melyik sportágban nyerte Magyarország első téli olimpiai aranyát 2018-ban?" A1="gyorskorcsolya" A2="műkorcsolya" A3="alpesi sí" A4="biatlon" CAT="sport" />
+<QUESTION QUESTION="Melyik testvér nyert egyéni olimpiai aranyat 500 méteren 2022-ben?" A1="Liu Shaoang" A2="Liu Shaolin Sándor" A3="Knoch Viktor" A4="Burján Csaba" CAT="sport" />
+<QUESTION QUESTION="Melyik sorozatban lett bajnok Michelisz Norbert 2019-ben?" A1="WTCR" A2="Forma–1" A3="DTM" A4="rali-világbajnokság" CAT="sport" />
+<QUESTION QUESTION="Hol rendezték az első téli olimpiát 1924-ben?" A1="Chamonix" A2="St. Moritz" A3="Lake Placid" A4="Oslo" CAT="sport" />
+<QUESTION QUESTION="Melyik város rendezett nyári és téli olimpiát is?" A1="Peking" A2="London" A3="Tokió" A4="Párizs" CAT="sport" />
+<QUESTION QUESTION="Melyik városban rendezték az 1936-os nyári olimpiát?" A1="Berlin" A2="Amszterdam" A3="Los Angeles" A4="Róma" CAT="sport" />
+<QUESTION QUESTION="Melyik nyári olimpiát bojkottálta a Szovjetunió és Magyarország?" A1="1984, Los Angeles" A2="1980, Moszkva" A3="1976, Montreal" A4="1988, Szöul" CAT="sport" />
+<QUESTION QUESTION="Ki találta fel a kosárlabdát?" A1="James Naismith" A2="William Morgan" A3="Walter Camp" A4="Abner Doubleday" CAT="sport" />
+<QUESTION QUESTION="Melyik kosárlabdázó viselte a 23-as mezt a Chicago Bullsban?" A1="Michael Jordan" A2="Scottie Pippen" A3="Dennis Rodman" A4="Kobe Bryant" CAT="sport" />
+<QUESTION QUESTION="Melyik csapatban játszott egész pályafutása alatt Kobe Bryant?" A1="Los Angeles Lakers" A2="Chicago Bulls" A3="Boston Celtics" A4="Miami Heat" CAT="sport" />
+<QUESTION QUESTION="Hogy hívják az új-zélandi rögbiválogatottat?" A1="All Blacks" A2="Wallabies" A3="Springboks" A4="Pumas" CAT="sport" />
+<QUESTION QUESTION="Melyik ország nyerte a legtöbb rögbi-világbajnokságot?" A1="Dél-Afrika" A2="Új-Zéland" A3="Ausztrália" A4="Anglia" CAT="sport" />
+<QUESTION QUESTION="Ki tartja a férfi 100 méteres síkfutás világcsúcsát?" A1="Usain Bolt" A2="Tyson Gay" A3="Yohan Blake" A4="Asafa Powell" CAT="sport" />
+<QUESTION QUESTION="Melyik versenyszám NEM része a tízpróbának?" A1="kalapácsvetés" A2="rúdugrás" A3="gerelyhajítás" A4="110 m gátfutás" CAT="sport" />
+<QUESTION QUESTION="Mit jelent a golfban a „birdie”?" A1="egy ütés a par alatt" A2="két ütés a par alatt" A3="egy ütés a par felett" A4="lyukba elsőre" CAT="sport" />
+<QUESTION QUESTION="Melyik sportágat játsszák lóháton, ütőkkel?" A1="lovaspóló" A2="krikett" A3="lacrosse" A4="hurling" CAT="sport" />
+<QUESTION QUESTION="Melyik japán küzdősport versenyzői küzdenek a dohjón?" A1="szumó" A2="dzsúdó" A3="karate" A4="kendó" CAT="sport" />
+<QUESTION QUESTION="Melyik harcművészet neve jelenti azt, hogy „üres kéz”?" A1="karate" A2="dzsúdó" A3="aikido" A4="taekwondo" CAT="sport" />
+<QUESTION QUESTION="Melyik téli sportágban csúsznak fekve, fejjel előre?" A1="szkeleton" A2="szánkó" A3="bob" A4="curling" CAT="sport" />
+<QUESTION QUESTION="Melyik sportágban söpörnek a jégen egy gránitkő előtt?" A1="curling" A2="bob" A3="szkeleton" A4="jégkorong" CAT="sport" />
+<QUESTION QUESTION="Melyik sportágban használják a tatamit?" A1="cselgáncs" A2="birkózás" A3="torna" A4="ökölvívás" CAT="sport" />
+<QUESTION QUESTION="Melyik sportág versenyszáma a keirin?" A1="pályakerékpár" A2="úszás" A3="atlétika" A4="cselgáncs" CAT="sport" />
+<QUESTION QUESTION="Mi a sakkban az en passant?" A1="menet közbeni ütés" A2="sáncolás" A3="gyalogátváltozás" A4="patthelyzet" CAT="sport" />
+<QUESTION QUESTION="Ki volt a sakk első hivatalos világbajnoka?" A1="Wilhelm Steinitz" A2="Emanuel Lasker" A3="José Capablanca" A4="Paul Morphy" CAT="sport" />
+<QUESTION QUESTION="Melyik sakkozó kapott ki a Deep Blue számítógéptől 1997-ben?" A1="Garri Kaszparov" A2="Anatolij Karpov" A3="Bobby Fischer" A4="Magnus Carlsen" CAT="sport" />
+<QUESTION QUESTION="Melyik a legrégebbi, ma is futó városi maraton (1897 óta)?" A1="Boston" A2="New York" A3="London" A4="Chicago" CAT="sport" />
+<QUESTION QUESTION="Melyik lóversenyt rendezik minden májusban Louisville-ben?" A1="Kentucky Derby" A2="Grand National" A3="Prix de l'Arc" A4="Melbourne Cup" CAT="sport" />
+<TIPQUESTION QUESTION="Hány játékos van egyszerre pályán egy kosárlabdacsapatból?" ANSWER="5" MINVAL="2" MAXVAL="15" CAT="sport" />
+<TIPQUESTION QUESTION="Hány lyukból áll egy szabványos golfpálya?" ANSWER="18" MINVAL="5" MAXVAL="40" CAT="sport" />
+<TIPQUESTION QUESTION="Hány mezőből áll egy sakktábla?" ANSWER="64" MINVAL="20" MAXVAL="150" CAT="sport" />
+<TIPQUESTION QUESTION="Hány bábu áll a sakktáblán egy játszma elején?" ANSWER="32" MINVAL="10" MAXVAL="60" CAT="sport" />
+<TIPQUESTION QUESTION="Hány méter hosszú egy olimpiai úszómedence?" ANSWER="50" MINVAL="10" MAXVAL="100" CAT="sport" />
+<TIPQUESTION QUESTION="Hány kilométer a maratoni táv (egészre kerekítve)?" ANSWER="42" MINVAL="10" MAXVAL="100" CAT="sport" />
+<TIPQUESTION QUESTION="Hány gólt lőtt az Aranycsapat Angliának 1953-ban a Wembleyben?" ANSWER="6" MINVAL="1" MAXVAL="12" CAT="sport" />
+<TIPQUESTION QUESTION="Hány gólt lőtt Puskás Ferenc a magyar válogatottban?" ANSWER="84" MINVAL="20" MAXVAL="150" CAT="sport" />
+<TIPQUESTION QUESTION="Hány olimpiai aranyérmet nyert Papp László?" ANSWER="3" MINVAL="1" MAXVAL="10" CAT="sport" />
+<TIPQUESTION QUESTION="Hány olimpiai aranyérmet nyert Egerszegi Krisztina?" ANSWER="5" MINVAL="1" MAXVAL="10" CAT="sport" />
+<TIPQUESTION QUESTION="Hány olimpiai aranyérmet nyert Gerevich Aladár?" ANSWER="7" MINVAL="1" MAXVAL="15" CAT="sport" />
+<TIPQUESTION QUESTION="Hányszor nyert olimpiát a magyar férfi vízilabda-válogatott?" ANSWER="9" MINVAL="1" MAXVAL="15" CAT="sport" />
+<TIPQUESTION QUESTION="Hány játékos van egyszerre vízben egy vízilabdacsapatból a kapussal együtt?" ANSWER="7" MINVAL="3" MAXVAL="15" CAT="sport" />
+<TIPQUESTION QUESTION="Hány pontot ér egy touchdown az amerikai futballban?" ANSWER="6" MINVAL="1" MAXVAL="10" CAT="sport" />
+<TIPQUESTION QUESTION="Hány perc a kosárlabda-mérkőzés rendes játékideje a nemzetközi szabályok szerint?" ANSWER="40" MINVAL="20" MAXVAL="90" CAT="sport" />
+<TIPQUESTION QUESTION="Hány perc a jégkorong-mérkőzés rendes játékideje?" ANSWER="60" MINVAL="20" MAXVAL="120" CAT="sport" />
+<TIPQUESTION QUESTION="Hányan ülnek egy evezős nyolcasban a kormányossal együtt?" ANSWER="9" MINVAL="5" MAXVAL="15" CAT="sport" />
+<TIPQUESTION QUESTION="Hány olimpiai aranyérmet nyert Hosszú Katinka?" ANSWER="3" MINVAL="1" MAXVAL="10" CAT="sport" />
+<TIPQUESTION QUESTION="Melyik évben rendezték az első labdarúgó-világbajnokságot?" ANSWER="1930" MINVAL="1900" MAXVAL="1960" CAT="sport" />
+<TIPQUESTION QUESTION="Melyik évben nyerte meg a magyar labdarúgó-válogatott a helsinki olimpiát?" ANSWER="1952" MINVAL="1930" MAXVAL="1970" CAT="sport" />
+<TIPQUESTION QUESTION="Hány kilogramm a férfi súlylökő golyó (egészre kerekítve)?" ANSWER="7" MINVAL="2" MAXVAL="20" CAT="sport" />
+<TIPQUESTION QUESTION="Melyik évben rendezték az első Magyar Nagydíjat a Hungaroringen?" ANSWER="1986" MINVAL="1950" MAXVAL="2000" CAT="sport" />
+<TIPQUESTION QUESTION="Hány menetből áll egy profi ökölvívó világbajnoki címmérkőzés?" ANSWER="12" MINVAL="3" MAXVAL="20" CAT="sport" />
+<TIPQUESTION QUESTION="Hány olimpiai aranyérmet nyert Michael Phelps?" ANSWER="23" MINVAL="5" MAXVAL="40" CAT="sport" />
+<TIPQUESTION QUESTION="Hány méter pontosan a maratoni futás távja?" ANSWER="42195" MINVAL="40000" MAXVAL="45000" CAT="sport" />
+<TIPQUESTION QUESTION="Melyik évben rendezték Budapesten az atlétikai világbajnokságot?" ANSWER="2023" MINVAL="1990" MAXVAL="2030" CAT="sport" />
+<TIPQUESTION QUESTION="Hányszor nyerte meg zsinórban a Tour de France-t Miguel Indurain?" ANSWER="5" MINVAL="1" MAXVAL="10" CAT="sport" />
+<TIPQUESTION QUESTION="Hány kilogramm a női kalapácsvetésben használt kalapács?" ANSWER="4" MINVAL="1" MAXVAL="10" CAT="sport" />
+<TIPQUESTION QUESTION="Hány aranyérmet nyert Magyarország az 1952-es helsinki olimpián?" ANSWER="16" MINVAL="1" MAXVAL="40" CAT="sport" />
+<TIPQUESTION QUESTION="Melyik évben rendezték az első téli olimpiát?" ANSWER="1924" MINVAL="1890" MAXVAL="1960" CAT="sport" />
+<TIPQUESTION QUESTION="Hány egymást követő olimpián nyert egyéni aranyat kardban Szilágyi Áron?" ANSWER="3" MINVAL="1" MAXVAL="6" CAT="sport" />
+<TIPQUESTION QUESTION="Hány méter egy szabványos atlétikai futópálya belső köre?" ANSWER="400" MINVAL="100" MAXVAL="1000" CAT="sport" />
+<QUESTION QUESTION="Hogy hívják Harry Potter iskoláját?" A1="Roxfort" A2="Durmstrang" A3="Beauxbatons" A4="Hollóhát" CAT="irodalom" />
+<QUESTION QUESTION="Melyik bibliai alak építette a bárkát?" A1="Noé" A2="Mózes" A3="Ábrahám" A4="Dávid" CAT="irodalom" />
+<QUESTION QUESTION="Ki győzte le Góliátot?" A1="Dávid" A2="Sámson" A3="Salamon" A4="Saul" CAT="irodalom" />
+<QUESTION QUESTION="Ki a görög mitológia főistene?" A1="Zeusz" A2="Poszeidón" A3="Hádész" A4="Apollón" CAT="irodalom" />
+<QUESTION QUESTION="Mi az első fennmaradt összefüggő magyar nyelvű szöveg?" A1="Halotti beszéd" A2="Ómagyar Mária-siralom" A3="a tihanyi alapítólevél" A4="Képes krónika" CAT="irodalom" />
+<QUESTION QUESTION="Melyik királyunk könyvtára volt a Corvina?" A1="Mátyásé" A2="Nagy Lajosé" A3="Zsigmondé" A4="II. Ulászlóé" CAT="irodalom" />
+<QUESTION QUESTION="Kinek a nevéhez fűződik a nyelvújítás?" A1="Kazinczy Ferenc" A2="Kölcsey Ferenc" A3="Bessenyei György" A4="Batsányi János" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Toldit?" A1="Arany János" A2="Petőfi Sándor" A3="Vörösmarty Mihály" A4="Jókai Mór" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta Az ember tragédiáját?" A1="Madách Imre" A2="Katona József" A3="Vörösmarty Mihály" A4="Kisfaludy Károly" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Bánk bán című drámát?" A1="Katona József" A2="Madách Imre" A3="Kisfaludy Sándor" A4="Erkel Ferenc" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta A kőszívű ember fiait?" A1="Jókai Mór" A2="Mikszáth Kálmán" A3="Eötvös József" A4="Gárdonyi Géza" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Légy jó mindhalálig című regényt?" A1="Móricz Zsigmond" A2="Molnár Ferenc" A3="Kosztolányi Dezső" A4="Krúdy Gyula" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta az Édes Annát?" A1="Kosztolányi Dezső" A2="Móricz Zsigmond" A3="Babits Mihály" A4="Krúdy Gyula" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Tüskevárat?" A1="Fekete István" A2="Gárdonyi Géza" A3="Szabó Magda" A4="Mándy Iván" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta az Abigélt?" A1="Szabó Magda" A2="Fekete István" A3="Németh László" A4="Ottlik Géza" CAT="irodalom" />
+<QUESTION QUESTION="Melyik Fekete István-regény főhőse egy rókakölyök?" A1="Vuk" A2="Kele" A3="Bogáncs" A4="Csí" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Szeptember végén című verset?" A1="Petőfi Sándor" A2="Ady Endre" A3="Arany János" A4="József Attila" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Tiszta szívvel című verset?" A1="József Attila" A2="Radnóti Miklós" A3="Ady Endre" A4="Babits Mihály" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Rómeó és Júliát?" A1="William Shakespeare" A2="Christopher Marlowe" A3="Moliere" A4="Goethe" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Don Quijotét?" A1="Miguel de Cervantes" A2="Lope de Vega" A3="Dante Alighieri" A4="Boccaccio" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Bűn és bűnhődést?" A1="Dosztojevszkij" A2="Tolsztoj" A3="Csehov" A4="Gogol" CAT="irodalom" />
+<QUESTION QUESTION="Melyik író teremtette meg Winnetou alakját?" A1="Karl May" A2="James Fenimore Cooper" A3="Jules Verne" A4="Mark Twain" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Nemo kapitányt?" A1="Jules Verne" A2="H. G. Wells" A3="Arthur Conan Doyle" A4="Robert Louis Stevenson" CAT="irodalom" />
+<QUESTION QUESTION="Ki teremtette meg Sherlock Holmes alakját?" A1="Arthur Conan Doyle" A2="Agatha Christie" A3="Edgar Allan Poe" A4="Charles Dickens" CAT="irodalom" />
+<QUESTION QUESTION="Hogy hívják Sherlock Holmes barátját és segítőjét?" A1="Dr. Watson" A2="Hastings kapitány" A3="Lestrade felügyelő" A4="Moriarty professzor" CAT="irodalom" />
+<QUESTION QUESTION="Hogy hívják Agatha Christie belga detektívjét?" A1="Hercule Poirot" A2="Miss Marple" A3="Maigret felügyelő" A4="Columbo hadnagy" CAT="irodalom" />
+<QUESTION QUESTION="Melyik roxforti ház címerállata az oroszlán?" A1="Griffendél" A2="Mardekár" A3="Hollóhát" A4="Hugrabug" CAT="irodalom" />
+<QUESTION QUESTION="Hogy hívják Frodó hűséges társát A Gyűrűk Urában?" A1="Samu" A2="Pippin" A3="Trufa" A4="Gollam" CAT="irodalom" />
+<QUESTION QUESTION="Kit neveznek fűzfapoétának?" A1="a rossz költőt" A2="a falusi tanítót" A3="a vándorköltőt" A4="a tájköltőt" CAT="irodalom" />
+<QUESTION QUESTION="Hogy hívták a római szerelemistent?" A1="Ámor" A2="Mars" A3="Merkúr" A4="Bacchus" CAT="irodalom" />
+<QUESTION QUESTION="Ki a tenger istene a görög mitológiában?" A1="Poszeidón" A2="Zeusz" A3="Hermész" A4="Árész" CAT="irodalom" />
+<QUESTION QUESTION="Melyik görög hősnek volt sebezhető a sarka?" A1="Akhilleusznak" A2="Héraklésznek" A3="Odüsszeusznak" A4="Perszeusznak" CAT="irodalom" />
+<QUESTION QUESTION="Melyik hős tért haza Ithakába hosszú bolyongás után?" A1="Odüsszeusz" A2="Akhilleusz" A3="Agamemnón" A4="Iaszón" CAT="irodalom" />
+<QUESTION QUESTION="Ki fordította magyarra Shakespeare Hamletjét a 19. században?" A1="Arany János" A2="Petőfi Sándor" A3="Vörösmarty Mihály" A4="Kazinczy Ferenc" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Halálfiai című regényt?" A1="Babits Mihály" A2="Kosztolányi Dezső" A3="Móricz Zsigmond" A4="Krúdy Gyula" CAT="irodalom" />
+<QUESTION QUESTION="Milyen nyelven íródott eredetileg az Újszövetség?" A1="görögül" A2="latinul" A3="héberül" A4="arámiul" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta Az eltűnt idő nyomában című regényfolyamot?" A1="Marcel Proust" A2="Gustave Flaubert" A3="Émile Zola" A4="Honoré de Balzac" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Bovaryné című regényt?" A1="Gustave Flaubert" A2="Stendhal" A3="Honoré de Balzac" A4="Émile Zola" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Vörös és fekete című regényt?" A1="Stendhal" A2="Honoré de Balzac" A3="Gustave Flaubert" A4="Victor Hugo" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta A nyomorultakat?" A1="Victor Hugo" A2="Alexandre Dumas" A3="Honoré de Balzac" A4="Émile Zola" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta A három testőrt?" A1="Alexandre Dumas" A2="Victor Hugo" A3="Jules Verne" A4="Eugène Sue" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta Az emberi színjáték című regényciklust?" A1="Honoré de Balzac" A2="Émile Zola" A3="Gustave Flaubert" A4="Victor Hugo" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Háború és békét?" A1="Lev Tolsztoj" A2="Fjodor Dosztojevszkij" A3="Ivan Turgenyev" A4="Anton Csehov" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta A Mester és Margaritát?" A1="Mihail Bulgakov" A2="Borisz Paszternak" A3="Nyikolaj Gogol" A4="Szolzsenyicin" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Doktor Zsivágót?" A1="Borisz Paszternak" A2="Mihail Bulgakov" A3="Mihail Solohov" A4="Szolzsenyicin" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Holt lelkeket?" A1="Nyikolaj Gogol" A2="Alekszandr Puskin" A3="Mihail Lermontov" A4="Lev Tolsztoj" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta az Anyegin című verses regényt?" A1="Alekszandr Puskin" A2="Mihail Lermontov" A3="Nyikolaj Gogol" A4="Lev Tolsztoj" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta A per című regényt?" A1="Franz Kafka" A2="Thomas Mann" A3="Hermann Hesse" A4="Robert Musil" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta A varázshegyet?" A1="Thomas Mann" A2="Hermann Hesse" A3="Franz Kafka" A4="Stefan Zweig" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta A pusztai farkast?" A1="Hermann Hesse" A2="Thomas Mann" A3="Franz Kafka" A4="Rainer Maria Rilke" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta az Ulysses című regényt?" A1="James Joyce" A2="Virginia Woolf" A3="Samuel Beckett" A4="Oscar Wilde" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Godot-ra várva című drámát?" A1="Samuel Beckett" A2="Eugène Ionesco" A3="Harold Pinter" A4="Jean Genet" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Dorian Gray arcképét?" A1="Oscar Wilde" A2="Bram Stoker" A3="Robert Louis Stevenson" A4="Charles Dickens" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Drakulát?" A1="Bram Stoker" A2="Mary Shelley" A3="Edgar Allan Poe" A4="Oscar Wilde" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Frankensteint?" A1="Mary Shelley" A2="Bram Stoker" A3="Jane Austen" A4="Emily Brontë" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Büszkeség és balítéletet?" A1="Jane Austen" A2="Charlotte Brontë" A3="Emily Brontë" A4="George Eliot" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta az Üvöltő szeleket?" A1="Emily Brontë" A2="Charlotte Brontë" A3="Jane Austen" A4="Anne Brontë" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Twist Olivért?" A1="Charles Dickens" A2="William Thackeray" A3="Thomas Hardy" A4="Anthony Trollope" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta az 1984 című regényt?" A1="George Orwell" A2="Aldous Huxley" A3="Ray Bradbury" A4="H. G. Wells" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Szép új világot?" A1="Aldous Huxley" A2="George Orwell" A3="Ray Bradbury" A4="Jevgenyij Zamjatyin" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Fahrenheit 451 című regényt?" A1="Ray Bradbury" A2="Aldous Huxley" A3="George Orwell" A4="Isaac Asimov" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta Az öreg halász és a tengert?" A1="Ernest Hemingway" A2="John Steinbeck" A3="William Faulkner" A4="Jack London" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Száz év magányt?" A1="Gabriel García Márquez" A2="Jorge Luis Borges" A3="Mario Vargas Llosa" A4="Julio Cortázar" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta A nagy Gatsbyt?" A1="F. Scott Fitzgerald" A2="Ernest Hemingway" A3="J. D. Salinger" A4="John Steinbeck" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Zabhegyezőt?" A1="J. D. Salinger" A2="Jack Kerouac" A3="F. Scott Fitzgerald" A4="John Updike" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta Az idegen című regényt?" A1="Albert Camus" A2="Jean-Paul Sartre" A3="André Gide" A4="Simone de Beauvoir" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta az Isteni színjátékot?" A1="Dante Alighieri" A2="Francesco Petrarca" A3="Giovanni Boccaccio" A4="Ludovico Ariosto" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Dekameront?" A1="Giovanni Boccaccio" A2="Dante Alighieri" A3="Francesco Petrarca" A4="Niccolò Machiavelli" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta A fejedelem című művet?" A1="Niccolò Machiavelli" A2="Thomas More" A3="Rotterdami Erasmus" A4="Baldassare Castiglione" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta az Utópia című művet?" A1="Morus Tamás" A2="Niccolò Machiavelli" A3="Tommaso Campanella" A4="Francis Bacon" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Faustot?" A1="J. W. Goethe" A2="Friedrich Schiller" A3="Heinrich Heine" A4="Thomas Mann" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Tell Vilmos című drámát?" A1="Friedrich Schiller" A2="J. W. Goethe" A3="Gotthold Lessing" A4="Heinrich von Kleist" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta az Oidipusz király című tragédiát?" A1="Szophoklész" A2="Euripidész" A3="Aiszkhülosz" A4="Arisztophanész" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta az Aeneist?" A1="Vergilius" A2="Ovidius" A3="Horatius" A4="Homérosz" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta az Átváltozások (Metamorphoses) című művet?" A1="Ovidius" A2="Vergilius" A3="Horatius" A4="Catullus" CAT="irodalom" />
+<QUESTION QUESTION="Melyik nyelven írta verseit Janus Pannonius?" A1="latinul" A2="magyarul" A3="görögül" A4="horvátul" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Narnia krónikáit?" A1="C. S. Lewis" A2="J. R. R. Tolkien" A3="Roald Dahl" A4="Lewis Carroll" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta az Alice Csodaországban című könyvet?" A1="Lewis Carroll" A2="C. S. Lewis" A3="J. M. Barrie" A4="Kenneth Grahame" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Pán Pétert?" A1="J. M. Barrie" A2="Lewis Carroll" A3="A. A. Milne" A4="Kenneth Grahame" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Charlie és a csokigyárat?" A1="Roald Dahl" A2="Enid Blyton" A3="Lewis Carroll" A4="Michael Ende" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta A végtelen történetet?" A1="Michael Ende" A2="Erich Kästner" A3="Cornelia Funke" A4="Otfried Preußler" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta A két Lotti című regényt?" A1="Erich Kästner" A2="Michael Ende" A3="Astrid Lindgren" A4="Otfried Preußler" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Harisnyás Pippit?" A1="Astrid Lindgren" A2="Selma Lagerlöf" A3="Tove Jansson" A4="Erich Kästner" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Nils Holgersson csodálatos utazását?" A1="Selma Lagerlöf" A2="Astrid Lindgren" A3="H. C. Andersen" A4="Tove Jansson" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta Az arany embert?" A1="Jókai Mór" A2="Mikszáth Kálmán" A3="Eötvös József" A4="Kemény Zsigmond" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta A Noszty fiú esete Tóth Marival című regényt?" A1="Mikszáth Kálmán" A2="Jókai Mór" A3="Krúdy Gyula" A4="Herczeg Ferenc" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta A falu jegyzőjét?" A1="Eötvös József" A2="Jókai Mór" A3="Kemény Zsigmond" A4="Mikszáth Kálmán" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Szindbád-történeteket?" A1="Krúdy Gyula" A2="Mikszáth Kálmán" A3="Kosztolányi Dezső" A4="Karinthy Frigyes" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta az Utazás a koponyám körül című regényt?" A1="Karinthy Frigyes" A2="Örkény István" A3="Kosztolányi Dezső" A4="Krúdy Gyula" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta az Egyperces novellákat?" A1="Örkény István" A2="Karinthy Frigyes" A3="Mándy Iván" A4="Esterházy Péter" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Tóték című kisregényt?" A1="Örkény István" A2="Déry Tibor" A3="Sánta Ferenc" A4="Moldova György" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Sorstalanságot?" A1="Kertész Imre" A2="Esterházy Péter" A3="Nádas Péter" A4="Krasznahorkai László" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Sátántangót?" A1="Krasznahorkai László" A2="Nádas Péter" A3="Esterházy Péter" A4="Kertész Imre" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Harmonia caelestist?" A1="Esterházy Péter" A2="Nádas Péter" A3="Krasznahorkai László" A4="Spiró György" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta az Emlékiratok könyvét?" A1="Nádas Péter" A2="Esterházy Péter" A3="Konrád György" A4="Spiró György" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta Az ajtó című regényt?" A1="Szabó Magda" A2="Németh László" A3="Ottlik Géza" A4="Polcz Alaine" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta az Iskola a határon című regényt?" A1="Ottlik Géza" A2="Déry Tibor" A3="Mészöly Miklós" A4="Szabó Magda" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta az Iszony című regényt?" A1="Németh László" A2="Móricz Zsigmond" A3="Szabó Magda" A4="Illyés Gyula" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Puszták népét?" A1="Illyés Gyula" A2="Németh László" A3="Szabó Pál" A4="Veres Péter" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Rozsdatemető című regényt?" A1="Fejes Endre" A2="Örkény István" A3="Moldova György" A4="Sánta Ferenc" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Csongor és Tündét?" A1="Vörösmarty Mihály" A2="Kisfaludy Károly" A3="Madách Imre" A4="Katona József" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta A helység kalapácsát?" A1="Petőfi Sándor" A2="Arany János" A3="Vörösmarty Mihály" A4="Csokonai Vitéz Mihály" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Lilla-verseket?" A1="Csokonai Vitéz Mihály" A2="Kazinczy Ferenc" A3="Berzsenyi Dániel" A4="Kisfaludy Sándor" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta A magyarokhoz című ódát (Romlásnak indult...)?" A1="Berzsenyi Dániel" A2="Kölcsey Ferenc" A3="Vörösmarty Mihály" A4="Csokonai Vitéz Mihály" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Szigeti veszedelmet?" A1="Zrínyi Miklós" A2="Balassi Bálint" A3="Gyöngyösi István" A4="Pázmány Péter" CAT="irodalom" />
+<QUESTION QUESTION="Melyik folyóirat köré csoportosult Ady, Babits és Kosztolányi?" A1="Nyugat" A2="A Holnap" A3="Válasz" A4="Szép Szó" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Héja-nász az avaron című verset?" A1="Ady Endre" A2="Babits Mihály" A3="Kosztolányi Dezső" A4="Juhász Gyula" CAT="irodalom" />
+<QUESTION QUESTION="Ki teremtette meg Esti Kornél alakját?" A1="Kosztolányi Dezső" A2="Krúdy Gyula" A3="Karinthy Frigyes" A4="Babits Mihály" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Jónás könyvét?" A1="Babits Mihály" A2="Ady Endre" A3="Kosztolányi Dezső" A4="Weöres Sándor" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Bolond Istók című elbeszélő költeményt?" A1="Arany János" A2="Petőfi Sándor" A3="Tompa Mihály" A4="Vajda János" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Psychét, Lónyay Erzsébet kitalált költőnő verseit?" A1="Weöres Sándor" A2="Pilinszky János" A3="Nemes Nagy Ágnes" A4="Radnóti Miklós" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta a Razglednicákat?" A1="Radnóti Miklós" A2="Pilinszky János" A3="József Attila" A4="Szép Ernő" CAT="irodalom" />
+<QUESTION QUESTION="Ki írta az Apokrif című verset?" A1="Pilinszky János" A2="Radnóti Miklós" A3="Nagy László" A4="Weöres Sándor" CAT="irodalom" />
+<QUESTION QUESTION="Melyik költő verse kezdődik így: „Nem tudhatom, hogy másnak e tájék mit jelent”?" A1="Radnóti Miklós" A2="József Attila" A3="Illyés Gyula" A4="Babits Mihály" CAT="irodalom" />
+<TIPQUESTION QUESTION="Hány versszakból áll a Himnusz?" ANSWER="8" MINVAL="1" MAXVAL="20" CAT="irodalom" />
+<TIPQUESTION QUESTION="Hány versszakból áll a Szózat?" ANSWER="14" MINVAL="5" MAXVAL="30" CAT="irodalom" />
+<TIPQUESTION QUESTION="Hány énekből áll Arany János Toldija?" ANSWER="12" MINVAL="5" MAXVAL="30" CAT="irodalom" />
+<TIPQUESTION QUESTION="Hány kötetből áll a Harry Potter-regénysorozat?" ANSWER="7" MINVAL="3" MAXVAL="15" CAT="irodalom" />
+<TIPQUESTION QUESTION="Hány magánhangzó van a magyar ábécében?" ANSWER="14" MINVAL="5" MAXVAL="25" CAT="irodalom" />
+<TIPQUESTION QUESTION="Hány betűből áll a magyar ábécé?" ANSWER="44" MINVAL="20" MAXVAL="60" CAT="irodalom" />
+<TIPQUESTION QUESTION="Hány éves volt Petőfi Sándor, amikor meghalt?" ANSWER="26" MINVAL="20" MAXVAL="40" CAT="irodalom" />
+<TIPQUESTION QUESTION="Melyik évben született Petőfi Sándor?" ANSWER="1823" MINVAL="1750" MAXVAL="1900" CAT="irodalom" />
+<TIPQUESTION QUESTION="Melyik évben jelent meg az első Harry Potter-könyv?" ANSWER="1997" MINVAL="1980" MAXVAL="2010" CAT="irodalom" />
+<TIPQUESTION QUESTION="Melyik évben kapott irodalmi Nobel-díjat Kertész Imre?" ANSWER="2002" MINVAL="1950" MAXVAL="2025" CAT="irodalom" />
+<TIPQUESTION QUESTION="Hány éves volt József Attila, amikor meghalt?" ANSWER="32" MINVAL="15" MAXVAL="60" CAT="irodalom" />
+<TIPQUESTION QUESTION="Hány éves volt Ady Endre, amikor meghalt?" ANSWER="41" MINVAL="20" MAXVAL="70" CAT="irodalom" />
+<TIPQUESTION QUESTION="Hány éves volt Radnóti Miklós, amikor meghalt?" ANSWER="35" MINVAL="15" MAXVAL="70" CAT="irodalom" />
+<TIPQUESTION QUESTION="Melyik évben született William Shakespeare?" ANSWER="1564" MINVAL="1500" MAXVAL="1650" CAT="irodalom" />
+<TIPQUESTION QUESTION="Hány szonettet írt Shakespeare?" ANSWER="154" MINVAL="50" MAXVAL="300" CAT="irodalom" />
+<TIPQUESTION QUESTION="Hány énekből áll Dante Isteni színjátéka?" ANSWER="100" MINVAL="30" MAXVAL="200" CAT="irodalom" />
+<TIPQUESTION QUESTION="Hány énekből áll Homérosz Iliásza?" ANSWER="24" MINVAL="10" MAXVAL="50" CAT="irodalom" />
+<TIPQUESTION QUESTION="Hány novellából áll Boccaccio Dekameronja?" ANSWER="100" MINVAL="20" MAXVAL="300" CAT="irodalom" />
+<TIPQUESTION QUESTION="Hány színből áll Az ember tragédiája?" ANSWER="15" MINVAL="5" MAXVAL="30" CAT="irodalom" />
+<TIPQUESTION QUESTION="Melyik évben jelent meg Az ember tragédiája először könyv alakban?" ANSWER="1861" MINVAL="1800" MAXVAL="1900" CAT="irodalom" />
+<TIPQUESTION QUESTION="Melyik évben jelent meg a Nyugat első száma?" ANSWER="1908" MINVAL="1880" MAXVAL="1950" CAT="irodalom" />
+<TIPQUESTION QUESTION="Melyik évben jelent meg Orwell 1984 című regénye?" ANSWER="1949" MINVAL="1920" MAXVAL="1990" CAT="irodalom" />
+<TIPQUESTION QUESTION="Melyik évben született Jókai Mór?" ANSWER="1825" MINVAL="1780" MAXVAL="1880" CAT="irodalom" />
+<TIPQUESTION QUESTION="Melyik évben született Arany János?" ANSWER="1817" MINVAL="1780" MAXVAL="1880" CAT="irodalom" />
+<TIPQUESTION QUESTION="Hány kötetben jelent meg eredetileg A Gyűrűk Ura?" ANSWER="3" MINVAL="1" MAXVAL="10" CAT="irodalom" />
+<TIPQUESTION QUESTION="Hány versszakból áll Petőfi Szeptember végén című verse?" ANSWER="3" MINVAL="1" MAXVAL="10" CAT="irodalom" />
+<TIPQUESTION QUESTION="Hány sorból áll egy szonett?" ANSWER="14" MINVAL="4" MAXVAL="30" CAT="irodalom" />
+<TIPQUESTION QUESTION="Hány szótagból áll egy haiku?" ANSWER="17" MINVAL="5" MAXVAL="30" CAT="irodalom" />
+<TIPQUESTION QUESTION="Melyik évben készült el Gutenberg 42 soros Bibliája (kb.)?" ANSWER="1455" MINVAL="1300" MAXVAL="1600" CAT="irodalom" />
+<TIPQUESTION QUESTION="Hány könyvből áll Az Újszövetség?" ANSWER="27" MINVAL="10" MAXVAL="60" CAT="irodalom" />
+<QUESTION QUESTION="Ki zenésítette meg a Himnuszt?" A1="Erkel Ferenc" A2="Egressy Béni" A3="Liszt Ferenc" A4="Kodály Zoltán" CAT="muveszet" />
+<QUESTION QUESTION="Ki zenésítette meg a Szózatot?" A1="Egressy Béni" A2="Erkel Ferenc" A3="Liszt Ferenc" A4="Mosonyi Mihály" CAT="muveszet" />
+<QUESTION QUESTION="Ki írta a Magyar rapszódiákat?" A1="Liszt Ferenc" A2="Bartók Béla" A3="Kodály Zoltán" A4="Erkel Ferenc" CAT="muveszet" />
+<QUESTION QUESTION="Ki komponálta a Háry Jánost?" A1="Kodály Zoltán" A2="Bartók Béla" A3="Erkel Ferenc" A4="Lehár Ferenc" CAT="muveszet" />
+<QUESTION QUESTION="Ki írta A kékszakállú herceg vára című operát?" A1="Bartók Béla" A2="Kodály Zoltán" A3="Erkel Ferenc" A4="Dohnányi Ernő" CAT="muveszet" />
+<QUESTION QUESTION="Ki írta A víg özvegy című operettet?" A1="Lehár Ferenc" A2="Kálmán Imre" A3="Huszka Jenő" A4="Johann Strauss" CAT="muveszet" />
+<QUESTION QUESTION="Ki írta A csárdáskirálynő című operettet?" A1="Kálmán Imre" A2="Lehár Ferenc" A3="Jacobi Viktor" A4="Jacques Offenbach" CAT="muveszet" />
+<QUESTION QUESTION="Melyik hangszer virtuóza volt Paganini?" A1="hegedű" A2="zongora" A3="gitár" A4="cselló" CAT="muveszet" />
+<QUESTION QUESTION="Ki festette A magányos cédrust?" A1="Csontváry" A2="Munkácsy" A3="Szinyei Merse" A4="Rippl-Rónai" CAT="muveszet" />
+<QUESTION QUESTION="Ki festette a Majálist?" A1="Szinyei Merse Pál" A2="Munkácsy Mihály" A3="Mednyánszky László" A4="Paál László" CAT="muveszet" />
+<QUESTION QUESTION="Ki festette a Krisztus Pilátus előtt című képet?" A1="Munkácsy Mihály" A2="Mednyánszky László" A3="Zichy Mihály" A4="Benczúr Gyula" CAT="muveszet" />
+<QUESTION QUESTION="Ki festette A magyarok bejövetele című körképet?" A1="Feszty Árpád" A2="Munkácsy Mihály" A3="Benczúr Gyula" A4="Than Mór" CAT="muveszet" />
+<QUESTION QUESTION="Ki festette A csillagos éjt?" A1="Vincent van Gogh" A2="Claude Monet" A3="Paul Gauguin" A4="Paul Cézanne" CAT="muveszet" />
+<QUESTION QUESTION="Ki festette a Sixtus-kápolna mennyezetfreskóit?" A1="Michelangelo" A2="Raffaello" A3="Leonardo da Vinci" A4="Botticelli" CAT="muveszet" />
+<QUESTION QUESTION="Ki festette a Guernicát?" A1="Pablo Picasso" A2="Salvador Dalí" A3="Joan Miró" A4="Francisco Goya" CAT="muveszet" />
+<QUESTION QUESTION="Melyik múzeumban látható a Mona Lisa?" A1="a Louvre-ban" A2="a Pradóban" A3="az Uffiziben" A4="a British Museumban" CAT="muveszet" />
+<QUESTION QUESTION="Melyik ókori világcsoda áll ma is?" A1="a gízai nagy piramis" A2="a rodoszi kolosszus" A3="a pharoszi torony" A4="a babiloni függőkertek" CAT="muveszet" />
+<QUESTION QUESTION="Melyik városban van az Uffizi képtár?" A1="Firenzében" A2="Rómában" A3="Velencében" A4="Milánóban" CAT="muveszet" />
+<QUESTION QUESTION="Melyik ókori világcsoda állt Alexandria kikötőjében?" A1="a világítótorony" A2="a függőkertek" A3="a kolosszus" A4="Zeusz szobra" CAT="muveszet" />
+<QUESTION QUESTION="Ki festette Az utolsó vacsorát a milánói Santa Maria delle Grazie kolostorban?" A1="Leonardo da Vinci" A2="Raffaello" A3="Michelangelo" A4="Tiziano" CAT="muveszet" />
+<QUESTION QUESTION="Ki faragta a híres firenzei márvány Dávid-szobrot?" A1="Michelangelo" A2="Donatello" A3="Bernini" A4="Verrocchio" CAT="muveszet" />
+<QUESTION QUESTION="Ki festette A Vénusz születését?" A1="Sandro Botticelli" A2="Tiziano" A3="Raffaello" A4="Giotto" CAT="muveszet" />
+<QUESTION QUESTION="Ki festette Az athéni iskola című freskót?" A1="Raffaello" A2="Michelangelo" A3="Leonardo da Vinci" A4="Perugino" CAT="muveszet" />
+<QUESTION QUESTION="Ki festette Az éjjeli őrjáratot?" A1="Rembrandt" A2="Jan Vermeer" A3="Rubens" A4="Frans Hals" CAT="muveszet" />
+<QUESTION QUESTION="Ki festette a Leány gyöngy fülbevalóval című képet?" A1="Jan Vermeer" A2="Rembrandt" A3="Van Dyck" A4="Frans Hals" CAT="muveszet" />
+<QUESTION QUESTION="Ki festette A sikolyt?" A1="Edvard Munch" A2="Gustav Klimt" A3="Egon Schiele" A4="Vincent van Gogh" CAT="muveszet" />
+<QUESTION QUESTION="Ki festette A csók című, aranyfüsttel díszített festményt?" A1="Gustav Klimt" A2="Egon Schiele" A3="Edvard Munch" A4="Alfons Mucha" CAT="muveszet" />
+<QUESTION QUESTION="Ki készítette A gondolkodó című szobrot?" A1="Auguste Rodin" A2="Camille Claudel" A3="Constantin Brâncuși" A4="Henry Moore" CAT="muveszet" />
+<QUESTION QUESTION="Ki festette a Napraforgók sorozatot?" A1="Vincent van Gogh" A2="Claude Monet" A3="Paul Gauguin" A4="Renoir" CAT="muveszet" />
+<QUESTION QUESTION="Melyik festményről kapta nevét az impresszionizmus?" A1="Impresszió, napfelkelte" A2="Tavirózsák" A3="Reggeli a szabadban" A4="Olympia" CAT="muveszet" />
+<QUESTION QUESTION="Ki festette a Tavirózsák sorozatot?" A1="Claude Monet" A2="Édouard Manet" A3="Edgar Degas" A4="Renoir" CAT="muveszet" />
+<QUESTION QUESTION="Melyik festő híres a balett-táncosnőket ábrázoló képeiről?" A1="Edgar Degas" A2="Claude Monet" A3="Toulouse-Lautrec" A4="Paul Cézanne" CAT="muveszet" />
+<QUESTION QUESTION="Ki festette a Reggeli a szabadban című képet?" A1="Édouard Manet" A2="Claude Monet" A3="Renoir" A4="Gustave Courbet" CAT="muveszet" />
+<QUESTION QUESTION="Melyik irányzatot alapította Pablo Picasso és Georges Braque?" A1="kubizmus" A2="szürrealizmus" A3="fauvizmus" A4="dadaizmus" CAT="muveszet" />
+<QUESTION QUESTION="Ki festette Az emlékezet állandósága (olvadó órák) című képet?" A1="Salvador Dalí" A2="René Magritte" A3="Joan Miró" A4="Max Ernst" CAT="muveszet" />
+<QUESTION QUESTION="Melyik festő képén olvasható: „Ez nem pipa”?" A1="René Magritte" A2="Salvador Dalí" A3="Marcel Duchamp" A4="Joan Miró" CAT="muveszet" />
+<QUESTION QUESTION="Ki festette a Campbell-levesesdobozokat?" A1="Andy Warhol" A2="Roy Lichtenstein" A3="Jasper Johns" A4="Keith Haring" CAT="muveszet" />
+<QUESTION QUESTION="Melyik irányzathoz tartozik Andy Warhol?" A1="pop-art" A2="kubizmus" A3="op-art" A4="minimalizmus" CAT="muveszet" />
+<QUESTION QUESTION="Melyik magyar származású művészt tartják az op-art atyjának?" A1="Victor Vasarely" A2="Moholy-Nagy László" A3="Kassák Lajos" A4="Amerigo Tot" CAT="muveszet" />
+<QUESTION QUESTION="Melyik magyar művész tanított a weimari Bauhausban?" A1="Moholy-Nagy László" A2="Victor Vasarely" A3="Kassák Lajos" A4="Rippl-Rónai József" CAT="muveszet" />
+<QUESTION QUESTION="Ki festette a Siralomházat?" A1="Munkácsy Mihály" A2="Szinyei Merse Pál" A3="Paál László" A4="Mednyánszky László" CAT="muveszet" />
+<QUESTION QUESTION="Ki festette az Országházban látható Honfoglalás című képet?" A1="Munkácsy Mihály" A2="Feszty Árpád" A3="Benczúr Gyula" A4="Lotz Károly" CAT="muveszet" />
+<QUESTION QUESTION="Ki festette Buda visszavétele 1686-ban című képet?" A1="Benczúr Gyula" A2="Madarász Viktor" A3="Than Mór" A4="Székely Bertalan" CAT="muveszet" />
+<QUESTION QUESTION="Ki festette az Egri nők című képet?" A1="Székely Bertalan" A2="Madarász Viktor" A3="Benczúr Gyula" A4="Munkácsy Mihály" CAT="muveszet" />
+<QUESTION QUESTION="Ki festette a Hunyadi László siratása című képet?" A1="Madarász Viktor" A2="Székely Bertalan" A3="Benczúr Gyula" A4="Lotz Károly" CAT="muveszet" />
+<QUESTION QUESTION="Melyik városban alapított festőiskolát Hollósy Simon 1896-ban?" A1="Nagybányán" A2="Szolnokon" A3="Gödöllőn" A4="Szentendrén" CAT="muveszet" />
+<QUESTION QUESTION="Ki festette a Zarándoklás a cédrusokhoz Libanonban című képet?" A1="Csontváry" A2="Munkácsy Mihály" A3="Mednyánszky László" A4="Gulácsy Lajos" CAT="muveszet" />
+<QUESTION QUESTION="Ki tervezte az Országházat?" A1="Steindl Imre" A2="Ybl Miklós" A3="Lechner Ödön" A4="Hauszmann Alajos" CAT="muveszet" />
+<QUESTION QUESTION="Ki tervezte a Magyar Állami Operaházat?" A1="Ybl Miklós" A2="Steindl Imre" A3="Lechner Ödön" A4="Feszl Frigyes" CAT="muveszet" />
+<QUESTION QUESTION="Ki tervezte az Iparművészeti Múzeum épületét?" A1="Lechner Ödön" A2="Ybl Miklós" A3="Steindl Imre" A4="Alpár Ignác" CAT="muveszet" />
+<QUESTION QUESTION="Melyik stílusban épültek Lechner Ödön Zsolnay-kerámiával díszített épületei?" A1="szecesszió" A2="barokk" A3="klasszicizmus" A4="gótika" CAT="muveszet" />
+<QUESTION QUESTION="Ki tervezte a Pesti Vigadót?" A1="Feszl Frigyes" A2="Ybl Miklós" A3="Steindl Imre" A4="Hild József" CAT="muveszet" />
+<QUESTION QUESTION="Ki tervezte a barcelonai Sagrada Famíliát?" A1="Antoni Gaudí" A2="Le Corbusier" A3="Santiago Calatrava" A4="Ricardo Bofill" CAT="muveszet" />
+<QUESTION QUESTION="Melyik építész tervezte a bilbaói Guggenheim Múzeumot?" A1="Frank Gehry" A2="Zaha Hadid" A3="Norman Foster" A4="Renzo Piano" CAT="muveszet" />
+<QUESTION QUESTION="Ki tervezte a Louvre üvegpiramisát?" A1="I. M. Pei" A2="Frank Gehry" A3="Jean Nouvel" A4="Renzo Piano" CAT="muveszet" />
+<QUESTION QUESTION="Ki tervezte a Sydney-i Operaházat?" A1="Jørn Utzon" A2="Frank Gehry" A3="Norman Foster" A4="Oscar Niemeyer" CAT="muveszet" />
+<QUESTION QUESTION="Melyik stílusban épült a párizsi Notre-Dame?" A1="gótikus" A2="román" A3="barokk" A4="reneszánsz" CAT="muveszet" />
+<QUESTION QUESTION="Melyik római épület kupolája volt bő ezer évig a világ legnagyobb kupolája?" A1="Pantheon" A2="Colosseum" A3="Szent Péter-bazilika" A4="Hagia Sophia" CAT="muveszet" />
+<QUESTION QUESTION="Ki tervezte a firenzei dóm kupoláját?" A1="Filippo Brunelleschi" A2="Michelangelo" A3="Leon Battista Alberti" A4="Donato Bramante" CAT="muveszet" />
+<QUESTION QUESTION="Ki tervezte a római Szent Péter-bazilika kupoláját?" A1="Michelangelo" A2="Bramante" A3="Bernini" A4="Raffaello" CAT="muveszet" />
+<QUESTION QUESTION="Melyik szobrász alkotása a római Szent Teréz extázisa?" A1="Gian Lorenzo Bernini" A2="Michelangelo" A3="Antonio Canova" A4="Donatello" CAT="muveszet" />
+<QUESTION QUESTION="Melyik görög szobrász alkotta az eredeti Diszkoszvetőt?" A1="Mürón" A2="Pheidiász" A3="Praxitelész" A4="Polükleitosz" CAT="muveszet" />
+<QUESTION QUESTION="Ki festette Az udvarhölgyeket (Las Meninas)?" A1="Diego Velázquez" A2="Francisco Goya" A3="El Greco" A4="Murillo" CAT="muveszet" />
+<QUESTION QUESTION="Melyik spanyol festő festette az 1808. május harmadikát?" A1="Francisco Goya" A2="Diego Velázquez" A3="El Greco" A4="Pablo Picasso" CAT="muveszet" />
+<QUESTION QUESTION="Melyik múzeumban látható Rembrandt Éjjeli őrjárata?" A1="Rijksmuseum" A2="Louvre" A3="Prado" A4="Uffizi" CAT="muveszet" />
+<QUESTION QUESTION="Melyik magyar származású fotós készítette a Milicista halála képet?" A1="Robert Capa" A2="André Kertész" A3="Brassaï" A4="Moholy-Nagy László" CAT="muveszet" />
+<QUESTION QUESTION="Mi volt a Brassaï néven ismert fotós eredeti neve?" A1="Halász Gyula" A2="Kertész Andor" A3="Friedmann Endre" A4="Moholy-Nagy László" CAT="muveszet" />
+<QUESTION QUESTION="Ki komponálta A varázsfuvolát?" A1="W. A. Mozart" A2="Joseph Haydn" A3="Ludwig van Beethoven" A4="Christoph Gluck" CAT="muveszet" />
+<QUESTION QUESTION="Ki komponálta az Aidát?" A1="Giuseppe Verdi" A2="Giacomo Puccini" A3="Gioachino Rossini" A4="Gaetano Donizetti" CAT="muveszet" />
+<QUESTION QUESTION="Ki komponálta a Pillangókisasszonyt?" A1="Giacomo Puccini" A2="Giuseppe Verdi" A3="Ruggero Leoncavallo" A4="Pietro Mascagni" CAT="muveszet" />
+<QUESTION QUESTION="Ki komponálta a Carment?" A1="Georges Bizet" A2="Jules Massenet" A3="Charles Gounod" A4="Hector Berlioz" CAT="muveszet" />
+<QUESTION QUESTION="Ki komponálta A sevillai borbélyt?" A1="Gioachino Rossini" A2="Giuseppe Verdi" A3="Gaetano Donizetti" A4="Vincenzo Bellini" CAT="muveszet" />
+<QUESTION QUESTION="Ki komponálta A diótörőt?" A1="Pjotr Csajkovszkij" A2="Szergej Prokofjev" A3="Igor Sztravinszkij" A4="Rimszkij-Korszakov" CAT="muveszet" />
+<QUESTION QUESTION="Ki komponálta A tavaszi áldozatot?" A1="Igor Sztravinszkij" A2="Szergej Prokofjev" A3="Claude Debussy" A4="Maurice Ravel" CAT="muveszet" />
+<QUESTION QUESTION="Ki komponálta a Bolerót?" A1="Maurice Ravel" A2="Claude Debussy" A3="Erik Satie" A4="Manuel de Falla" CAT="muveszet" />
+<QUESTION QUESTION="Ki komponálta A négy évszakot?" A1="Antonio Vivaldi" A2="Johann Sebastian Bach" A3="Georg Friedrich Händel" A4="Arcangelo Corelli" CAT="muveszet" />
+<QUESTION QUESTION="Ki komponálta a Messiás című oratóriumot?" A1="Georg Friedrich Händel" A2="Johann Sebastian Bach" A3="Joseph Haydn" A4="Mozart" CAT="muveszet" />
+<QUESTION QUESTION="Ki komponálta a Brandenburgi versenyeket?" A1="Johann Sebastian Bach" A2="Antonio Vivaldi" A3="Händel" A4="Telemann" CAT="muveszet" />
+<QUESTION QUESTION="Melyik Beethoven-szimfónia zárótételében hangzik el az Örömóda?" A1="IX. szimfónia" A2="V. szimfónia" A3="III. szimfónia" A4="VI. szimfónia" CAT="muveszet" />
+<QUESTION QUESTION="Ki komponálta Az Újvilág-szimfóniát?" A1="Antonín Dvořák" A2="Bedřich Smetana" A3="Gustav Mahler" A4="Johannes Brahms" CAT="muveszet" />
+<QUESTION QUESTION="Ki írta a Moldva című szimfonikus költeményt?" A1="Bedřich Smetana" A2="Antonín Dvořák" A3="Leoš Janáček" A4="Liszt Ferenc" CAT="muveszet" />
+<QUESTION QUESTION="Ki komponálta A kék Duna keringőt?" A1="ifj. Johann Strauss" A2="id. Johann Strauss" A3="Lehár Ferenc" A4="Joseph Lanner" CAT="muveszet" />
+<QUESTION QUESTION="Melyik zeneszerző dolgozta fel a Rákóczi-indulót a Faust elkárhozásában?" A1="Hector Berlioz" A2="Liszt Ferenc" A3="Erkel Ferenc" A4="Johannes Brahms" CAT="muveszet" />
+<QUESTION QUESTION="Ki komponálta a Bánk bán című operát?" A1="Erkel Ferenc" A2="Liszt Ferenc" A3="Kodály Zoltán" A4="Mosonyi Mihály" CAT="muveszet" />
+<QUESTION QUESTION="Ki komponálta a Psalmus Hungaricust?" A1="Kodály Zoltán" A2="Bartók Béla" A3="Weiner Leó" A4="Dohnányi Ernő" CAT="muveszet" />
+<QUESTION QUESTION="Ki komponálta A csodálatos mandarint?" A1="Bartók Béla" A2="Kodály Zoltán" A3="Igor Sztravinszkij" A4="Dohnányi Ernő" CAT="muveszet" />
+<QUESTION QUESTION="Melyik hangszer tartozik a rézfúvósok közé?" A1="harsona" A2="klarinét" A3="fagott" A4="oboa" CAT="muveszet" />
+<QUESTION QUESTION="Melyik hangszer NEM fafúvós?" A1="kürt" A2="fuvola" A3="oboa" A4="fagott" CAT="muveszet" />
+<QUESTION QUESTION="Melyik a legmélyebb hangú vonós hangszer a szimfonikus zenekarban?" A1="nagybőgő" A2="cselló" A3="brácsa" A4="hegedű" CAT="muveszet" />
+<QUESTION QUESTION="Mit jelent a pianissimo jelzés a kottában?" A1="nagyon halkan" A2="nagyon gyorsan" A3="nagyon lassan" A4="nagyon hangosan" CAT="muveszet" />
+<QUESTION QUESTION="Mit jelent az allegro tempójelzés?" A1="gyorsan, élénken" A2="lassan" A3="mérsékelten" A4="nagyon lassan" CAT="muveszet" />
+<QUESTION QUESTION="Melyik balett zenéjét írta Csajkovszkij?" A1="A hattyúk tava" A2="Giselle" A3="Coppélia" A4="Bolero" CAT="muveszet" />
+<TIPQUESTION QUESTION="Hány szimfóniát írt Beethoven?" ANSWER="9" MINVAL="3" MAXVAL="20" CAT="muveszet" />
+<TIPQUESTION QUESTION="Hány húrja van egy hagyományos gitárnak?" ANSWER="6" MINVAL="3" MAXVAL="12" CAT="muveszet" />
+<TIPQUESTION QUESTION="Hány billentyűje van egy hagyományos zongorának?" ANSWER="88" MINVAL="50" MAXVAL="150" CAT="muveszet" />
+<TIPQUESTION QUESTION="Hány méter magas az Országház kupolája?" ANSWER="96" MINVAL="50" MAXVAL="200" CAT="muveszet" />
+<TIPQUESTION QUESTION="Hány éves volt Mozart, amikor meghalt?" ANSWER="35" MINVAL="20" MAXVAL="60" CAT="muveszet" />
+<TIPQUESTION QUESTION="Melyik évben született Ludwig van Beethoven?" ANSWER="1770" MINVAL="1700" MAXVAL="1850" CAT="muveszet" />
+<TIPQUESTION QUESTION="Melyik évben született Liszt Ferenc?" ANSWER="1811" MINVAL="1750" MAXVAL="1900" CAT="muveszet" />
+<TIPQUESTION QUESTION="Melyik évben született Bartók Béla?" ANSWER="1881" MINVAL="1800" MAXVAL="1950" CAT="muveszet" />
+<TIPQUESTION QUESTION="Melyik évben halt meg Liszt Ferenc?" ANSWER="1886" MINVAL="1820" MAXVAL="1950" CAT="muveszet" />
+<TIPQUESTION QUESTION="Hány szimfóniát írt Mozart a hagyományos számozás szerint?" ANSWER="41" MINVAL="10" MAXVAL="100" CAT="muveszet" />
+<TIPQUESTION QUESTION="Hány számozott szimfóniát írt Joseph Haydn?" ANSWER="104" MINVAL="20" MAXVAL="200" CAT="muveszet" />
+<TIPQUESTION QUESTION="Hány befejezett szimfóniát írt Gustav Mahler?" ANSWER="9" MINVAL="1" MAXVAL="20" CAT="muveszet" />
+<TIPQUESTION QUESTION="Hány tételből áll Vivaldi A négy évszak sorozata összesen?" ANSWER="12" MINVAL="4" MAXVAL="24" CAT="muveszet" />
+<TIPQUESTION QUESTION="Hány vonalból áll egy kottasor?" ANSWER="5" MINVAL="1" MAXVAL="10" CAT="muveszet" />
+<TIPQUESTION QUESTION="Melyik évben mutatták be Bartók A kékszakállú herceg vára című operáját?" ANSWER="1918" MINVAL="1900" MAXVAL="1950" CAT="muveszet" />
+<TIPQUESTION QUESTION="Hány méter volt az Eiffel-torony eredeti magassága?" ANSWER="300" MINVAL="100" MAXVAL="600" CAT="muveszet" />
+<TIPQUESTION QUESTION="Melyik évben készült el az Eiffel-torony?" ANSWER="1889" MINVAL="1800" MAXVAL="1950" CAT="muveszet" />
+<TIPQUESTION QUESTION="Melyik évben nyílt meg a budapesti Operaház?" ANSWER="1884" MINVAL="1800" MAXVAL="1950" CAT="muveszet" />
+<TIPQUESTION QUESTION="Hány méter magas a Szent István-bazilika?" ANSWER="96" MINVAL="50" MAXVAL="200" CAT="muveszet" />
+<TIPQUESTION QUESTION="Melyik évben született Munkácsy Mihály?" ANSWER="1844" MINVAL="1800" MAXVAL="1900" CAT="muveszet" />
+<TIPQUESTION QUESTION="Melyik évben halt meg Vincent van Gogh?" ANSWER="1890" MINVAL="1850" MAXVAL="1950" CAT="muveszet" />
+<TIPQUESTION QUESTION="Hány méter hosszú a Feszty-körkép (kb.)?" ANSWER="120" MINVAL="30" MAXVAL="500" CAT="muveszet" />
+<TIPQUESTION QUESTION="Hány évig festette Michelangelo a Sixtus-kápolna mennyezetét?" ANSWER="4" MINVAL="1" MAXVAL="15" CAT="muveszet" />
+<TIPQUESTION QUESTION="Hány méter magas volt eredetileg a gízai nagy piramis (kb.)?" ANSWER="146" MINVAL="50" MAXVAL="300" CAT="muveszet" />
+<TIPQUESTION QUESTION="Melyik évben alapította Hollósy Simon a nagybányai festőiskolát?" ANSWER="1896" MINVAL="1850" MAXVAL="1950" CAT="muveszet" />
+<TIPQUESTION QUESTION="Melyik évben adták át a Pesti Vigadót?" ANSWER="1865" MINVAL="1800" MAXVAL="1950" CAT="muveszet" />
+<TIPQUESTION QUESTION="Hány méter magas a pisai ferde torony (kb.)?" ANSWER="56" MINVAL="20" MAXVAL="150" CAT="muveszet" />
+<TIPQUESTION QUESTION="Hány évig épült a kölni dóm (1248–1880)?" ANSWER="632" MINVAL="100" MAXVAL="1000" CAT="muveszet" />
+<TIPQUESTION QUESTION="Melyik évben kezdték építeni a Sagrada Famíliát?" ANSWER="1882" MINVAL="1800" MAXVAL="1950" CAT="muveszet" />
+<QUESTION QUESTION="Melyik állat NEM emlős?" A1="pingvin" A2="delfin" A3="denevér" A4="bálna" CAT="termtud" />
+<QUESTION QUESTION="Mi az óriáspanda fő tápláléka?" A1="bambusz" A2="eukaliptusz" A3="hal" A4="méz" CAT="termtud" />
+<QUESTION QUESTION="Mi a balatoni fogas másik neve?" A1="süllő" A2="csuka" A3="harcsa" A4="keszeg" CAT="termtud" />
+<QUESTION QUESTION="Mi a vas vegyjele?" A1="Fe" A2="V" A3="Ir" A4="Va" CAT="termtud" />
+<QUESTION QUESTION="Mi az arany vegyjele?" A1="Au" A2="Ag" A3="Ar" A4="Go" CAT="termtud" />
+<QUESTION QUESTION="Mi az ezüst vegyjele?" A1="Ag" A2="Au" A3="Si" A4="Ez" CAT="termtud" />
+<QUESTION QUESTION="Melyik gázból van a legtöbb a Föld légkörében?" A1="nitrogén" A2="oxigén" A3="szén-dioxid" A4="argon" CAT="termtud" />
+<QUESTION QUESTION="Melyik a legkönnyebb kémiai elem?" A1="hidrogén" A2="hélium" A3="lítium" A4="oxigén" CAT="termtud" />
+<QUESTION QUESTION="Melyik vitamin keletkezik a bőrben napfény hatására?" A1="D-vitamin" A2="C-vitamin" A3="A-vitamin" A4="B12-vitamin" CAT="termtud" />
+<QUESTION QUESTION="Melyik szervünk termeli az inzulint?" A1="hasnyálmirigy" A2="máj" A3="vese" A4="pajzsmirigy" CAT="termtud" />
+<QUESTION QUESTION="Mi az emberi test legnagyobb szerve?" A1="bőr" A2="máj" A3="agy" A4="tüdő" CAT="termtud" />
+<QUESTION QUESTION="Ki fedezte fel a penicillint?" A1="Alexander Fleming" A2="Louis Pasteur" A3="Robert Koch" A4="Semmelweis Ignác" CAT="termtud" />
+<QUESTION QUESTION="Kit neveznek az anyák megmentőjének?" A1="Semmelweis Ignácot" A2="Szent-Györgyi Albertet" A3="Korányi Sándort" A4="Hőgyes Endrét" CAT="termtud" />
+<QUESTION QUESTION="Melyik vitamin kutatásáért kapott Nobel-díjat Szent-Györgyi Albert?" A1="C-vitamin" A2="D-vitamin" A3="A-vitamin" A4="B1-vitamin" CAT="termtud" />
+<QUESTION QUESTION="Ki találta fel a zajtalan gyufát?" A1="Irinyi János" A2="Jedlik Ányos" A3="Bíró László József" A4="Puskás Tivadar" CAT="termtud" />
+<QUESTION QUESTION="Melyik fa termése a makk?" A1="a tölgyé" A2="a nyíré" A3="a gesztenyéé" A4="a dióé" CAT="termtud" />
+<QUESTION QUESTION="Melyik madarunk költözik ősszel melegebb vidékre?" A1="gólya" A2="veréb" A3="szarka" A4="cinege" CAT="termtud" />
+<QUESTION QUESTION="Melyik állat alszik téli álmot?" A1="sün" A2="nyúl" A3="őz" A4="róka" CAT="termtud" />
+<QUESTION QUESTION="Melyik a legnagyobb ragadozó hal a magyar vizekben?" A1="harcsa" A2="csuka" A3="süllő" A4="ponty" CAT="termtud" />
+<QUESTION QUESTION="Melyik gázból van a legtöbb a kilélegzett levegőben?" A1="nitrogén" A2="szén-dioxid" A3="oxigén" A4="vízgőz" CAT="termtud" />
+<QUESTION QUESTION="Mi a konyhasó kémiai neve?" A1="nátrium-klorid" A2="kálium-klorid" A3="nátrium-karbonát" A4="kalcium-karbonát" CAT="termtud" />
+<QUESTION QUESTION="Mi a szódabikarbóna képlete?" A1="NaHCO3" A2="NaCl" A3="CaCO3" A4="NH4NO3" CAT="termtud" />
+<QUESTION QUESTION="Melyik fém folyékony szobahőmérsékleten?" A1="higany" A2="ólom" A3="cink" A4="ón" CAT="termtud" />
+<QUESTION QUESTION="Mit mér a Mohs-skála?" A1="ásványok keménységét" A2="földrengéseket" A3="a víz keménységét" A4="a hangerőt" CAT="termtud" />
+<QUESTION QUESTION="Melyik a legkeményebb természetes anyag?" A1="gyémánt" A2="korund" A3="kvarc" A4="topáz" CAT="termtud" />
+<QUESTION QUESTION="Milyen színű a jegesmedve bőre?" A1="fekete" A2="fehér" A3="rózsaszín" A4="szürke" CAT="termtud" />
+<QUESTION QUESTION="Mi a DNS rövidítés feloldása?" A1="dezoxiribonukleinsav" A2="ribonukleinsav" A3="dinukleotid-szulfát" A4="deuteronukleinsav" CAT="termtud" />
+<QUESTION QUESTION="Melyik vércsoportú ember adhat vért szinte bárkinek?" A1="0 Rh-negatív" A2="AB Rh-pozitív" A3="A Rh-negatív" A4="B Rh-pozitív" CAT="termtud" />
+<QUESTION QUESTION="Melyik elem vegyjele a K?" A1="kálium" A2="kalcium" A3="kripton" A4="kobalt" CAT="termtud" />
+<QUESTION QUESTION="Melyik elem vegyjele a Na?" A1="nátrium" A2="nikkel" A3="neon" A4="nitrogén" CAT="termtud" />
+<QUESTION QUESTION="Melyik elem vegyjele a W?" A1="volfrám" A2="vanádium" A3="xenon" A4="ólom" CAT="termtud" />
+<QUESTION QUESTION="Melyik elem vegyjele a Pb?" A1="ólom" A2="platina" A3="palládium" A4="foszfor" CAT="termtud" />
+<QUESTION QUESTION="Melyik elem vegyjele a Hg?" A1="higany" A2="hidrogén" A3="hélium" A4="hafnium" CAT="termtud" />
+<QUESTION QUESTION="Melyik NEM nemesgáz?" A1="nitrogén" A2="argon" A3="neon" A4="kripton" CAT="termtud" />
+<QUESTION QUESTION="Melyik gáz a kéjgáz?" A1="dinitrogén-oxid" A2="szén-monoxid" A3="metán" A4="ammónia" CAT="termtud" />
+<QUESTION QUESTION="Milyen gáz keletkezik, ha mészkövet sósavval öntünk le?" A1="szén-dioxid" A2="hidrogén" A3="oxigén" A4="klór" CAT="termtud" />
+<QUESTION QUESTION="Mi a földgáz fő összetevője?" A1="metán" A2="etán" A3="propán" A4="bután" CAT="termtud" />
+<QUESTION QUESTION="Mi az oltatlan mész kémiai neve?" A1="kalcium-oxid" A2="kalcium-karbonát" A3="kalcium-hidroxid" A4="nátrium-oxid" CAT="termtud" />
+<QUESTION QUESTION="Melyik sav található a gyomornedvben?" A1="sósav" A2="kénsav" A3="salétromsav" A4="ecetsav" CAT="termtud" />
+<QUESTION QUESTION="Mi az ózon képlete?" A1="O3" A2="O2" A3="CO" A4="H2O2" CAT="termtud" />
+<QUESTION QUESTION="Mi a hidrogén-peroxid képlete?" A1="H2O2" A2="HO2" A3="H2O" A4="H3O" CAT="termtud" />
+<QUESTION QUESTION="Ki alkotta meg az elemek periódusos rendszerét?" A1="Dmitrij Mengyelejev" A2="Antoine Lavoisier" A3="John Dalton" A4="Niels Bohr" CAT="termtud" />
+<QUESTION QUESTION="Kik fedezték fel a rádiumot és a polóniumot?" A1="a Curie házaspár" A2="Ernest Rutherford" A3="Henri Becquerel" A4="Wilhelm Röntgen" CAT="termtud" />
+<QUESTION QUESTION="Mi a rozsda fő alkotórésze?" A1="vas-oxid" A2="vas-szulfid" A3="réz-oxid" A4="alumínium-oxid" CAT="termtud" />
+<QUESTION QUESTION="Milyen színű a réz-szulfát vizes oldata?" A1="kék" A2="zöld" A3="sárga" A4="vörös" CAT="termtud" />
+<QUESTION QUESTION="Melyik fém vezeti legjobban az elektromosságot?" A1="ezüst" A2="réz" A3="arany" A4="alumínium" CAT="termtud" />
+<QUESTION QUESTION="Melyik a legnagyobb sűrűségű elem?" A1="ozmium" A2="ólom" A3="arany" A4="higany" CAT="termtud" />
+<QUESTION QUESTION="Melyik elem atomjaiból áll a gyémánt?" A1="szén" A2="szilícium" A3="bór" A4="kalcium" CAT="termtud" />
+<QUESTION QUESTION="Melyik vitamin hiánya okozza a skorbutot?" A1="C-vitamin" A2="D-vitamin" A3="B1-vitamin" A4="A-vitamin" CAT="termtud" />
+<QUESTION QUESTION="Melyik vitamin hiánya okozza az angolkórt?" A1="D-vitamin" A2="C-vitamin" A3="K-vitamin" A4="B12-vitamin" CAT="termtud" />
+<QUESTION QUESTION="Melyik vitamin fontos a véralvadáshoz?" A1="K-vitamin" A2="E-vitamin" A3="A-vitamin" A4="C-vitamin" CAT="termtud" />
+<QUESTION QUESTION="Melyik ásványi anyag hiánya okoz leggyakrabban vérszegénységet?" A1="vas" A2="kalcium" A3="cink" A4="magnézium" CAT="termtud" />
+<QUESTION QUESTION="Melyik szervünk termeli az epét?" A1="máj" A2="epehólyag" A3="hasnyálmirigy" A4="lép" CAT="termtud" />
+<QUESTION QUESTION="Hol képződnek a vörösvértestek egy felnőttben?" A1="a vörös csontvelőben" A2="a lépben" A3="a májban" A4="a nyirokcsomókban" CAT="termtud" />
+<QUESTION QUESTION="Hogy hívják a szívizmot ellátó ereket?" A1="koszorúerek" A2="tüdőerek" A3="nyaki verőerek" A4="kapuér" CAT="termtud" />
+<QUESTION QUESTION="Melyik az emberi test leghosszabb csontja?" A1="combcsont" A2="sípcsont" A3="felkarcsont" A4="szárkapocscsont" CAT="termtud" />
+<QUESTION QUESTION="Melyik az emberi test legkisebb csontja?" A1="kengyel" A2="üllő" A3="kalapács" A4="járomcsont" CAT="termtud" />
+<QUESTION QUESTION="Melyik hormont termeli a pajzsmirigy?" A1="tiroxin" A2="inzulin" A3="adrenalin" A4="kortizol" CAT="termtud" />
+<QUESTION QUESTION="Melyik sejtalkotót nevezik a sejt erőművének?" A1="mitokondrium" A2="riboszóma" A3="Golgi-készülék" A4="sejtmag" CAT="termtud" />
+<QUESTION QUESTION="Melyik sejtalkotóban zajlik a fotoszintézis?" A1="zöld színtest" A2="mitokondrium" A3="riboszóma" A4="vakuólum" CAT="termtud" />
+<QUESTION QUESTION="Mi szállítja az oxigént a vörösvértestekben?" A1="hemoglobin" A2="mioglobin" A3="inzulin" A4="fibrinogén" CAT="termtud" />
+<QUESTION QUESTION="Mi a vér folyékony, sejtmentes része?" A1="vérplazma" A2="vérlemezke" A3="hemoglobin" A4="fibrin" CAT="termtud" />
+<QUESTION QUESTION="Ki írta A fajok eredete című művet?" A1="Charles Darwin" A2="Alfred Russel Wallace" A3="Gregor Mendel" A4="Jean-Baptiste Lamarck" CAT="termtud" />
+<QUESTION QUESTION="Ki kísérletezett borsóval, és lett az öröklődéstan atyja?" A1="Gregor Mendel" A2="Charles Darwin" A3="Jean-Baptiste Lamarck" A4="Thomas Morgan" CAT="termtud" />
+<QUESTION QUESTION="Kik írták le 1953-ban a DNS kettős spirál szerkezetét?" A1="Watson és Crick" A2="Darwin és Wallace" A3="Pasteur és Koch" A4="Curie és Bohr" CAT="termtud" />
+<QUESTION QUESTION="Ki fedezte fel a tuberkulózis kórokozóját?" A1="Robert Koch" A2="Louis Pasteur" A3="Alexander Fleming" A4="Edward Jenner" CAT="termtud" />
+<QUESTION QUESTION="Ki dolgozta ki a himlő elleni védőoltást?" A1="Edward Jenner" A2="Louis Pasteur" A3="Robert Koch" A4="Jonas Salk" CAT="termtud" />
+<QUESTION QUESTION="Ki dolgozta ki a veszettség elleni védőoltást?" A1="Louis Pasteur" A2="Robert Koch" A3="Edward Jenner" A4="Semmelweis Ignác" CAT="termtud" />
+<QUESTION QUESTION="Melyik magyar kutató kapott 2023-ban orvosi Nobel-díjat az mRNS-kutatásaiért?" A1="Karikó Katalin" A2="Krausz Ferenc" A3="Szent-Györgyi Albert" A4="Bárány Róbert" CAT="termtud" />
+<QUESTION QUESTION="Melyik madár tud hátrafelé is repülni?" A1="kolibri" A2="fecske" A3="sarlósfecske" A4="harkály" CAT="termtud" />
+<QUESTION QUESTION="Melyik a legnagyobb ma élő hüllő?" A1="bordás krokodil" A2="komodói varánusz" A3="anakonda" A4="kérgesteknős" CAT="termtud" />
+<QUESTION QUESTION="Melyik emlős képes valódi, aktív repülésre?" A1="denevér" A2="repülőmókus" A3="kolugó" A4="erszényes repülő" CAT="termtud" />
+<QUESTION QUESTION="Melyik emlős rak tojást?" A1="kacsacsőrű emlős" A2="koala" A3="vombat" A4="tatu" CAT="termtud" />
+<QUESTION QUESTION="Melyik állat gerinctelen?" A1="polip" A2="cápa" A3="béka" A4="kígyó" CAT="termtud" />
+<QUESTION QUESTION="Melyik állat NEM rovar?" A1="pók" A2="méh" A3="hangya" A4="szöcske" CAT="termtud" />
+<QUESTION QUESTION="Hogy hívják a lepke fejlődésében a hernyó és a kifejlett lepke közti állapotot?" A1="báb" A2="lárva" A3="nimfa" A4="imágó" CAT="termtud" />
+<QUESTION QUESTION="Melyik növény egyszikű?" A1="kukorica" A2="bab" A3="napraforgó" A4="tölgy" CAT="termtud" />
+<QUESTION QUESTION="Melyik a világ legmagasabbra növő fafaja?" A1="parti mamutfenyő" A2="óriás eukaliptusz" A3="duglászfenyő" A4="baobab" CAT="termtud" />
+<QUESTION QUESTION="Az agy melyik részében található a hipotalamusz?" A1="köztiagyban" A2="kisagyban" A3="nyúltvelőben" A4="nagyagykéregben" CAT="termtud" />
+<TIPQUESTION QUESTION="Hány foga van egy felnőttnek a bölcsességfogakkal együtt?" ANSWER="32" MINVAL="10" MAXVAL="50" CAT="termtud" />
+<TIPQUESTION QUESTION="Hány szárnya van egy méhnek?" ANSWER="4" MINVAL="1" MAXVAL="10" CAT="termtud" />
+<TIPQUESTION QUESTION="Hány szíve van egy polipnak?" ANSWER="3" MINVAL="1" MAXVAL="10" CAT="termtud" />
+<TIPQUESTION QUESTION="Hány csontból áll egy felnőtt ember csontváza?" ANSWER="206" MINVAL="50" MAXVAL="400" CAT="termtud" />
+<TIPQUESTION QUESTION="Hány kromoszóma van egy egészséges emberi testi sejtben?" ANSWER="46" MINVAL="10" MAXVAL="100" CAT="termtud" />
+<TIPQUESTION QUESTION="Hány hétig tart átlagosan egy emberi terhesség?" ANSWER="40" MINVAL="20" MAXVAL="60" CAT="termtud" />
+<TIPQUESTION QUESTION="Hány napig kotlik a tyúk a tojásain?" ANSWER="21" MINVAL="5" MAXVAL="60" CAT="termtud" />
+<TIPQUESTION QUESTION="Hány elem szerepel ma a periódusos rendszerben?" ANSWER="118" MINVAL="80" MAXVAL="200" CAT="termtud" />
+<TIPQUESTION QUESTION="Mi a szén rendszáma?" ANSWER="6" MINVAL="1" MAXVAL="20" CAT="termtud" />
+<TIPQUESTION QUESTION="Mi az arany rendszáma?" ANSWER="79" MINVAL="20" MAXVAL="120" CAT="termtud" />
+<TIPQUESTION QUESTION="Mi az oxigén rendszáma?" ANSWER="8" MINVAL="1" MAXVAL="20" CAT="termtud" />
+<TIPQUESTION QUESTION="Mi a vas rendszáma?" ANSWER="26" MINVAL="5" MAXVAL="60" CAT="termtud" />
+<TIPQUESTION QUESTION="Mennyi a semleges vizes oldat pH-ja 25 °C-on?" ANSWER="7" MINVAL="1" MAXVAL="14" CAT="termtud" />
+<TIPQUESTION QUESTION="Hány üregből (pitvarból és kamrából) áll az emberi szív?" ANSWER="4" MINVAL="1" MAXVAL="10" CAT="termtud" />
+<TIPQUESTION QUESTION="Hány liter vér van egy felnőtt ember szervezetében (kb.)?" ANSWER="5" MINVAL="1" MAXVAL="15" CAT="termtud" />
+<TIPQUESTION QUESTION="Hány tejfoga van egy gyereknek?" ANSWER="20" MINVAL="5" MAXVAL="40" CAT="termtud" />
+<TIPQUESTION QUESTION="Hány napig él átlagosan egy vörösvértest?" ANSWER="120" MINVAL="10" MAXVAL="400" CAT="termtud" />
+<TIPQUESTION QUESTION="Hány százalék víz van egy felnőtt emberi testben (kb.)?" ANSWER="60" MINVAL="20" MAXVAL="90" CAT="termtud" />
+<TIPQUESTION QUESTION="Hány km/h a gepárd legnagyobb sebessége (kb.)?" ANSWER="110" MINVAL="40" MAXVAL="200" CAT="termtud" />
+<TIPQUESTION QUESTION="Hány méter hosszúra nőhet egy kék bálna (kb.)?" ANSWER="30" MINVAL="5" MAXVAL="60" CAT="termtud" />
+<TIPQUESTION QUESTION="Hány szeme van a legtöbb pókfajnak?" ANSWER="8" MINVAL="1" MAXVAL="20" CAT="termtud" />
+<TIPQUESTION QUESTION="Hány részből áll a szarvasmarha gyomra?" ANSWER="4" MINVAL="1" MAXVAL="10" CAT="termtud" />
+<TIPQUESTION QUESTION="Melyik évben fedezte fel Alexander Fleming a penicillint?" ANSWER="1928" MINVAL="1850" MAXVAL="1990" CAT="termtud" />
+<TIPQUESTION QUESTION="Melyik évben kapott Nobel-díjat Szent-Györgyi Albert?" ANSWER="1937" MINVAL="1900" MAXVAL="1990" CAT="termtud" />
+<TIPQUESTION QUESTION="Hány neutron van a szén-12 atommagjában?" ANSWER="6" MINVAL="1" MAXVAL="20" CAT="termtud" />
+<TIPQUESTION QUESTION="Hány atomból áll egy vízmolekula?" ANSWER="3" MINVAL="1" MAXVAL="10" CAT="termtud" />
+<QUESTION QUESTION="Ki volt az első ember a világűrben?" A1="Jurij Gagarin" A2="Neil Armstrong" A3="German Tyitov" A4="Alan Shepard" CAT="matfiz" />
+<QUESTION QUESTION="Ki volt az első magyar űrhajós?" A1="Farkas Bertalan" A2="Simonyi Károly" A3="Kapu Tibor" A4="Magyari Béla" CAT="matfiz" />
+<QUESTION QUESTION="Melyik hónapban van a téli napforduló az északi féltekén?" A1="decemberben" A2="januárban" A3="novemberben" A4="februárban" CAT="matfiz" />
+<QUESTION QUESTION="Melyik a legkisebb prímszám?" A1="2" A2="1" A3="3" A4="0" CAT="matfiz" />
+<QUESTION QUESTION="Melyik bolygó kering a legközelebb a Naphoz?" A1="Merkúr" A2="Vénusz" A3="Mars" A4="Föld" CAT="matfiz" />
+<QUESTION QUESTION="Melyik bolygónak van a legfeltűnőbb gyűrűrendszere?" A1="Szaturnusz" A2="Jupiter" A3="Uránusz" A4="Neptunusz" CAT="matfiz" />
+<QUESTION QUESTION="Nagyjából mennyi idő alatt ér a Nap fénye a Földre?" A1="8 perc" A2="8 másodperc" A3="1 óra" A4="1 nap" CAT="matfiz" />
+<QUESTION QUESTION="Ki találta fel a golyóstollat?" A1="Bíró László József" A2="Rubik Ernő" A3="Kandó Kálmán" A4="Irinyi János" CAT="matfiz" />
+<QUESTION QUESTION="Ki építette a sakkozó törököt?" A1="Kempelen Farkas" A2="Neumann János" A3="Jedlik Ányos" A4="Bolyai Farkas" CAT="matfiz" />
+<QUESTION QUESTION="Melyik magyar származású tudós nevét viseli a számítógépek ma is használt felépítési elve?" A1="Neumann János" A2="Kármán Tódor" A3="Szilárd Leó" A4="Teller Ede" CAT="matfiz" />
+<QUESTION QUESTION="Melyik magyar matematikus dolgozta ki a nemeuklideszi geometriát?" A1="Bolyai János" A2="Bolyai Farkas" A3="Riesz Frigyes" A4="Erdős Pál" CAT="matfiz" />
+<QUESTION QUESTION="Ki fogalmazta meg a relativitáselméletet?" A1="Albert Einstein" A2="Isaac Newton" A3="Niels Bohr" A4="Max Planck" CAT="matfiz" />
+<QUESTION QUESTION="Melyik bolygó holdja az Io?" A1="a Jupiteré" A2="a Szaturnuszé" A3="a Marsé" A4="a Neptunuszé" CAT="matfiz" />
+<QUESTION QUESTION="Melyik bolygó holdja a Titán?" A1="a Szaturnuszé" A2="a Jupiteré" A3="az Uránuszé" A4="a Neptunuszé" CAT="matfiz" />
+<QUESTION QUESTION="Melyik bolygót fedezte fel William Herschel 1781-ben?" A1="az Uránuszt" A2="a Neptunuszt" A3="a Plútót" A4="a Szaturnuszt" CAT="matfiz" />
+<QUESTION QUESTION="Melyik a Naprendszer legnagyobb holdja?" A1="Ganümédész" A2="Titán" A3="a Hold" A4="Kallisztó" CAT="matfiz" />
+<QUESTION QUESTION="Melyik a Tejútrendszerhez legközelebbi nagy spirálgalaxis?" A1="Androméda-köd" A2="Nagy Magellán-felhő" A3="Orion-köd" A4="Sombrero-galaxis" CAT="matfiz" />
+<QUESTION QUESTION="Melyik csillagkép része a Sarkcsillag?" A1="Kis Medve" A2="Nagy Medve" A3="Orion" A4="Kassziopeia" CAT="matfiz" />
+<QUESTION QUESTION="Mi az elektromos ellenállás mértékegysége?" A1="ohm" A2="volt" A3="amper" A4="watt" CAT="matfiz" />
+<QUESTION QUESTION="Mi a teljesítmény mértékegysége?" A1="watt" A2="joule" A3="newton" A4="pascal" CAT="matfiz" />
+<QUESTION QUESTION="Mit mér a Beaufort-skála?" A1="a szél erősségét" A2="a tenger mélységét" A3="a fényerősséget" A4="a földrengéseket" CAT="matfiz" />
+<QUESTION QUESTION="Melyik részecske töltése negatív?" A1="az elektroné" A2="a protoné" A3="a neutroné" A4="a fotoné" CAT="matfiz" />
+<QUESTION QUESTION="Ki dolgozta ki a dinamó elvét még Siemens előtt?" A1="Jedlik Ányos" A2="Bláthy Ottó" A3="Kandó Kálmán" A4="Eötvös Loránd" CAT="matfiz" />
+<QUESTION QUESTION="Kinek az ötlete volt a telefonközpont és a Telefonhírmondó?" A1="Puskás Tivadar" A2="Jedlik Ányos" A3="Bánki Donát" A4="Kempelen Farkas" CAT="matfiz" />
+<QUESTION QUESTION="Mennyi a pi értéke két tizedesjegyre kerekítve?" A1="3,14" A2="3,41" A3="3,12" A4="3,16" CAT="matfiz" />
+<QUESTION QUESTION="Mi a neve a 180°-nál nagyobb, de 360°-nál kisebb szögnek?" A1="homorú szög" A2="tompaszög" A3="egyenesszög" A4="hegyesszög" CAT="matfiz" />
+<QUESTION QUESTION="Melyik szabályos test lapjai mind szabályos ötszögek?" A1="dodekaéder" A2="ikozaéder" A3="oktaéder" A4="tetraéder" CAT="matfiz" />
+<QUESTION QUESTION="Melyik szabályos testnek van 20 háromszöglapja?" A1="ikozaéder" A2="dodekaéder" A3="oktaéder" A4="tetraéder" CAT="matfiz" />
+<QUESTION QUESTION="Mi a neve a derékszögű háromszög leghosszabb oldalának?" A1="átfogó" A2="befogó" A3="magasság" A4="súlyvonal" CAT="matfiz" />
+<QUESTION QUESTION="Melyik szám NEM prím?" A1="91" A2="89" A3="97" A4="83" CAT="matfiz" />
+<QUESTION QUESTION="Melyik szám következik a Fibonacci-sorozatban: 1, 1, 2, 3, 5, 8, 13...?" A1="21" A2="20" A3="18" A4="26" CAT="matfiz" />
+<QUESTION QUESTION="Hogy hívják az olyan számot, amely egyenlő a nála kisebb osztói összegével (pl. 6, 28)?" A1="tökéletes szám" A2="barátságos szám" A3="prímszám" A4="négyzetszám" CAT="matfiz" />
+<QUESTION QUESTION="Mennyi a 0 faktoriálisa?" A1="1" A2="0" A3="nem értelmezett" A4="végtelen" CAT="matfiz" />
+<QUESTION QUESTION="Mennyi a tízes alapú logaritmusa 1000-nek?" A1="3" A2="10" A3="100" A4="30" CAT="matfiz" />
+<QUESTION QUESTION="Ki bizonyította be a nagy Fermat-tételt 1994-ben?" A1="Andrew Wiles" A2="Grigorij Perelman" A3="Terence Tao" A4="Erdős Pál" CAT="matfiz" />
+<QUESTION QUESTION="Melyik híres sejtést bizonyította be Grigorij Perelman?" A1="Poincaré-sejtés" A2="Riemann-sejtés" A3="Goldbach-sejtés" A4="Fermat-sejtés" CAT="matfiz" />
+<QUESTION QUESTION="Melyik magyar matematikusról szól Az ember, aki csak a számokat szerette című könyv?" A1="Erdős Pál" A2="Neumann János" A3="Bolyai János" A4="Lovász László" CAT="matfiz" />
+<QUESTION QUESTION="Melyik magyar matematikus kapott Abel-díjat 2021-ben?" A1="Lovász László" A2="Erdős Pál" A3="Szemerédi Endre" A4="Laczkovich Miklós" CAT="matfiz" />
+<QUESTION QUESTION="Ki írta az Elemeket, a geometria alapművét?" A1="Eukleidész" A2="Arkhimédész" A3="Püthagorasz" A4="Thalész" CAT="matfiz" />
+<QUESTION QUESTION="Melyik ókori tudós kiáltott fel: „Heuréka!”?" A1="Arkhimédész" A2="Eukleidész" A3="Püthagorasz" A4="Eratoszthenész" CAT="matfiz" />
+<QUESTION QUESTION="Ki mérte meg elsőként a Föld kerületét az i. e. 3. században?" A1="Eratoszthenész" A2="Arisztotelész" A3="Ptolemaiosz" A4="Arkhimédész" CAT="matfiz" />
+<QUESTION QUESTION="Ki alkotta meg a heliocentrikus világképet a 16. században?" A1="Kopernikusz" A2="Galileo Galilei" A3="Johannes Kepler" A4="Tycho Brahe" CAT="matfiz" />
+<QUESTION QUESTION="Ki fogalmazta meg a bolygómozgás három törvényét?" A1="Johannes Kepler" A2="Galileo Galilei" A3="Isaac Newton" A4="Kopernikusz" CAT="matfiz" />
+<QUESTION QUESTION="Milyen alakú pályán keringenek a bolygók Kepler szerint?" A1="ellipszis" A2="kör" A3="parabola" A4="hiperbola" CAT="matfiz" />
+<QUESTION QUESTION="Milyen görbén repül egy elhajított kő közegellenállás nélkül?" A1="parabola" A2="hiperbola" A3="ellipszis" A4="spirál" CAT="matfiz" />
+<QUESTION QUESTION="Mi az erő SI-mértékegysége?" A1="newton" A2="joule" A3="pascal" A4="watt" CAT="matfiz" />
+<QUESTION QUESTION="Mi a nyomás SI-mértékegysége?" A1="pascal" A2="bar" A3="newton" A4="atmoszféra" CAT="matfiz" />
+<QUESTION QUESTION="Mi az energia SI-mértékegysége?" A1="joule" A2="watt" A3="newton" A4="kalória" CAT="matfiz" />
+<QUESTION QUESTION="Mi az elektromos töltés mértékegysége?" A1="coulomb" A2="amper" A3="volt" A4="farad" CAT="matfiz" />
+<QUESTION QUESTION="Mi a frekvencia mértékegysége?" A1="hertz" A2="decibel" A3="weber" A4="tesla" CAT="matfiz" />
+<QUESTION QUESTION="Mi a mágneses indukció SI-mértékegysége?" A1="tesla" A2="weber" A3="henry" A4="gauss" CAT="matfiz" />
+<QUESTION QUESTION="Melyik SI-alapmennyiség az alábbiak közül?" A1="fényerősség" A2="feszültség" A3="teljesítmény" A4="nyomás" CAT="matfiz" />
+<QUESTION QUESTION="Melyik törvény mondja ki, hogy F = m · a?" A1="Newton II. törvénye" A2="Newton I. törvénye" A3="Hooke-törvény" A4="Ohm-törvény" CAT="matfiz" />
+<QUESTION QUESTION="Melyik képlet fejezi ki Ohm törvényét?" A1="U = R · I" A2="F = m · a" A3="E = m · c²" A4="P = U · I" CAT="matfiz" />
+<QUESTION QUESTION="Melyik törvény magyarázza, miért úszik a vasból készült hajó?" A1="Arkhimédész törvénye" A2="Pascal törvénye" A3="Bernoulli-elv" A4="Hooke-törvény" CAT="matfiz" />
+<QUESTION QUESTION="Mi keletkezik, amikor egy repülőgép átlépi a hangsebességet?" A1="hangrobbanás" A2="Doppler-hatás" A3="rezonancia" A4="interferencia" CAT="matfiz" />
+<QUESTION QUESTION="Melyik jelenség miatt változik a közeledő mentőautó szirénájának hangmagassága?" A1="Doppler-hatás" A2="rezonancia" A3="interferencia" A4="diffrakció" CAT="matfiz" />
+<QUESTION QUESTION="Hogy hívják a fény irányváltozását két közeg határán?" A1="fénytörés" A2="fényelhajlás" A3="fényvisszaverődés" A4="polarizáció" CAT="matfiz" />
+<QUESTION QUESTION="Milyen színű a legrövidebb hullámhosszú látható fény?" A1="ibolya" A2="vörös" A3="zöld" A4="sárga" CAT="matfiz" />
+<QUESTION QUESTION="Melyik részecske semleges töltésű az atommagban?" A1="neutron" A2="proton" A3="elektron" A4="pozitron" CAT="matfiz" />
+<QUESTION QUESTION="Ki fedezte fel az atommagot az aranyfüst-kísérlettel?" A1="Ernest Rutherford" A2="Niels Bohr" A3="J. J. Thomson" A4="James Chadwick" CAT="matfiz" />
+<QUESTION QUESTION="Ki fedezte fel az elektront?" A1="J. J. Thomson" A2="Ernest Rutherford" A3="Niels Bohr" A4="Robert Millikan" CAT="matfiz" />
+<QUESTION QUESTION="Melyik magyar fizikus kapott Nobel-díjat 2023-ban az attoszekundumos fényimpulzusokért?" A1="Krausz Ferenc" A2="Karikó Katalin" A3="Gábor Dénes" A4="Wigner Jenő" CAT="matfiz" />
+<QUESTION QUESTION="Ki kapott Nobel-díjat 1971-ben a holográfia feltalálásáért?" A1="Gábor Dénes" A2="Wigner Jenő" A3="Szilárd Leó" A4="Teller Ede" CAT="matfiz" />
+<QUESTION QUESTION="Melyik magyar származású fizikus kapott Nobel-díjat 1963-ban?" A1="Wigner Jenő" A2="Gábor Dénes" A3="Teller Ede" A4="Szilárd Leó" CAT="matfiz" />
+<QUESTION QUESTION="Kit neveznek a hidrogénbomba atyjának?" A1="Teller Ede" A2="Szilárd Leó" A3="Wigner Jenő" A4="Robert Oppenheimer" CAT="matfiz" />
+<QUESTION QUESTION="Ki vezette a Manhattan-terv los alamosi laboratóriumát?" A1="Robert Oppenheimer" A2="Enrico Fermi" A3="Teller Ede" A4="Niels Bohr" CAT="matfiz" />
+<QUESTION QUESTION="Melyik bolygón található a Naprendszer legnagyobb vulkánja, az Olympus Mons?" A1="Marson" A2="Vénuszon" A3="Io holdon" A4="Merkúron" CAT="matfiz" />
+<QUESTION QUESTION="Melyik bolygó forog szinte „fekve”, tengelye közel van a pályasíkjához?" A1="Uránusz" A2="Neptunusz" A3="Szaturnusz" A4="Vénusz" CAT="matfiz" />
+<QUESTION QUESTION="Melyik bolygón tart tovább egy nap, mint egy év?" A1="Vénusz" A2="Merkúr" A3="Mars" A4="Jupiter" CAT="matfiz" />
+<QUESTION QUESTION="Melyik a Naprendszer legforróbb felszínű bolygója?" A1="Vénusz" A2="Merkúr" A3="Mars" A4="Jupiter" CAT="matfiz" />
+<QUESTION QUESTION="Melyik a Mars egyik holdja?" A1="Phobos" A2="Io" A3="Titán" A4="Triton" CAT="matfiz" />
+<QUESTION QUESTION="Melyik égitest számít 2006 óta törpebolygónak?" A1="Plútó" A2="Ganümédész" A3="Titán" A4="Európa" CAT="matfiz" />
+<QUESTION QUESTION="Melyik a Naphoz legközelebbi csillag?" A1="Proxima Centauri" A2="Szíriusz" A3="Betelgeuze" A4="Vega" CAT="matfiz" />
+<QUESTION QUESTION="Melyik a legfényesebb csillag az éjszakai égbolton?" A1="Szíriusz" A2="Sarkcsillag" A3="Vega" A4="Betelgeuze" CAT="matfiz" />
+<QUESTION QUESTION="Minek a mértékegysége a fényév?" A1="távolságnak" A2="időnek" A3="sebességnek" A4="fényerőnek" CAT="matfiz" />
+<QUESTION QUESTION="Ki volt az első nő a világűrben?" A1="Valentyina Tyereskova" A2="Sally Ride" A3="Szvetlana Szavickaja" A4="Jelena Kondakova" CAT="matfiz" />
+<QUESTION QUESTION="Melyik űrszonda hagyta el elsőként a helioszférát?" A1="Voyager–1" A2="Voyager–2" A3="Pioneer–10" A4="New Horizons" CAT="matfiz" />
+<QUESTION QUESTION="Mi volt az első mesterséges hold neve?" A1="Szputnyik–1" A2="Explorer–1" A3="Vosztok–1" A4="Vanguard–1" CAT="matfiz" />
+<QUESTION QUESTION="Ki lett 2025-ben a második magyar űrhajós?" A1="Kapu Tibor" A2="Cserényi Gyula" A3="Farkas Bertalan" A4="Magyari Béla" CAT="matfiz" />
+<TIPQUESTION QUESTION="Hány perc van egy napban?" ANSWER="1440" MINVAL="100" MAXVAL="5000" CAT="matfiz" />
+<TIPQUESTION QUESTION="Hány pötty van összesen egy dobókocka hat oldalán?" ANSWER="21" MINVAL="6" MAXVAL="50" CAT="matfiz" />
+<TIPQUESTION QUESTION="Hány Fahrenheit-fokon fagy meg a víz?" ANSWER="32" MINVAL="0" MAXVAL="100" CAT="matfiz" />
+<TIPQUESTION QUESTION="Hány Fahrenheit-fokon forr a víz?" ANSWER="212" MINVAL="100" MAXVAL="400" CAT="matfiz" />
+<TIPQUESTION QUESTION="Hány liter egy hektoliter?" ANSWER="100" MINVAL="10" MAXVAL="1000" CAT="matfiz" />
+<TIPQUESTION QUESTION="Hány négyzetméter egy hektár?" ANSWER="10000" MINVAL="1000" MAXVAL="100000" CAT="matfiz" />
+<TIPQUESTION QUESTION="Hány milliméter egy hüvelyk (egészre kerekítve)?" ANSWER="25" MINVAL="10" MAXVAL="50" CAT="matfiz" />
+<TIPQUESTION QUESTION="Hány méter egy angol mérföld (egészre kerekítve)?" ANSWER="1609" MINVAL="1000" MAXVAL="3000" CAT="matfiz" />
+<TIPQUESTION QUESTION="Hány métert tesz meg a hang egy másodperc alatt a levegőben (kb.)?" ANSWER="343" MINVAL="100" MAXVAL="1000" CAT="matfiz" />
+<TIPQUESTION QUESTION="Melyik évben repült először a Wright fivérek motoros repülőgépe?" ANSWER="1903" MINVAL="1850" MAXVAL="1950" CAT="matfiz" />
+<TIPQUESTION QUESTION="Melyik évben repült az űrbe Farkas Bertalan?" ANSWER="1980" MINVAL="1960" MAXVAL="2000" CAT="matfiz" />
+<TIPQUESTION QUESTION="Hány kilométert tesz meg a fény egy másodperc alatt vákuumban (kerekítve)?" ANSWER="300000" MINVAL="100000" MAXVAL="1000000" CAT="matfiz" />
+<TIPQUESTION QUESTION="Hány fokkal van a nulla Celsius-fok alatt az abszolút nulla pont (egészre kerekítve)?" ANSWER="273" MINVAL="100" MAXVAL="500" CAT="matfiz" />
+<TIPQUESTION QUESTION="Mennyi 2 a 10. hatványon?" ANSWER="1024" MINVAL="100" MAXVAL="5000" CAT="matfiz" />
+<TIPQUESTION QUESTION="Hány prímszám van 1 és 100 között?" ANSWER="25" MINVAL="5" MAXVAL="60" CAT="matfiz" />
+<TIPQUESTION QUESTION="Hány fokos egy szabályos hatszög egy belső szöge?" ANSWER="120" MINVAL="60" MAXVAL="180" CAT="matfiz" />
+<TIPQUESTION QUESTION="Hány átlója van egy hatszögnek?" ANSWER="9" MINVAL="1" MAXVAL="30" CAT="matfiz" />
+<TIPQUESTION QUESTION="Hány éle van egy kockának?" ANSWER="12" MINVAL="4" MAXVAL="30" CAT="matfiz" />
+<TIPQUESTION QUESTION="Hány m/s² a nehézségi gyorsulás a Föld felszínén (egészre kerekítve)?" ANSWER="10" MINVAL="1" MAXVAL="30" CAT="matfiz" />
+<TIPQUESTION QUESTION="Hány perc alatt kerüli meg a Földet a Nemzetközi Űrállomás (kb.)?" ANSWER="92" MINVAL="30" MAXVAL="300" CAT="matfiz" />
+<TIPQUESTION QUESTION="Hány holdja van a Marsnak?" ANSWER="2" MINVAL="0" MAXVAL="10" CAT="matfiz" />
+<TIPQUESTION QUESTION="Hány földi napig tart egy év a Marson (kb.)?" ANSWER="687" MINVAL="300" MAXVAL="1500" CAT="matfiz" />
+<TIPQUESTION QUESTION="Hány kilométer a Föld és a Hold átlagos távolsága (kb.)?" ANSWER="384000" MINVAL="100000" MAXVAL="1000000" CAT="matfiz" />
+<TIPQUESTION QUESTION="Hány millió kilométer a Föld átlagos távolsága a Naptól (kb.)?" ANSWER="150" MINVAL="50" MAXVAL="500" CAT="matfiz" />
+<QUESTION QUESTION="Melyik gyümölcsből készül a guacamole?" A1="avokádó" A2="mangó" A3="kivi" A4="banán" CAT="eletmod" />
+<QUESTION QUESTION="Melyik cég gyártja az iPhone-t?" A1="Apple" A2="Samsung" A3="Nokia" A4="Sony" CAT="eletmod" />
+<QUESTION QUESTION="Melyik a hagyományos magyar karácsonyi sütemény?" A1="bejgli" A2="kürtőskalács" A3="fánk" A4="pogácsa" CAT="eletmod" />
+<QUESTION QUESTION="Melyik ünnep a jelmezek és a fánk ideje?" A1="farsang" A2="húsvét" A3="pünkösd" A4="szilveszter" CAT="eletmod" />
+<QUESTION QUESTION="Hogyan folytatódik a közmondás: Lassan járj, ...?" A1="tovább érsz" A2="messzebb látsz" A3="kevesebbet fáradsz" A4="mindig odaérsz" CAT="eletmod" />
+<QUESTION QUESTION="Hogyan folytatódik a közmondás: Ki korán kel, ...?" A1="aranyat lel" A2="sokat lát" A3="hamar elfárad" A4="messzire jut" CAT="eletmod" />
+<QUESTION QUESTION="Hogyan folytatódik a közmondás: Addig üsd a vasat, ...?" A1="amíg meleg" A2="amíg bírod" A3="amíg fényes" A4="amíg el nem törik" CAT="eletmod" />
+<QUESTION QUESTION="Hogyan folytatódik a közmondás: Nem esik messze az alma ...?" A1="a fájától" A2="a kosártól" A3="a háztól" A4="a kerttől" CAT="eletmod" />
+<QUESTION QUESTION="Hogyan folytatódik a közmondás: Ajándék lónak ne nézd ...?" A1="a fogát" A2="a patáját" A3="a színét" A4="a farkát" CAT="eletmod" />
+<QUESTION QUESTION="Melyik autómárka logója négy összefonódó karika?" A1="Audi" A2="Opel" A3="Toyota" A4="Mercedes-Benz" CAT="eletmod" />
+<QUESTION QUESTION="Melyik autómárka logóján látható ágaskodó ló?" A1="Ferrari" A2="Lamborghini" A3="Maserati" A4="Alfa Romeo" CAT="eletmod" />
+<QUESTION QUESTION="Mi a pesto fő zöld hozzávalója?" A1="bazsalikom" A2="petrezselyem" A3="spenót" A4="menta" CAT="eletmod" />
+<QUESTION QUESTION="Melyik országból származik a sushi?" A1="Japán" A2="Kína" A3="Korea" A4="Vietnám" CAT="eletmod" />
+<QUESTION QUESTION="Mi a hummusz fő alapanyaga?" A1="csicseriborsó" A2="lencse" A3="bab" A4="szójabab" CAT="eletmod" />
+<QUESTION QUESTION="Miből készül a tofu?" A1="szójababból" A2="rizsből" A3="csicseriborsóból" A4="kölesből" CAT="eletmod" />
+<QUESTION QUESTION="Melyik italt ízesítik komlóval?" A1="sört" A2="bort" A3="pálinkát" A4="whiskyt" CAT="eletmod" />
+<QUESTION QUESTION="Melyik szín van a magyar kártyában?" A1="makk" A2="káró" A3="pikk" A4="treff" CAT="eletmod" />
+<QUESTION QUESTION="Ki az após?" A1="a házastárs apja" A2="a nagyapa" A3="a keresztapa" A4="a nagybácsi" CAT="eletmod" />
+<QUESTION QUESTION="Ki lehet a sógornőm?" A1="a feleségem nővére" A2="a nagynéném" A3="az unokahúgom" A4="a keresztanyám" CAT="eletmod" />
+<QUESTION QUESTION="Mi a bocskor?" A1="lábbeli" A2="fejfedő" A3="kabát" A4="öv" CAT="eletmod" />
+<QUESTION QUESTION="Mi a szűr?" A1="posztóköpeny" A2="lábbeli" A3="kalap" A4="szoknya" CAT="eletmod" />
+<QUESTION QUESTION="Mi a pruszlik?" A1="mellény" A2="szoknya" A3="csizma" A4="kendő" CAT="eletmod" />
+<QUESTION QUESTION="Mit készít a kádár?" A1="hordót" A2="kádat" A3="bútort" A4="kenyeret" CAT="eletmod" />
+<QUESTION QUESTION="Mit készít a bognár?" A1="szekeret és kereket" A2="patkót" A3="kötelet" A4="hordót" CAT="eletmod" />
+<QUESTION QUESTION="Mi a csizmadia?" A1="csizmakészítő mester" A2="katonai rang" A3="lovas futár" A4="vándorénekes" CAT="eletmod" />
+<QUESTION QUESTION="Mit jelent a carpe diem?" A1="Élj a mának!" A2="Ismerd meg önmagad!" A3="Jöttem, láttam, győztem." A4="A kocka el van vetve." CAT="eletmod" />
+<QUESTION QUESTION="Melyik magyar falu nevéből ered az angol coach (kocsi) szó?" A1="Kocs" A2="Komárom" A3="Kecskemét" A4="Kocsord" CAT="eletmod" />
+<QUESTION QUESTION="Mit jelent az ad acta kifejezés?" A1="lezártnak tekinteni" A2="sürgősen intézni" A3="titkosan kezelni" A4="határidőre teljesíteni" CAT="eletmod" />
+<QUESTION QUESTION="Hogyan folytatódik a közmondás: Aki másnak vermet ás, ...?" A1="maga esik bele" A2="sokat dolgozik" A3="mélyre jut" A4="maga is ott marad" CAT="eletmod" />
+<QUESTION QUESTION="Hogyan folytatódik a közmondás: Sok lúd ...?" A1="disznót győz" A2="nagy zajt csap" A3="sokat eszik" A4="sok tojást tojik" CAT="eletmod" />
+<QUESTION QUESTION="Melyik fűszert nyerik egy krókuszfaj virágának bibéjéből?" A1="sáfrányt" A2="kurkumát" A3="fahéjat" A4="szegfűszeget" CAT="eletmod" />
+<QUESTION QUESTION="Melyik tésztafajta neve jelenti olaszul azt, hogy kis nyelvek?" A1="linguine" A2="spagetti" A3="penne" A4="fusilli" CAT="eletmod" />
+<QUESTION QUESTION="Melyik süteményt nevezték el egy cigányprímásról?" A1="Rigó Jancsi" A2="Dobostorta" A3="Esterházy-torta" A4="Gerbeaud-szelet" CAT="eletmod" />
+<QUESTION QUESTION="Melyik torta tetején van ropogós karamellréteg?" A1="Dobostorta" A2="Esterházy-torta" A3="Sachertorta" A4="Rigó Jancsi" CAT="eletmod" />
+<QUESTION QUESTION="Melyik ország nemzeti étele a paella?" A1="Spanyolország" A2="Portugália" A3="Olaszország" A4="Mexikó" CAT="eletmod" />
+<QUESTION QUESTION="Mi a kecskeméti barackpálinka alapanyaga?" A1="kajszibarack" A2="őszibarack" A3="szilva" A4="körte" CAT="eletmod" />
+<QUESTION QUESTION="Melyik márkanév kötődik a szegedi téliszalámihoz?" A1="Pick" A2="Herz" A3="Gyermelyi" A4="Univer" CAT="eletmod" />
+<QUESTION QUESTION="Mit jelent a www rövidítés?" A1="World Wide Web" A2="World Web Wide" A3="Wide World Web" A4="Web World Wide" CAT="eletmod" />
+<QUESTION QUESTION="Ki alapította Paul Allennel a Microsoftot?" A1="Bill Gates" A2="Steve Jobs" A3="Steve Wozniak" A4="Larry Page" CAT="eletmod" />
+<QUESTION QUESTION="Melyik országban alapították a Nokiát?" A1="Finnországban" A2="Svédországban" A3="Norvégiában" A4="Dániában" CAT="eletmod" />
+<QUESTION QUESTION="Melyik ország autómárkája a Skoda?" A1="Csehország" A2="Szlovákia" A3="Lengyelország" A4="Németország" CAT="eletmod" />
+<QUESTION QUESTION="Melyik ország autómárkája a Volvo?" A1="Svédország" A2="Norvégia" A3="Németország" A4="Dánia" CAT="eletmod" />
+<QUESTION QUESTION="Melyik nyelvből került a magyarba a papucs szó?" A1="a törökből" A2="a németből" A3="a latinból" A4="a szlovákból" CAT="eletmod" />
+<QUESTION QUESTION="Mi a besamelmártás alapja?" A1="vaj, liszt és tej" A2="tojás és olaj" A3="paradicsom" A4="tejszín és sajt" CAT="eletmod" />
+<QUESTION QUESTION="Melyik tészta készül eredetileg tojással, pecorinóval és guancialéval?" A1="carbonara" A2="bolognai" A3="amatriciana" A4="arrabbiata" CAT="eletmod" />
+<QUESTION QUESTION="Melyik szőlőfajtából készül elsősorban a tokaji aszú?" A1="furmint" A2="olaszrizling" A3="kékfrankos" A4="cserszegi fűszeres" CAT="eletmod" />
+<QUESTION QUESTION="Mi a tempura?" A1="bundában sült étel" A2="nyers halszelet" A3="húsleves" A4="rizsgombóc" CAT="eletmod" />
+<QUESTION QUESTION="Melyik gabonából készül a bulgur?" A1="búza" A2="rizs" A3="kukorica" A4="árpa" CAT="eletmod" />
+<QUESTION QUESTION="Melyik gabona malátájából készül a skót single malt whisky?" A1="árpa" A2="rozs" A3="kukorica" A4="búza" CAT="eletmod" />
+<QUESTION QUESTION="Mi a kombucha?" A1="erjesztett tea" A2="kecsketej" A3="rizsbor" A4="gyümölcslé" CAT="eletmod" />
+<QUESTION QUESTION="Mi a pho?" A1="vietnami leves" A2="koreai savanyúság" A3="japán édesség" A4="thai curry" CAT="eletmod" />
+<QUESTION QUESTION="Melyik országból származik a kimcsi?" A1="Korea" A2="Japán" A3="Kína" A4="Vietnám" CAT="eletmod" />
+<QUESTION QUESTION="Melyik olasz sajt készül eredetileg bivalytejből?" A1="mozzarella" A2="parmezán" A3="gorgonzola" A4="pecorino" CAT="eletmod" />
+<QUESTION QUESTION="Mi a tiramisu egyik fő hozzávalója?" A1="mascarpone" A2="ricotta" A3="túró" A4="tejföl" CAT="eletmod" />
+<QUESTION QUESTION="Melyik fűszer adja a gulyás jellegzetes színét?" A1="fűszerpaprika" A2="kurkuma" A3="sáfrány" A4="szegfűbors" CAT="eletmod" />
+<QUESTION QUESTION="Mi a hagyományos magyar halászlé fő hala?" A1="ponty" A2="harcsa" A3="csuka" A4="pisztráng" CAT="eletmod" />
+<TIPQUESTION QUESTION="Hány 31 napos hónap van egy évben?" ANSWER="7" MINVAL="1" MAXVAL="12" CAT="eletmod" />
+<TIPQUESTION QUESTION="Hány lapból áll a magyar kártya?" ANSWER="32" MINVAL="10" MAXVAL="60" CAT="eletmod" />
+<TIPQUESTION QUESTION="Hány lapból áll a francia kártya jokerek nélkül?" ANSWER="52" MINVAL="20" MAXVAL="100" CAT="eletmod" />
+<TIPQUESTION QUESTION="Hány éves kortól lehet Magyarországon szavazni?" ANSWER="18" MINVAL="10" MAXVAL="30" CAT="eletmod" />
+<TIPQUESTION QUESTION="Hány csillag van az Európai Unió zászlaján?" ANSWER="12" MINVAL="5" MAXVAL="30" CAT="eletmod" />
+<TIPQUESTION QUESTION="Hány képviselője van az Országgyűlésnek?" ANSWER="199" MINVAL="100" MAXVAL="500" CAT="eletmod" />
+<TIPQUESTION QUESTION="Hány tagállama van az Európai Uniónak?" ANSWER="27" MINVAL="10" MAXVAL="40" CAT="eletmod" />
+<TIPQUESTION QUESTION="Hány darab egy gros?" ANSWER="144" MINVAL="50" MAXVAL="500" CAT="eletmod" />
+<TIPQUESTION QUESTION="Melyik évben vezették be a forintot?" ANSWER="1946" MINVAL="1900" MAXVAL="2000" CAT="eletmod" />
+<TIPQUESTION QUESTION="Melyik évben mutatták be az első iPhone-t?" ANSWER="2007" MINVAL="1995" MAXVAL="2015" CAT="eletmod" />
+<TIPQUESTION QUESTION="Melyik évben alapították a Google-t?" ANSWER="1998" MINVAL="1985" MAXVAL="2010" CAT="eletmod" />
+<TIPQUESTION QUESTION="Hány gramm egy dekagramm?" ANSWER="10" MINVAL="1" MAXVAL="100" CAT="eletmod" />
+<TIPQUESTION QUESTION="Hány milliliter egy deciliter?" ANSWER="100" MINVAL="10" MAXVAL="1000" CAT="eletmod" />
+<TIPQUESTION QUESTION="Hány forint a legnagyobb címletű forintbankjegy?" ANSWER="20000" MINVAL="1000" MAXVAL="100000" CAT="eletmod" />
+<TIPQUESTION QUESTION="Hány milliméter széles egy A4-es papírlap?" ANSWER="210" MINVAL="100" MAXVAL="500" CAT="eletmod" />
+<TIPQUESTION QUESTION="Hány milliméter hosszú egy A4-es papírlap?" ANSWER="297" MINVAL="100" MAXVAL="500" CAT="eletmod" />
+<TIPQUESTION QUESTION="Hány számjegyből áll a magyar adóazonosító jel?" ANSWER="10" MINVAL="4" MAXVAL="20" CAT="eletmod" />
+<TIPQUESTION QUESTION="Hány számjegyből áll egy háromszor nyolc jegyű magyar bankszámlaszám?" ANSWER="24" MINVAL="8" MAXVAL="40" CAT="eletmod" />
+<QUESTION QUESTION="Hogy hívják Batmant a civil életben?" A1="Bruce Wayne" A2="Clark Kent" A3="Tony Stark" A4="Peter Parker" CAT="szorakozas" />
+<QUESTION QUESTION="Hogy hívják Supermant a civil életben?" A1="Clark Kent" A2="Bruce Wayne" A3="Peter Parker" A4="Steve Rogers" CAT="szorakozas" />
+<QUESTION QUESTION="Ki Luke Skywalker apja?" A1="Darth Vader" A2="Obi-Wan Kenobi" A3="Han Solo" A4="Yoda" CAT="szorakozas" />
+<QUESTION QUESTION="Melyik együttes énekese volt Freddie Mercury?" A1="Queen" A2="The Rolling Stones" A3="Led Zeppelin" A4="Pink Floyd" CAT="szorakozas" />
+<QUESTION QUESTION="Kit neveztek a rock and roll királyának?" A1="Elvis Presley" A2="Chuck Berry" A3="Little Richard" A4="Buddy Holly" CAT="szorakozas" />
+<QUESTION QUESTION="Melyik rajzfilm főhőse Simba?" A1="Az oroszlánkirály" A2="A dzsungel könyve" A3="Madagaszkár" A4="Bambi" CAT="szorakozas" />
+<QUESTION QUESTION="Hogy hívják Bart Simpson apját?" A1="Homer" A2="Ned" A3="Moe" A4="Abe" CAT="szorakozas" />
+<QUESTION QUESTION="Mitől lesz erős Popeye?" A1="spenóttól" A2="répától" A3="sóskától" A4="babtól" CAT="szorakozas" />
+<QUESTION QUESTION="Milyen fajtájú kutya Scooby-Doo?" A1="dán dog" A2="bernáthegyi" A3="labrador" A4="beagle" CAT="szorakozas" />
+<QUESTION QUESTION="Hogy hívják Popeye kedvesét?" A1="Olívia" A2="Betty" A3="Wilma" A4="Daisy" CAT="szorakozas" />
+<QUESTION QUESTION="Ki játszotta Forrest Gumpot?" A1="Tom Hanks" A2="Tom Cruise" A3="Kevin Costner" A4="Robin Williams" CAT="szorakozas" />
+<QUESTION QUESTION="Ki játszotta a Terminátort?" A1="Arnold Schwarzenegger" A2="Sylvester Stallone" A3="Bruce Willis" A4="Dolph Lundgren" CAT="szorakozas" />
+<QUESTION QUESTION="Melyik filmsorozat szereplője Jack Sparrow kapitány?" A1="A Karib-tenger kalózai" A2="Pán Péter" A3="Hook" A4="A kincses sziget" CAT="szorakozas" />
+<QUESTION QUESTION="Melyik országból származik az ABBA együttes?" A1="Svédország" A2="Norvégia" A3="Dánia" A4="Finnország" CAT="szorakozas" />
+<QUESTION QUESTION="Melyik városból indult a Beatles?" A1="Liverpool" A2="London" A3="Manchester" A4="Birmingham" CAT="szorakozas" />
+<QUESTION QUESTION="Ki rendezte a Jurassic Parkot?" A1="Steven Spielberg" A2="George Lucas" A3="James Cameron" A4="Ridley Scott" CAT="szorakozas" />
+<QUESTION QUESTION="Ki rendezte az 1997-es Titanic című filmet?" A1="James Cameron" A2="Steven Spielberg" A3="Ridley Scott" A4="Peter Jackson" CAT="szorakozas" />
+<QUESTION QUESTION="Melyik filmet rendezte Quentin Tarantino?" A1="Ponyvaregény" A2="Forrest Gump" A3="Gladiátor" A4="Titanic" CAT="szorakozas" />
+<QUESTION QUESTION="Melyik filmben hangzik el: Az élet nem habostorta?" A1="A tanú" A2="Indul a bakterház" A3="Az ötödik pecsét" A4="Csinibaba" CAT="szorakozas" />
+<QUESTION QUESTION="Ki rendezte az Oscar-díjas Mephisto című filmet?" A1="Szabó István" A2="Jancsó Miklós" A3="Fábri Zoltán" A4="Makk Károly" CAT="szorakozas" />
+<QUESTION QUESTION="Melyik magyar film nyert Oscar-díjat 2016-ban?" A1="Saul fia" A2="Testről és lélekről" A3="Kontroll" A4="Üvegtigris" CAT="szorakozas" />
+<QUESTION QUESTION="Hogy hívják a Macskafogó titkosügynök egerét?" A1="Grabowski" A2="Lusta Dick" A3="Mr. Teufel" A4="Safranek" CAT="szorakozas" />
+<QUESTION QUESTION="Hogy hívják a Mézga család kutyáját?" A1="Blöki" A2="Bodri" A3="Morzsi" A4="Frakk" CAT="szorakozas" />
+<QUESTION QUESTION="Hogy hívják a Hupikék törpikék gonosz varázslóját?" A1="Hókuszpók" A2="Szundi" A3="Törpapa" A4="Okoska" CAT="szorakozas" />
+<QUESTION QUESTION="Hogy hívják Hókuszpók macskáját?" A1="Sziamiaú" A2="Szilveszter" A3="Cirmi" A4="Garfield" CAT="szorakozas" />
+<QUESTION QUESTION="Melyik együttest alapította Presser Gábor 1971-ben?" A1="Locomotiv GT" A2="Omega" A3="Illés" A4="Fonográf" CAT="szorakozas" />
+<QUESTION QUESTION="Melyik zenekar dala a Gyöngyhajú lány?" A1="Omega" A2="Illés" A3="Metro" A4="Locomotiv GT" CAT="szorakozas" />
+<QUESTION QUESTION="Melyik filmet rendezte Christopher Nolan?" A1="Eredet" A2="Avatar" A3="Gladiátor" A4="Mátrix" CAT="szorakozas" />
+<QUESTION QUESTION="Ki rendezte A keresztapát?" A1="Francis Ford Coppola" A2="Martin Scorsese" A3="Brian De Palma" A4="Sergio Leone" CAT="szorakozas" />
+<QUESTION QUESTION="Ki játszotta Vito Corleonét A keresztapában?" A1="Marlon Brando" A2="Al Pacino" A3="Robert De Niro" A4="James Caan" CAT="szorakozas" />
+<QUESTION QUESTION="Melyik filmben hangzik el: „Houston, baj van.”?" A1="Apollo 13" A2="Gravitáció" A3="Csillagok között" A4="Armageddon" CAT="szorakozas" />
+<QUESTION QUESTION="Melyik filmben szerepel a HAL 9000 számítógép?" A1="2001: Űrodüsszeia" A2="Mátrix" A3="Szárnyas fejvadász" A4="Terminátor" CAT="szorakozas" />
+<QUESTION QUESTION="Ki alakította Indiana Jonest?" A1="Harrison Ford" A2="Mel Gibson" A3="Kevin Costner" A4="Michael Douglas" CAT="szorakozas" />
+<QUESTION QUESTION="Melyik dél-koreai film nyerte el elsőként a legjobb filmnek járó Oscart?" A1="Élősködők" A2="Oldboy" A3="Vonat Busanba" A4="A szolgálólány" CAT="szorakozas" />
+<QUESTION QUESTION="Melyik országban játszódik a Nyerd meg az életed (Squid Game)?" A1="Dél-Korea" A2="Japán" A3="Kína" A4="Tajvan" CAT="szorakozas" />
+<QUESTION QUESTION="Melyik sorozat főszereplője Walter White?" A1="Breaking Bad" A2="Better Call Saul" A3="Ozark" A4="Narcos" CAT="szorakozas" />
+<QUESTION QUESTION="Melyik sorozatban harcolnak a Vastrónért?" A1="Trónok harca" A2="Vikingek" A3="Vaják" A4="A hatalom gyűrűi" CAT="szorakozas" />
+<QUESTION QUESTION="Melyik kitalált városban él a Simpson család?" A1="Springfield" A2="Shelbyville" A3="South Park" A4="Quahog" CAT="szorakozas" />
+<QUESTION QUESTION="Melyik sorozatban játszotta Jennifer Aniston Rachelt?" A1="Jóbarátok" A2="Így jártam anyátokkal" A3="Seinfeld" A4="Szex és New York" CAT="szorakozas" />
+<QUESTION QUESTION="Melyik zenekar albuma a The Dark Side of the Moon?" A1="Pink Floyd" A2="Led Zeppelin" A3="The Who" A4="Genesis" CAT="szorakozas" />
+<QUESTION QUESTION="Melyik zenekar dala a Stairway to Heaven?" A1="Led Zeppelin" A2="Deep Purple" A3="Pink Floyd" A4="Black Sabbath" CAT="szorakozas" />
+<QUESTION QUESTION="Melyik zenekar dala a Smells Like Teen Spirit?" A1="Nirvana" A2="Pearl Jam" A3="Soundgarden" A4="Alice in Chains" CAT="szorakozas" />
+<QUESTION QUESTION="Kit neveztek a pop királyának?" A1="Michael Jackson" A2="Prince" A3="Elvis Presley" A4="Justin Timberlake" CAT="szorakozas" />
+<QUESTION QUESTION="Melyik énekesnő albuma a 21?" A1="Adele" A2="Amy Winehouse" A3="Duffy" A4="Lady Gaga" CAT="szorakozas" />
+<QUESTION QUESTION="Melyik zenekar énekese Mick Jagger?" A1="The Rolling Stones" A2="The Who" A3="The Kinks" A4="The Beatles" CAT="szorakozas" />
+<QUESTION QUESTION="Ki képviselte elsőként Magyarországot az Eurovíziós Dalfesztiválon 1994-ben?" A1="Bayer Friderika" A2="Charlie" A3="Zámbó Jimmy" A4="Szandi" CAT="szorakozas" />
+<QUESTION QUESTION="Melyik zenekart vezette Kovács Ákos az 1990-es évek elején?" A1="Bonanza Banzai" A2="Hooligans" A3="Kispál és a Borz" A4="Tankcsapda" CAT="szorakozas" />
+<QUESTION QUESTION="Melyik együttes frontembere Lovasi András?" A1="Kispál és a Borz" A2="Quimby" A3="Tankcsapda" A4="Hooligans" CAT="szorakozas" />
+<QUESTION QUESTION="Melyik együttes frontembere Lukács László?" A1="Tankcsapda" A2="Quimby" A3="Kispál és a Borz" A4="Ossian" CAT="szorakozas" />
+<QUESTION QUESTION="Melyik videojáték-sorozat főhőse egy vízvezeték-szerelő?" A1="Super Mario" A2="Sonic" A3="The Legend of Zelda" A4="Pac-Man" CAT="szorakozas" />
+<QUESTION QUESTION="Melyik országban fejlesztették ki a Tetrist?" A1="Szovjetunió" A2="Japán" A3="Egyesült Államok" A4="Egyesült Királyság" CAT="szorakozas" />
+<QUESTION QUESTION="Melyik képregénykiadó hőse Pókember?" A1="Marvel" A2="DC" A3="Dark Horse" A4="Image" CAT="szorakozas" />
+<QUESTION QUESTION="Melyik képregénykiadó hőse Batman?" A1="DC" A2="Marvel" A3="Image" A4="Dark Horse" CAT="szorakozas" />
+<QUESTION QUESTION="Hogy hívják Batman komornyikját?" A1="Alfred" A2="Jarvis" A3="Sebastian" A4="Jeeves" CAT="szorakozas" />
+<QUESTION QUESTION="Hogy hívják a törpöt, akit Hókuszpók teremtett, hogy viszályt szítson?" A1="Törpilla" A2="Törpicur" A3="Okoska" A4="Törperős" CAT="szorakozas" />
+<QUESTION QUESTION="Ki írta és rendezte az első Csillagok háborúja filmet?" A1="George Lucas" A2="Steven Spielberg" A3="Ridley Scott" A4="James Cameron" CAT="szorakozas" />
+<QUESTION QUESTION="Melyik filmben szerepel Hannibal Lecter?" A1="A bárányok hallgatnak" A2="Hetedik" A3="Psycho" A4="Ragyogás" CAT="szorakozas" />
+<QUESTION QUESTION="Ki rendezte a Psychót (1960)?" A1="Alfred Hitchcock" A2="Stanley Kubrick" A3="Orson Welles" A4="Billy Wilder" CAT="szorakozas" />
+<QUESTION QUESTION="Ki rendezte a Ragyogást?" A1="Stanley Kubrick" A2="Alfred Hitchcock" A3="Steven Spielberg" A4="John Carpenter" CAT="szorakozas" />
+<TIPQUESTION QUESTION="Hány évadot ért meg a Jóbarátok?" ANSWER="10" MINVAL="3" MAXVAL="20" CAT="szorakozas" />
+<TIPQUESTION QUESTION="Hány Oscar-díjat nyert az 1997-es Titanic?" ANSWER="11" MINVAL="1" MAXVAL="20" CAT="szorakozas" />
+<TIPQUESTION QUESTION="Melyik évben mutatták be a Csillagok háborúja első filmjét?" ANSWER="1977" MINVAL="1960" MAXVAL="1990" CAT="szorakozas" />
+<TIPQUESTION QUESTION="Melyik évben mutatták be az első Toy Story filmet?" ANSWER="1995" MINVAL="1970" MAXVAL="2010" CAT="szorakozas" />
+<TIPQUESTION QUESTION="Melyik évben mutatták be a Mátrixot?" ANSWER="1999" MINVAL="1980" MAXVAL="2010" CAT="szorakozas" />
+<TIPQUESTION QUESTION="Hány Oscar-díjat nyert A Gyűrűk Ura: A király visszatér?" ANSWER="11" MINVAL="1" MAXVAL="20" CAT="szorakozas" />
+<TIPQUESTION QUESTION="Hány évadból áll a Trónok harca?" ANSWER="8" MINVAL="1" MAXVAL="15" CAT="szorakozas" />
+<TIPQUESTION QUESTION="Hány évadból áll a Breaking Bad?" ANSWER="5" MINVAL="1" MAXVAL="12" CAT="szorakozas" />
+<TIPQUESTION QUESTION="Melyik évben jelent meg a Nirvana Nevermind című albuma?" ANSWER="1991" MINVAL="1970" MAXVAL="2010" CAT="szorakozas" />
+<TIPQUESTION QUESTION="Melyik évben jelent meg a Beatles Abbey Road című albuma?" ANSWER="1969" MINVAL="1950" MAXVAL="1990" CAT="szorakozas" />
+<TIPQUESTION QUESTION="Melyik évben halt meg Elvis Presley?" ANSWER="1977" MINVAL="1950" MAXVAL="2000" CAT="szorakozas" />
+<TIPQUESTION QUESTION="Melyik évben halt meg Michael Jackson?" ANSWER="2009" MINVAL="1990" MAXVAL="2020" CAT="szorakozas" />
+<TIPQUESTION QUESTION="Hány hivatalos James Bond-filmben játszott Sean Connery?" ANSWER="6" MINVAL="1" MAXVAL="15" CAT="szorakozas" />
+<TIPQUESTION QUESTION="Hány James Bond-filmben játszott Daniel Craig?" ANSWER="5" MINVAL="1" MAXVAL="15" CAT="szorakozas" />
+<TIPQUESTION QUESTION="Melyik évben mutatták be a Macskafogót?" ANSWER="1986" MINVAL="1960" MAXVAL="2010" CAT="szorakozas" />
+<TIPQUESTION QUESTION="Melyik évben jelent meg az első Super Mario Bros. játék?" ANSWER="1985" MINVAL="1970" MAXVAL="2010" CAT="szorakozas" />
+<TIPQUESTION QUESTION="Melyik évben jelent meg a Minecraft teljes változata?" ANSWER="2011" MINVAL="1990" MAXVAL="2020" CAT="szorakozas" />
+<TIPQUESTION QUESTION="Hány perc hosszú a Bohemian Rhapsody (egészre kerekítve)?" ANSWER="6" MINVAL="1" MAXVAL="15" CAT="szorakozas" />
+<TIPQUESTION QUESTION="Melyik évben mutatták be Fábri Zoltán A Pál utcai fiúk című filmjét?" ANSWER="1969" MINVAL="1950" MAXVAL="2000" CAT="szorakozas" />
+<TIPQUESTION QUESTION="Melyik évben mutatták be Koltai Gábor Honfoglalás című filmjét?" ANSWER="1996" MINVAL="1970" MAXVAL="2020" CAT="szorakozas" />
+<TIPQUESTION QUESTION="Melyik évben indult a YouTube?" ANSWER="2005" MINVAL="1995" MAXVAL="2015" CAT="szorakozas" />

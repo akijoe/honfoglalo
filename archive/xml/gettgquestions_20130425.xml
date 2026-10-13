@@ -1,0 +1,98 @@
+<QUESTION QUESTION="Ki van az 500 forintos elején?" A1="II. Rákóczi Ferenc" A2="Bethlen Gábor" A3="Mátyás király" A4="Deák Ferenc" />
+<QUESTION QUESTION="Milyen eredetű ital a Metaxa?" A1="görög" A2="portugál" A3="francia" A4="spanyol" />
+<QUESTION QUESTION="Milyen módra készített az ananászos húsétel?" A1="hawaii módra" A2="Budapest módra" A3="Kedvessy módon" A4="udvarmester módra" />
+<QUESTION QUESTION="Melyik jegy tart augusztus 24-től szeptember 23-ig?" A1="szűz" A2="skorpió" A3="ikrek" A4="halak" />
+<QUESTION QUESTION="Melyik NEM megújuló energiaforrás?" A1="atomenergia" A2="szélenergia" A3="geotermikus energia" A4="napenergia" />
+<QUESTION QUESTION="Hogy hívják az euró váltópénzét?" A1="cent" A2="pfenning" A3="penny" A4="groschen" />
+<QUESTION QUESTION="Ki a macskák réme?" A1="Frakk" A2="Lassie" A3="Bogáncs" A4="Vahúr" />
+<QUESTION QUESTION="Milyen fajta hal &quot;Némó&quot;?" A1="Bohóchal" A2="Sügér" A3="Ponty" A4="Bálna" />
+<QUESTION QUESTION="Mit csinál, aki rokkát hajt?" A1="fon" A2="kocsikázik" A3="vadászik" A4="őröl" />
+<QUESTION QUESTION="Melyik jegy tart május 22-től június 21-ig?" A1="ikrek" A2="vízöntő" A3="nyilas" A4="rák" />
+<QUESTION QUESTION="Melyik étel tartalmazza a legtöbb kalóriát?" A1="körözött" A2="eper" A3="meggy" A4="görögdinnye" />
+<QUESTION QUESTION="Melyik NEM (volt) üdítőmárka?" A1="Pitralon" A2="Márka" A3="Sztár" A4="Bambi" />
+<QUESTION QUESTION="Melyik magyar borvidék jellegzetes bora a bikavér?" A1="Eger" A2="Csongrád" A3="Somló" A4="Etyek" />
+<QUESTION QUESTION="Ki Garfield gazdija?" A1="Jon" A2="Ubul" A3="Nermál" A4="Luka" />
+<QUESTION QUESTION="Melyik égitestről nevezték el a rómaiak a szombatot?" A1="Szaturnusz" A2="Hold" A3="Merkúr" A4="Vénusz" />
+<QUESTION QUESTION="Hogyan nevezzük a sertés hússal fedett bordáit?" A1="oldalas" A2="hasaalja" A3="hosszú karaj" A4="lapocka" />
+<QUESTION QUESTION="Milyen néven vált ismertté Allen Stewart Konigsberg?" A1="Woody Allen" A2="Fred Astaire" A3="Bob Dylan" A4="Tony Curtis" />
+<QUESTION QUESTION="Mit jelent oroszul a vodka szó?" A1="vizecske" A2="víz" A3="varjú" A4="vár" />
+<QUESTION QUESTION="Ki volt eredetileg a léhűtő?" A1="sörfőzőinas" A2="ügyvédbojtár" A3="újságíró" A4="cipész" />
+<QUESTION QUESTION="Mi a sebességváltó feladata?" A1="nyomatékszabályzás" A2="hűtés" A3="légerő szabályzás" A4="üzemanyag tárolás" />
+<QUESTION QUESTION="Mi a puliszka alapanyaga?" A1="kukorica" A2="rozs" A3="rizs" A4="búza" />
+<QUESTION QUESTION="A hét melyik napját nevezték el a rómaiak a Napról?" A1="vasárnap" A2="hétfő" A3="péntek" A4="szerda" />
+<QUESTION QUESTION="Milyen világnap van április 22-én?" A1="Föld napja" A2="anyák napja" A3="gyereknap" A4="tánc napja" />
+<QUESTION QUESTION="Milyen lény Shrek?" A1="ogre" A2="sárkány" A3="manó" A4="ember" />
+<QUESTION QUESTION="Milyen színű Hófehérke haja?" A1="ébenfekete" A2="szőkésbarna" A3="hamvasszőke" A4="lángvörös" />
+<QUESTION QUESTION="Milyen nemzetiségű Kylie Minogue?" A1="ausztrál" A2="francia" A3="kanadai" A4="angol" />
+<QUESTION QUESTION="Melyik az a két egymást követő hónap, amelyik 31 napos?" A1="július-augusztus" A2="január-február" A3="szeptember-október" A4="június-július" />
+<QUESTION QUESTION="Hol dolgozik Al Bundy?" A1="cipőboltban" A2="atomerőműben" A3="orvosi rendelőben" A4="szállodában" />
+<QUESTION QUESTION="Kinek a hangján szólal meg a Szamár a Shrek-filmekben?" A1="Eddie Murphy" A2="John Cleese" A3="Antonio Banderas" A4="Mike Myers" />
+<TIPQUESTION QUESTION="Hányszor van 29-e egy szökőévben?" ANSWER="12" MINVAL="1" MAXVAL="12" />
+<TIPQUESTION QUESTION="Legkevesebb hány forgalmi érmével fizethető ki pontosan 705 forint?" ANSWER="5" MINVAL="1" MAXVAL="20" />
+<QUESTION QUESTION="Melyik étel tartalmazza a legkevesebb kalóriát?" A1="sóska" A2="trappista sajt" A3="méz" A4="kaviár" />
+<QUESTION QUESTION="Kik használták a &quot;Jó szerencsét!&quot; köszönést?" A1="a bányászok" A2="a pilóták" A3="a vasutasok" A4="a földművesek" />
+<QUESTION QUESTION="Melyik NEM állatövi jegy a horoszkópban?" A1="juh" A2="bak" A3="kos" A4="rák" />
+<QUESTION QUESTION="Melyik egy híres rapper neve?" A1="50 cent" A2="1 dollar" A3="50 font" A4="100 euro" />
+<QUESTION QUESTION="Mi volt a foglalkozása Quasimodónak?" A1="harangozó" A2="pap" A3="sekrestyés" A4="katona" />
+<QUESTION QUESTION="Ki nem játszott James Bondot az alábbi színészek közül?" A1="Joseph Barbera" A2="Timothy Dalton" A3="Roger Moore" A4="Sean Connery" />
+<QUESTION QUESTION="Melyik madár a természetvédelem címerállata?" A1="nagy kócsag" A2="bakcsó" A3="szajkó" A4="galamb" />
+<QUESTION QUESTION="Melyik NEM kelt tésztából készül?" A1="linzer" A2="bukta" A3="aranygaluska" A4="fánk" />
+<QUESTION QUESTION="Hol dolgozik a krupié?" A1="kaszinó" A2="étterem" A3="színház" A4="tőzsde" />
+<QUESTION QUESTION="Mi a Pókember neve a civil életben?" A1="Peter Parker" A2="Karel" A3="Clark Kent" A4="Bruce Wayne" />
+<QUESTION QUESTION="A mobiltelefon 5-ös gombjához az ABC mely betűi tartoznak?" A1="JKL" A2="KLM" A3="IJK" A4="GHI" />
+<QUESTION QUESTION="Milyen eredetű étel a pozsonyi kocka?" A1="magyar" A2="cseh" A3="orosz" A4="kínai" />
+<QUESTION QUESTION="Ki NEM volt Beatles-tag?" A1="Steve Morse" A2="Paul McCartney" A3="John Lennon" A4="Ringo Starr" />
+<QUESTION QUESTION="Milyen állat Diego a Jégkorszak című animációs filmben?" A1="kardfogú tigris" A2="lajhár" A3="oposszum" A4="mamut" />
+<QUESTION QUESTION="Milyen állat látható a Lamborghini logóján?" A1="bika" A2="elefánt" A3="kecske" A4="béka" />
+<QUESTION QUESTION="Mi volt Antal Imre eredeti foglalkozása?" A1="zongoraművész" A2="énekes" A3="rendező" A4="karmester" />
+<QUESTION QUESTION="Kim nekem az ángyom?" A1="férfirokonom felesége" A2="anyám" A3="nagymamám" A4="nővérem" />
+<QUESTION QUESTION="Melyik színésznő méretei kapcsán híresült el a számsor: 90-60-90?" A1="Marilyn Monroe" A2="Greta Garbo" A3="Karády Katalin" A4="Dobó Kata" />
+<QUESTION QUESTION="Kiről nevezték el a Jókai-bablevest?" A1="egy íróról" A2="egy mesterszakácsról" A3="egy nagyétkű főúrról" A4="egy huszárkapitányról" />
+<QUESTION QUESTION="Melyik mozgó ünnep?" A1="húsvét" A2="karácsony" A3="vízkereszt" A4="halottak napja" />
+<QUESTION QUESTION="Ki volt a Playboy történetének első címlaplánya?" A1="Marilyn Monroe" A2="Rena Heffner" A3="Bo Derek" A4="Eldon Sellers" />
+<QUESTION QUESTION="Hogy hívják a családfőt a Besenyő családban?" A1="Pista bácsi" A2="Bandi bácsi" A3="Jani bácsi" A4="Lajos bácsi" />
+<QUESTION QUESTION="Hogy hívják James Bond főnökét?" A1="M" A2="C" A3="K" A4="CS" />
+<QUESTION QUESTION="Milyen színű tengeralattjáróról énekelt a Beatles?" A1="sárga" A2="kék" A3="vörös" A4="zöld" />
+<QUESTION QUESTION="Mi volt J.K. Rowling első Harry Potter könyvének a címe?" A1="A Bölcsek Köve" A2="A Titkok Kamrája" A3="Az azkabani fogoly" A4="A Tűz Serlege" />
+<QUESTION QUESTION="Milyen koporsóba tették Hófehérkét?" A1="üveg" A2="fa" A3="arany" A4="gyémánt" />
+<QUESTION QUESTION="Ki NEM nőrokon?" A1="ipa" A2="meny" A3="ángy" A4="napa" />
+<TIPQUESTION QUESTION="Melyik évben lépett a Holdra Neil Amstrong?" ANSWER="1969" MINVAL="1900" MAXVAL="1980" />
+<TIPQUESTION QUESTION="Mennyi 3333+5555?" ANSWER="8888" MINVAL="5555" MAXVAL="9999" />
+<TIPQUESTION QUESTION="Hány lába van 20 bölömbikának?" ANSWER="40" MINVAL="20" MAXVAL="200" />
+<TIPQUESTION QUESTION="Melyik év volt a XXI. század első szökőéve?" ANSWER="2004" MINVAL="2000" MAXVAL="2009" />
+<TIPQUESTION QUESTION="Hogy írjuk arab számmal a következő római számot: MCMLVI?" ANSWER="1956" MINVAL="1800" MAXVAL="2200" />
+<TIPQUESTION QUESTION="Mennyi a VICC szóban szereplő római számok összege?" ANSWER="206" MINVAL="50" MAXVAL="500" />
+<TIPQUESTION QUESTION="Hány órából áll 5 nap?" ANSWER="120" MINVAL="50" MAXVAL="500" />
+<TIPQUESTION QUESTION="A Föld légkörének hány %-a oxigén?" ANSWER="21" MINVAL="0" MAXVAL="100" />
+<TIPQUESTION QUESTION="Melyik évben szabadalmaztatta Johan Vaaler a gemkapcsot?" ANSWER="1901" MINVAL="1750" MAXVAL="1990" />
+<TIPQUESTION QUESTION="Hány méter hosszú a Pentagon egy-egy oldala?" ANSWER="281" MINVAL="100" MAXVAL="500" />
+<TIPQUESTION QUESTION="Melyik évben tették kötelezővé a rendszámtáblát Magyarországon?" ANSWER="1901" MINVAL="1850" MAXVAL="1980" />
+<TIPQUESTION QUESTION="Melyik évben született Natalie Portman színésznő?" ANSWER="1981" MINVAL="1960" MAXVAL="1990" />
+<TIPQUESTION QUESTION="Melyik évben jelent meg az első dobozos Coca-Cola?" ANSWER="1950" MINVAL="1920" MAXVAL="1980" />
+<TIPQUESTION QUESTION="Melyik évben nyílt meg Magyarországon az első földalatti kéregvasút?" ANSWER="1896" MINVAL="1820" MAXVAL="1950" />
+<TIPQUESTION QUESTION="Hány éves koruktól mehetnek férjhez a kínai nők?" ANSWER="20" MINVAL="15" MAXVAL="25" />
+<TIPQUESTION QUESTION="Melyik évben rendezett először világkiállítást Párizs?" ANSWER="1855" MINVAL="1800" MAXVAL="1950" />
+<TIPQUESTION QUESTION="Hány állomás van a budapesti 3-as (kék) metró vonalán?" ANSWER="20" MINVAL="5" MAXVAL="30" />
+<TIPQUESTION QUESTION="Melyik évben jelent meg Michael Jackson Off the Wall című albuma?" ANSWER="1979" MINVAL="1970" MAXVAL="1999" />
+<TIPQUESTION QUESTION="Melyik évben született híres színészünk, Bodrogi Gyula?" ANSWER="1934" MINVAL="1920" MAXVAL="1960" />
+<TIPQUESTION QUESTION="Hány pontjuk volt az úttörőknek?" ANSWER="12" MINVAL="5" MAXVAL="20" />
+<TIPQUESTION QUESTION="Hány méter hosszú volt a Titanic?" ANSWER="269" MINVAL="50" MAXVAL="500" />
+<TIPQUESTION QUESTION="Hányadik adással ért véget a Szabó család című rádiós sorozat?" ANSWER="2500" MINVAL="500" MAXVAL="3500" />
+<TIPQUESTION QUESTION="Melyik évben kezdte meg adását a Music Television?" ANSWER="1981" MINVAL="1960" MAXVAL="1999" />
+<TIPQUESTION QUESTION="Június hányadik napján van Szent Iván-éj?" ANSWER="24" MINVAL="1" MAXVAL="30" />
+<TIPQUESTION QUESTION="Összesen hány alkalommal koronázták meg Luxemburgi Zsigmondot?" ANSWER="5" MINVAL="1" MAXVAL="9" />
+<TIPQUESTION QUESTION="Melyik évben született híres színészünk, Bujtor István?" ANSWER="1942" MINVAL="1920" MAXVAL="1960" />
+<TIPQUESTION QUESTION="Hány alkalommal koronázták meg Károly Róbertet?" ANSWER="3" MINVAL="1" MAXVAL="10" />
+<TIPQUESTION QUESTION="Hány forinttal ér többet legnagyobb címletű papírpénzünk a legkisebbnél?" ANSWER="19500" MINVAL="10000" MAXVAL="20000" />
+<TIPQUESTION QUESTION="Hány 30 napos hónap van egy naptári évben?" ANSWER="4" MINVAL="1" MAXVAL="12" />
+<TIPQUESTION QUESTION="Melyik évben szabadalmaztatta Rubik Ernő a bűvös kockát?" ANSWER="1975" MINVAL="1950" MAXVAL="1988" />
+<TIPQUESTION QUESTION="Melyik évben jelent meg a Trabant 600?" ANSWER="1962" MINVAL="1940" MAXVAL="1970" />
+<TIPQUESTION QUESTION="Hány forintom van, ha minden forgalomban levő érméből van egy nálam?" ANSWER="385" MINVAL="111" MAXVAL="1111" />
+<TIPQUESTION QUESTION="Hányféleképpen ülhet egymás mellé 4 ember egy padon?" ANSWER="24" MINVAL="10" MAXVAL="60" />
+<TIPQUESTION QUESTION="Hányadik napja az évnek február elseje?" ANSWER="32" MINVAL="20" MAXVAL="50" />
+<TIPQUESTION QUESTION="Hány feje van Süsünek, a sárkánynak?" ANSWER="1" MINVAL="1" MAXVAL="10" />
+<TIPQUESTION QUESTION="Hányas számú úton &quot;várhatsz rám dideregve&quot; a Republic dala szerint?" ANSWER="67" MINVAL="1" MAXVAL="100" />
+<TIPQUESTION QUESTION="Ha Zolinak van 5 lány és 2 fiútestvére, akkor hányan vannak testvérek?" ANSWER="8" MINVAL="1" MAXVAL="20" />
+<TIPQUESTION QUESTION="Hányadik házassági évfordulón ünneplik a gyémántlakodalmat?" ANSWER="60" MINVAL="1" MAXVAL="100" />
+<TIPQUESTION QUESTION="Melyik évben indult útjára a Szomszédok című sorozat?" ANSWER="1987" MINVAL="1960" MAXVAL="1990" />
+

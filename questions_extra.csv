@@ -1,0 +1,992 @@
+# A régi próbajáték kérdései mellé írt kérdések (2026), kategóriákba sorolva. A játék előbb
+# kategóriát sorsol, aztán abból kérdést, így minden kategória nagyjából egyforma gyakran jön.
+# A questions.xml ebből és a questions_2013.csv-ből épül: python3 tools/import_questions.py --rebuild
+# Feleletválasztós: kérdés;helyes válasz;rossz;rossz;rossz (a játék megkeveri a válaszokat)
+# Tippkérdés: kérdés;helyes szám;legkisebb;legnagyobb (a határok a robotok tippjeihez kellenek)
+# A "# " kezdetű kérdések ki vannak kapcsolva; a "# " törlésével (és a kategóriájuk alá írva) visszakapcsolhatók.
+#
+# kategória: Földrajz
+Milyen nyelven beszélnek Brazíliában?;portugálul;spanyolul;franciául;angolul
+Melyik országban áll a Colosseum?;Olaszország;Görögország;Spanyolország;Törökország
+Melyik városban áll a Big Ben?;London;Edinburgh;Dublin;Manchester
+Melyik városban áll a Szabadság-szobor?;New York;Washington;Boston;Philadelphia
+Melyik a legnagyobb óceán?;Csendes-óceán;Atlanti-óceán;Indiai-óceán;Északi-Jeges-tenger
+Melyik országot nevezik a felkelő nap országának?;Japán;Kína;Korea;Thaiföld
+Melyik hegységben van a Kékes?;Mátra;Bükk;Zemplén;Börzsöny
+Melyik megye székhelye Pécs?;Baranya;Tolna;Somogy;Zala
+Melyik megye székhelye Kecskemét?;Bács-Kiskun;Pest;Csongrád-Csanád;Jász-Nagykun-Szolnok
+Melyik megye székhelye Szekszárd?;Tolna;Baranya;Fejér;Somogy
+Melyik megye székhelye Zalaegerszeg?;Zala;Vas;Veszprém;Somogy
+Melyik megye székhelye Salgótarján?;Nógrád;Heves;Borsod-Abaúj-Zemplén;Pest
+Melyik város NEM a Balaton partján fekszik?;Tapolca;Siófok;Keszthely;Balatonfüred
+Melyik folyónak a leghosszabb a magyarországi szakasza?;Tiszának;Dunának;Rábának;Drávának
+Mi Magyarország legmagasabb pontja?;Kékes;Galya-tető;Istállós-kő;Dobogó-kő
+Melyik városban van a Zsolnay Kulturális Negyed?;Pécs;Győr;Szeged;Debrecen
+Melyik városban áll a Fogadalmi templom, amely előtt szabadtéri játékokat tartanak?;Szeged;Debrecen;Eger;Pécs
+Melyik várost nevezik kálvinista Rómának?;Debrecent;Sárospatakot;Pápát;Kecskemétet
+Melyik ország fővárosa Canberra?;Ausztrália;Új-Zéland;Kanada;Dél-Afrika
+Melyik ország fővárosa Ottawa?;Kanada;Egyesült Államok;Ausztrália;Írország
+Melyik ország fővárosa Ankara?;Törökország;Görögország;Irán;Szíria
+Mi Szlovákia fővárosa?;Pozsony;Kassa;Nyitra;Besztercebánya
+Mi Horvátország fővárosa?;Zágráb;Split;Eszék;Fiume
+Mi Szlovénia fővárosa?;Ljubljana;Maribor;Koper;Bled
+Mi Svájc fővárosa?;Bern;Zürich;Genf;Bázel
+Mi Brazília fővárosa?;Brasília;Rio de Janeiro;Sao Paulo;Salvador
+Melyik folyót tartják hagyományosan a világ leghosszabbjának?;Nílus;Amazonas;Jangce;Mississippi
+Melyik a Föld legnagyobb forró sivataga?;Szahara;Góbi;Kalahári;Atacama
+Melyik országban található Machu Picchu?;Peru;Bolívia;Chile;Mexikó
+Melyik országban található Petra sziklavárosa?;Jordánia;Egyiptom;Izrael;Szíria
+Melyik ország része Grönland?;Dánia;Norvégia;Izland;Kanada
+Melyik ország NEM szomszédja Magyarországnak?;Csehország;Szlovénia;Ukrajna;Szerbia
+Melyik tengerbe ömlik a Duna?;a Fekete-tengerbe;az Adriai-tengerbe;az Égei-tengerbe;az Északi-tengerbe
+Melyik országban ered a Duna?;Németországban;Ausztriában;Svájcban;Szlovákiában
+Melyik országban ered a Tisza?;Ukrajnában;Romániában;Szlovákiában;Lengyelországban
+Melyik a világ legnagyobb területű országa?;Oroszország;Kanada;Kína;Egyesült Államok
+Melyik a világ legkisebb független állama?;Vatikán;Monaco;San Marino;Liechtenstein
+Melyik város NEM a Duna partján fekszik?;Prága;Bécs;Pozsony;Belgrád
+Melyik folyó partján fekszik Szeged?;Tisza;Maros;Duna;Körös
+Melyik folyó partján fekszik Párizs?;Szajna;Loire;Rajna;Rhone
+Melyik budapesti híd hídfőit őrzik kőoroszlánok?;Széchenyi lánchíd;Erzsébet híd;Szabadság híd;Margit híd
+Melyik budapesti hegyen áll a Szabadság-szobor?;Gellért-hegy;Várhegy;János-hegy;Rózsadomb
+Melyik budapesti hegyen áll az Erzsébet-kilátó?;János-hegy;Gellért-hegy;Hármashatár-hegy;Széchenyi-hegy
+Melyik fürdő található a Városligetben?;Széchenyi fürdő;Gellért fürdő;Rudas fürdő;Lukács fürdő
+Melyik budapesti téren áll a Millenniumi emlékmű?;a Hősök terén;a Kossuth téren;a Szabadság téren;a Deák téren
+Melyik városban áll Magyarország legnagyobb temploma?;Esztergomban;Budapesten;Egerben;Kalocsán
+Hol van a világ legnagyobb, fürdésre alkalmas természetes termáltava?;Hévízen;Harkányban;Zalakaroson;Bükfürdőn
+Melyik barlang bejárata van Aggteleken?;Baradla;Pál-völgyi;Abaligeti;Lóczy
+Melyik nemzeti parkban áll a Kilenclyukú híd?;Hortobágyi;Kiskunsági;Bükki;Aggteleki
+Melyik fa levele látható Kanada zászlaján?;a juharé;a tölgyé;a nyíré;a hársé
+Melyik város jelképe a Manneken Pis?;Brüsszel;Amszterdam;Bécs;Koppenhága
+Melyik város jelképe a Kis hableány szobra?;Koppenhága;Oslo;Stockholm;Helsinki
+Melyik nép építette Machu Picchut?;az inkák;az aztékok;a maják;az olmékok
+Melyik tengerszoros választja el Európát Ázsiától Isztambulnál?;Boszporusz;Gibraltári-szoros;Messinai-szoros;Kercsi-szoros
+Melyik országban áll Angkor Vat templomegyüttese?;Kambodzsában;Thaiföldön;Vietnámban;Laoszban
+Melyik országban ered a Rajna?;Svájcban;Németországban;Ausztriában;Franciaországban
+Melyik ország fővárosa Ulánbátor?;Mongólia;Kazahsztán;Kirgizisztán;Nepál
+Melyik ország fővárosa Reykjavík?;Izland;Norvégia;Feröer;Írország
+Melyik ország fővárosa Wellington?;Új-Zéland;Ausztrália;Kanada;Dél-Afrika
+Melyik ország fővárosa Asztana?;Kazahsztán;Üzbegisztán;Kirgizisztán;Türkmenisztán
+Melyik ország fővárosa Taskent?;Üzbegisztán;Kazahsztán;Tádzsikisztán;Azerbajdzsán
+Melyik ország fővárosa Addisz-Abeba?;Etiópia;Kenya;Szomália;Eritrea
+Melyik ország fővárosa Hanoi?;Vietnám;Laosz;Kambodzsa;Thaiföld
+Melyik ország fővárosa Katmandu?;Nepál;Bhután;Banglades;Mianmar
+Melyik ország fővárosa Quito?;Ecuador;Kolumbia;Peru;Venezuela
+Melyik ország fővárosa Montevideo?;Uruguay;Paraguay;Argentína;Chile
+Mi Bolívia alkotmányos fővárosa?;Sucre;La Paz;Santa Cruz;Cochabamba
+Melyik ország NEM határos tengerrel?;Bolívia;Peru;Chile;Ecuador
+Melyik Afrika legnagyobb tava?;Viktória-tó;Tanganyika-tó;Malawi-tó;Csád-tó
+Melyik a világ legmélyebb tava?;Bajkál-tó;Tanganyika-tó;Kaszpi-tenger;Felső-tó
+Melyik a világ legnagyobb területű tava?;Kaszpi-tenger;Felső-tó;Viktória-tó;Bajkál-tó
+Melyik országban emelkedik a Kilimandzsáró?;Tanzánia;Kenya;Uganda;Etiópia
+Melyik hegységet tekintik hagyományosan Európa és Ázsia határának?;Urál;Kaukázus;Kárpátok;Altaj
+Melyik Európa legmagasabb csúcsa, ha a Kaukázust is ide számítjuk?;Elbrusz;Mont Blanc;Matterhorn;Kazbek
+Melyik Európa leghosszabb folyója?;Volga;Duna;Dnyeper;Rajna
+Melyik tengerbe ömlik a Volga?;a Kaszpi-tengerbe;a Fekete-tengerbe;az Azovi-tengerbe;a Balti-tengerbe
+Melyik folyó ömlik a Fekete-tengerbe Ukrajnában?;Dnyeper;Volga;Odera;Visztula
+Melyik szoros köti össze a Földközi-tengert az Atlanti-óceánnal?;Gibraltári-szoros;Boszporusz;Dardanellák;Messinai-szoros
+Melyik csatorna köti össze a Földközi-tengert a Vörös-tengerrel?;Szuezi-csatorna;Panama-csatorna;Korinthoszi-csatorna;Kieli-csatorna
+Melyik ország része Korzika?;Franciaország;Olaszország;Spanyolország;Görögország
+Melyik ország része Mallorca?;Spanyolország;Olaszország;Görögország;Málta
+Melyik a világ legnépesebb országa 2023 óta?;India;Kína;Egyesült Államok;Indonézia
+Melyik Afrika legnagyobb területű országa?;Algéria;Kongói DK;Szudán;Líbia
+Melyik várost becézik Nagy Almának?;New York;Chicago;Los Angeles;Boston
+Melyik vármegyében van Hollókő?;Nógrád;Heves;Borsod-Abaúj-Zemplén;Pest
+Melyik magyar város római kori neve Savaria?;Szombathely;Sopron;Győr;Pécs
+Melyik magyar város római kori neve Sopianae?;Pécs;Szombathely;Sopron;Szekszárd
+Melyik a legnagyobb területű magyar vármegye?;Bács-Kiskun;Pest;Borsod-Abaúj-Zemplén;Hajdú-Bihar
+Melyik a legkisebb területű magyar vármegye?;Komárom-Esztergom;Nógrád;Vas;Tolna
+Melyik hegységben van a Galyatető?;Mátra;Bükk;Zempléni-hegység;Börzsöny
+Melyik hegységben van az Istállós-kő?;Bükk;Mátra;Börzsöny;Pilis
+Mi a Börzsöny legmagasabb csúcsa?;Csóványos;Nagy-Hideg-hegy;Pilis-tető;Dobogókő
+Hány kerülete van Budapestnek?;23;5;40
+Hány megyéje van Magyarországnak?;19;5;40
+Hány országgal határos Magyarország?;7;3;12
+Hány csillag van az Egyesült Államok zászlaján?;50;10;100
+Hány méter magas a Kékes?;1014;500;2000
+Hány méter mély a Balaton legmélyebb pontja (egészre kerekítve)?;12;2;50
+Hány kilométer a Duna magyarországi szakasza (kb.)?;417;100;1000
+Hány kilométer a Tisza magyarországi szakasza (kb.)?;596;100;1000
+Melyik évben adták át a Széchenyi lánchidat?;1849;1800;1900
+Melyik évben egyesült Pest, Buda és Óbuda?;1873;1800;1950
+Melyik évben érte el Kolumbusz Amerikát?;1492;1400;1600
+Melyik évben jutott el először ember a Déli-sarkra?;1911;1850;1950
+Hány méter magas a Mount Everest (egészre kerekítve)?;8849;5000;10000
+Hány méter mély a Bajkál-tó legmélyebb pontja (kb.)?;1642;500;3000
+Hány méter magas a Mont Blanc (kb.)?;4808;3000;6000
+Hány kilométer hosszú a Nílus (kb.)?;6650;2000;10000
+Hány méterrel van a tengerszint alatt a Holt-tenger partja (kb.)?;430;100;1000
+Hány ország van Afrikában?;54;20;80
+Hány tagállama van az ENSZ-nek?;193;100;250
+Hány ezer négyzetkilométer Magyarország területe (kerekítve)?;93;50;200
+Hány négyzetkilométer a Balaton felülete (kb.)?;594;100;2000
+Hány méter magas a Kilimandzsáró (kb.)?;5895;3000;8000
+Hány méter mély a Mariana-árok legmélyebb pontja (kb.)?;11000;5000;15000
+Hány időzónája van Oroszországnak?;11;3;20
+Hány országgal határos Németország?;9;3;15
+Hány országgal határos Ausztria?;8;3;15
+Hány méter magas a Kárpátok legmagasabb csúcsa, a Gerlach (kb.)?;2655;1500;4000
+#
+# kategória: Sport
+Melyik sakkfigura lép L alakban?;huszár;futó;bástya;király
+Melyik sportágban lett többszörös olimpiai bajnok Egerszegi Krisztina?;úszásban;vívásban;kajak-kenuban;öttusában
+Melyik sportág legendája Papp László?;ökölvívás;birkózás;vívás;súlyemelés
+Melyik sportágban lett többszörös olimpiai bajnok Gerevich Aladár?;vívásban;úszásban;atlétikában;cselgáncsban
+Ki volt az Aranycsapat csapatkapitánya?;Puskás Ferenc;Bozsik József;Kocsis Sándor;Hidegkuti Nándor
+Kitől kapott ki a magyar válogatott az 1954-es világbajnokság döntőjében?;NSZK;Brazília;Uruguay;Ausztria
+Ki volt Magyarország első olimpiai bajnoka?;Hajós Alfréd;Papp László;Gerevich Aladár;Bauer Rudolf
+Melyik városban rendezték az első újkori olimpiát 1896-ban?;Athénban;Párizsban;Londonban;Rómában
+Melyik kerékpáros körverseny éllovasa visel sárga trikót?;Tour de France;Giro d'Italia;Vuelta;Párizs-Roubaix
+Melyik sportágban olimpiai bajnok Szilágyi Áron?;kardvívásban;párbajtőrvívásban;birkózásban;kajakozásban
+Melyik sportágban nyert olimpiai aranyérmet Milák Kristóf?;úszásban;kajakozásban;vívásban;öttusában
+Milyen becenéven ismert Hosszú Katinka?;Iron Lady;Golden Girl;Queen of Water;Speedy
+Melyik ország nyerte a 2018-as labdarúgó-világbajnokságot?;Franciaország;Horvátország;Németország;Brazília
+Melyik ország nyerte a 2022-es labdarúgó-világbajnokságot?;Argentína;Franciaország;Brazília;Horvátország
+Melyik ország válogatottja nyerte a legtöbb labdarúgó-világbajnokságot?;Brazília;Németország;Olaszország;Argentína
+Ki szerezte a legtöbb gólt a labdarúgó-világbajnokságok történetében?;Miroslav Klose;Ronaldo;Pelé;Gerd Müller
+Ki szerezte az „Isten keze” gólt 1986-ban?;Diego Maradona;Pelé;Michel Platini;Zico
+Melyik országban rendezték az 1986-os labdarúgó-világbajnokságot?;Mexikó;Olaszország;Spanyolország;Argentína
+Melyik klubban futballozott Puskás Ferenc Spanyolországban?;Real Madrid;FC Barcelona;Atlético Madrid;Sevilla
+Melyik klubhoz igazolt Kocsis Sándor és Czibor Zoltán 1956 után?;FC Barcelona;Real Madrid;Juventus;AC Milan
+Melyik klub stadionja az Anfield?;Liverpool;Everton;Manchester United;Arsenal
+Melyik klub stadionja a Santiago Bernabéu?;Real Madrid;FC Barcelona;Atlético Madrid;Sevilla
+Melyik város csapata az Ajax?;Amszterdam;Rotterdam;Eindhoven;Utrecht
+Melyik budapesti klub színe a lila-fehér?;Újpest;Ferencváros;MTK;Vasas
+Melyik városban van a Maracanã stadion?;Rio de Janeiro;São Paulo;Buenos Aires;Montevideo
+Ki nyerte a legtöbb Aranylabdát?;Lionel Messi;Cristiano Ronaldo;Michel Platini;Johan Cruyff
+Melyik teniszversenyt játsszák füves pályán?;Wimbledon;Roland Garros;US Open;Australian Open
+Melyik Grand Slam-tornát játsszák salakon?;Roland Garros;Wimbledon;US Open;Australian Open
+Ki nyerte a legtöbb Grand Slam-tornát a férfiak között?;Novak Djokovic;Rafael Nadal;Roger Federer;Pete Sampras
+Melyik sportágban adják a Davis-kupát?;tenisz;golf;vitorlázás;asztalitenisz
+Melyik sportágban adják a Ryder-kupát?;golf;tenisz;vitorlázás;krikett
+Melyik sportágban rendezik az America's Cupot?;vitorlázás;evezés;golf;lovaglás
+Melyik sportágban adják a Stanley-kupát?;jégkorong;kosárlabda;baseball;amerikai futball
+Melyik sportág bajnoki döntője a Super Bowl?;amerikai futball;baseball;kosárlabda;jégkorong
+Milyen sportverseny a Giro d'Italia?;kerékpáros körverseny;autóverseny;motorverseny;vitorlásverseny
+Melyik országban rendezik a Dakar-ralit 2020 óta?;Szaúd-Arábia;Marokkó;Argentína;Szenegál
+Hol rendezik a Forma–1-es Magyar Nagydíjat?;Mogyoródon;Zsámbékon;Kakucson;Győrben
+Ki nyerte az első Forma–1-es Magyar Nagydíjat 1986-ban?;Nelson Piquet;Ayrton Senna;Nigel Mansell;Alain Prost
+Melyik versenyző nyert Michael Schumacher mellett hét Forma–1-es világbajnokságot?;Lewis Hamilton;Sebastian Vettel;Ayrton Senna;Alain Prost
+Ki volt az első magyar Forma–1-es versenyző?;Baumgartner Zsolt;Michelisz Norbert;Kiss Norbert;Talmácsi Gábor
+Melyik sportágban lett világbajnok Talmácsi Gábor 2007-ben?;gyorsasági motorozás;autóverseny;motokrossz;rali
+Melyik sportágban olimpiai bajnok Balczó András?;öttusa;vívás;atlétika;birkózás
+Melyik sportágban olimpiai bajnok Kozák Danuta?;kajak;kenu;evezés;úszás
+Melyik sportágban olimpiai bajnok Kolonics György?;kenu;kajak;evezés;úszás
+Melyik sportágban olimpiai bajnok Keleti Ágnes?;torna;vívás;úszás;atlétika
+Melyik sportágban olimpiai bajnok Pars Krisztián?;kalapácsvetés;súlylökés;diszkoszvetés;gerelyhajítás
+Melyik sportágban olimpiai bajnok Zsivótzky Gyula?;kalapácsvetés;súlylökés;gerelyhajítás;diszkoszvetés
+Melyik sportágban olimpiai bajnok Németh Miklós?;gerelyhajítás;kalapácsvetés;diszkoszvetés;súlylökés
+Melyik sportágban olimpiai bajnok Kulcsár Győző?;párbajtőrvívás;kardvívás;tőrvívás;öttusa
+Melyik sportágban olimpiai bajnok Elek Ilona?;tőrvívás;kardvívás;párbajtőrvívás;öttusa
+Melyik sportágban olimpiai bajnok Szász Emese?;párbajtőrvívás;tőrvívás;kardvívás;öttusa
+Melyik sportágban olimpiai bajnok Kovács Antal?;cselgáncs;birkózás;ökölvívás;súlyemelés
+Melyik sportágban olimpiai bajnok Risztov Éva?;nyíltvízi úszás;öttusa;kajak;triatlon
+Melyik sportágban olimpiai bajnok Kásás Tamás?;vízilabda;úszás;kenu;evezés
+Melyik szeren nyert olimpiai aranyat Csollány Szilveszter?;gyűrű;nyújtó;lólengés;korlát
+Melyik szeren nyert olimpiai aranyat Berki Krisztián?;lólengés;gyűrű;nyújtó;talaj
+Melyik úszásnemben nyert olimpiai aranyat Milák Kristóf Tokióban?;pillangóúszás;gyorsúszás;hátúszás;mellúszás
+Melyik úszásnemben nyert olimpiai aranyat Gyurta Dániel?;mellúszás;pillangóúszás;hátúszás;vegyes úszás
+Melyik úszásnemben nyert olimpiai aranyat Darnyi Tamás?;vegyes úszás;mellúszás;hátúszás;pillangóúszás
+Melyik úszásnemben nyert olimpiai aranyat Egerszegi Krisztina 1988-ban?;hátúszás;vegyes úszás;pillangóúszás;gyorsúszás
+Melyik sportágban nyerte Magyarország első téli olimpiai aranyát 2018-ban?;gyorskorcsolya;műkorcsolya;alpesi sí;biatlon
+Melyik testvér nyert egyéni olimpiai aranyat 500 méteren 2022-ben?;Liu Shaoang;Liu Shaolin Sándor;Knoch Viktor;Burján Csaba
+Melyik sorozatban lett bajnok Michelisz Norbert 2019-ben?;WTCR;Forma–1;DTM;rali-világbajnokság
+Hol rendezték az első téli olimpiát 1924-ben?;Chamonix;St. Moritz;Lake Placid;Oslo
+Melyik város rendezett nyári és téli olimpiát is?;Peking;London;Tokió;Párizs
+Melyik városban rendezték az 1936-os nyári olimpiát?;Berlin;Amszterdam;Los Angeles;Róma
+Melyik nyári olimpiát bojkottálta a Szovjetunió és Magyarország?;1984, Los Angeles;1980, Moszkva;1976, Montreal;1988, Szöul
+Ki találta fel a kosárlabdát?;James Naismith;William Morgan;Walter Camp;Abner Doubleday
+Melyik kosárlabdázó viselte a 23-as mezt a Chicago Bullsban?;Michael Jordan;Scottie Pippen;Dennis Rodman;Kobe Bryant
+Melyik csapatban játszott egész pályafutása alatt Kobe Bryant?;Los Angeles Lakers;Chicago Bulls;Boston Celtics;Miami Heat
+Hogy hívják az új-zélandi rögbiválogatottat?;All Blacks;Wallabies;Springboks;Pumas
+Melyik ország nyerte a legtöbb rögbi-világbajnokságot?;Dél-Afrika;Új-Zéland;Ausztrália;Anglia
+Ki tartja a férfi 100 méteres síkfutás világcsúcsát?;Usain Bolt;Tyson Gay;Yohan Blake;Asafa Powell
+Melyik versenyszám NEM része a tízpróbának?;kalapácsvetés;rúdugrás;gerelyhajítás;110 m gátfutás
+Mit jelent a golfban a „birdie”?;egy ütés a par alatt;két ütés a par alatt;egy ütés a par felett;lyukba elsőre
+Melyik sportágat játsszák lóháton, ütőkkel?;lovaspóló;krikett;lacrosse;hurling
+Melyik japán küzdősport versenyzői küzdenek a dohjón?;szumó;dzsúdó;karate;kendó
+Melyik harcművészet neve jelenti azt, hogy „üres kéz”?;karate;dzsúdó;aikido;taekwondo
+Melyik téli sportágban csúsznak fekve, fejjel előre?;szkeleton;szánkó;bob;curling
+Melyik sportágban söpörnek a jégen egy gránitkő előtt?;curling;bob;szkeleton;jégkorong
+Melyik sportágban használják a tatamit?;cselgáncs;birkózás;torna;ökölvívás
+Melyik sportág versenyszáma a keirin?;pályakerékpár;úszás;atlétika;cselgáncs
+Mi a sakkban az en passant?;menet közbeni ütés;sáncolás;gyalogátváltozás;patthelyzet
+Ki volt a sakk első hivatalos világbajnoka?;Wilhelm Steinitz;Emanuel Lasker;José Capablanca;Paul Morphy
+Melyik sakkozó kapott ki a Deep Blue számítógéptől 1997-ben?;Garri Kaszparov;Anatolij Karpov;Bobby Fischer;Magnus Carlsen
+Melyik a legrégebbi, ma is futó városi maraton (1897 óta)?;Boston;New York;London;Chicago
+Melyik lóversenyt rendezik minden májusban Louisville-ben?;Kentucky Derby;Grand National;Prix de l'Arc;Melbourne Cup
+Hány játékos van egyszerre pályán egy kosárlabdacsapatból?;5;2;15
+Hány lyukból áll egy szabványos golfpálya?;18;5;40
+Hány mezőből áll egy sakktábla?;64;20;150
+Hány bábu áll a sakktáblán egy játszma elején?;32;10;60
+Hány méter hosszú egy olimpiai úszómedence?;50;10;100
+Hány kilométer a maratoni táv (egészre kerekítve)?;42;10;100
+Hány gólt lőtt az Aranycsapat Angliának 1953-ban a Wembleyben?;6;1;12
+Hány gólt lőtt Puskás Ferenc a magyar válogatottban?;84;20;150
+Hány olimpiai aranyérmet nyert Papp László?;3;1;10
+Hány olimpiai aranyérmet nyert Egerszegi Krisztina?;5;1;10
+Hány olimpiai aranyérmet nyert Gerevich Aladár?;7;1;15
+Hányszor nyert olimpiát a magyar férfi vízilabda-válogatott?;9;1;15
+Hány játékos van egyszerre vízben egy vízilabdacsapatból a kapussal együtt?;7;3;15
+Hány pontot ér egy touchdown az amerikai futballban?;6;1;10
+Hány perc a kosárlabda-mérkőzés rendes játékideje a nemzetközi szabályok szerint?;40;20;90
+Hány perc a jégkorong-mérkőzés rendes játékideje?;60;20;120
+Hányan ülnek egy evezős nyolcasban a kormányossal együtt?;9;5;15
+Hány olimpiai aranyérmet nyert Hosszú Katinka?;3;1;10
+Melyik évben rendezték az első labdarúgó-világbajnokságot?;1930;1900;1960
+Melyik évben nyerte meg a magyar labdarúgó-válogatott a helsinki olimpiát?;1952;1930;1970
+Hány kilogramm a férfi súlylökő golyó (egészre kerekítve)?;7;2;20
+Melyik évben rendezték az első Magyar Nagydíjat a Hungaroringen?;1986;1950;2000
+Hány menetből áll egy profi ökölvívó világbajnoki címmérkőzés?;12;3;20
+Hány olimpiai aranyérmet nyert Michael Phelps?;23;5;40
+Hány méter pontosan a maratoni futás távja?;42195;40000;45000
+Melyik évben rendezték Budapesten az atlétikai világbajnokságot?;2023;1990;2030
+Hányszor nyerte meg zsinórban a Tour de France-t Miguel Indurain?;5;1;10
+Hány kilogramm a női kalapácsvetésben használt kalapács?;4;1;10
+Hány aranyérmet nyert Magyarország az 1952-es helsinki olimpián?;16;1;40
+Melyik évben rendezték az első téli olimpiát?;1924;1890;1960
+Hány egymást követő olimpián nyert egyéni aranyat kardban Szilágyi Áron?;3;1;6
+Hány méter egy szabványos atlétikai futópálya belső köre?;400;100;1000
+#
+# kategória: Irodalom
+Hogy hívják Harry Potter iskoláját?;Roxfort;Durmstrang;Beauxbatons;Hollóhát
+Melyik bibliai alak építette a bárkát?;Noé;Mózes;Ábrahám;Dávid
+Ki győzte le Góliátot?;Dávid;Sámson;Salamon;Saul
+Ki a görög mitológia főistene?;Zeusz;Poszeidón;Hádész;Apollón
+Mi az első fennmaradt összefüggő magyar nyelvű szöveg?;Halotti beszéd;Ómagyar Mária-siralom;a tihanyi alapítólevél;Képes krónika
+Melyik királyunk könyvtára volt a Corvina?;Mátyásé;Nagy Lajosé;Zsigmondé;II. Ulászlóé
+Kinek a nevéhez fűződik a nyelvújítás?;Kazinczy Ferenc;Kölcsey Ferenc;Bessenyei György;Batsányi János
+Ki írta a Toldit?;Arany János;Petőfi Sándor;Vörösmarty Mihály;Jókai Mór
+Ki írta Az ember tragédiáját?;Madách Imre;Katona József;Vörösmarty Mihály;Kisfaludy Károly
+Ki írta a Bánk bán című drámát?;Katona József;Madách Imre;Kisfaludy Sándor;Erkel Ferenc
+Ki írta A kőszívű ember fiait?;Jókai Mór;Mikszáth Kálmán;Eötvös József;Gárdonyi Géza
+Ki írta a Légy jó mindhalálig című regényt?;Móricz Zsigmond;Molnár Ferenc;Kosztolányi Dezső;Krúdy Gyula
+Ki írta az Édes Annát?;Kosztolányi Dezső;Móricz Zsigmond;Babits Mihály;Krúdy Gyula
+Ki írta a Tüskevárat?;Fekete István;Gárdonyi Géza;Szabó Magda;Mándy Iván
+Ki írta az Abigélt?;Szabó Magda;Fekete István;Németh László;Ottlik Géza
+Melyik Fekete István-regény főhőse egy rókakölyök?;Vuk;Kele;Bogáncs;Csí
+Ki írta a Szeptember végén című verset?;Petőfi Sándor;Ady Endre;Arany János;József Attila
+Ki írta a Tiszta szívvel című verset?;József Attila;Radnóti Miklós;Ady Endre;Babits Mihály
+Ki írta a Rómeó és Júliát?;William Shakespeare;Christopher Marlowe;Moliere;Goethe
+Ki írta a Don Quijotét?;Miguel de Cervantes;Lope de Vega;Dante Alighieri;Boccaccio
+Ki írta a Bűn és bűnhődést?;Dosztojevszkij;Tolsztoj;Csehov;Gogol
+Melyik író teremtette meg Winnetou alakját?;Karl May;James Fenimore Cooper;Jules Verne;Mark Twain
+Ki írta a Nemo kapitányt?;Jules Verne;H. G. Wells;Arthur Conan Doyle;Robert Louis Stevenson
+Ki teremtette meg Sherlock Holmes alakját?;Arthur Conan Doyle;Agatha Christie;Edgar Allan Poe;Charles Dickens
+Hogy hívják Sherlock Holmes barátját és segítőjét?;Dr. Watson;Hastings kapitány;Lestrade felügyelő;Moriarty professzor
+Hogy hívják Agatha Christie belga detektívjét?;Hercule Poirot;Miss Marple;Maigret felügyelő;Columbo hadnagy
+Melyik roxforti ház címerállata az oroszlán?;Griffendél;Mardekár;Hollóhát;Hugrabug
+Hogy hívják Frodó hűséges társát A Gyűrűk Urában?;Samu;Pippin;Trufa;Gollam
+Kit neveznek fűzfapoétának?;a rossz költőt;a falusi tanítót;a vándorköltőt;a tájköltőt
+Hogy hívták a római szerelemistent?;Ámor;Mars;Merkúr;Bacchus
+Ki a tenger istene a görög mitológiában?;Poszeidón;Zeusz;Hermész;Árész
+Melyik görög hősnek volt sebezhető a sarka?;Akhilleusznak;Héraklésznek;Odüsszeusznak;Perszeusznak
+Melyik hős tért haza Ithakába hosszú bolyongás után?;Odüsszeusz;Akhilleusz;Agamemnón;Iaszón
+Ki fordította magyarra Shakespeare Hamletjét a 19. században?;Arany János;Petőfi Sándor;Vörösmarty Mihály;Kazinczy Ferenc
+Ki írta a Halálfiai című regényt?;Babits Mihály;Kosztolányi Dezső;Móricz Zsigmond;Krúdy Gyula
+Milyen nyelven íródott eredetileg az Újszövetség?;görögül;latinul;héberül;arámiul
+Ki írta Az eltűnt idő nyomában című regényfolyamot?;Marcel Proust;Gustave Flaubert;Émile Zola;Honoré de Balzac
+Ki írta a Bovaryné című regényt?;Gustave Flaubert;Stendhal;Honoré de Balzac;Émile Zola
+Ki írta a Vörös és fekete című regényt?;Stendhal;Honoré de Balzac;Gustave Flaubert;Victor Hugo
+Ki írta A nyomorultakat?;Victor Hugo;Alexandre Dumas;Honoré de Balzac;Émile Zola
+Ki írta A három testőrt?;Alexandre Dumas;Victor Hugo;Jules Verne;Eugène Sue
+Ki írta Az emberi színjáték című regényciklust?;Honoré de Balzac;Émile Zola;Gustave Flaubert;Victor Hugo
+Ki írta a Háború és békét?;Lev Tolsztoj;Fjodor Dosztojevszkij;Ivan Turgenyev;Anton Csehov
+Ki írta A Mester és Margaritát?;Mihail Bulgakov;Borisz Paszternak;Nyikolaj Gogol;Szolzsenyicin
+Ki írta a Doktor Zsivágót?;Borisz Paszternak;Mihail Bulgakov;Mihail Solohov;Szolzsenyicin
+Ki írta a Holt lelkeket?;Nyikolaj Gogol;Alekszandr Puskin;Mihail Lermontov;Lev Tolsztoj
+Ki írta az Anyegin című verses regényt?;Alekszandr Puskin;Mihail Lermontov;Nyikolaj Gogol;Lev Tolsztoj
+Ki írta A per című regényt?;Franz Kafka;Thomas Mann;Hermann Hesse;Robert Musil
+Ki írta A varázshegyet?;Thomas Mann;Hermann Hesse;Franz Kafka;Stefan Zweig
+Ki írta A pusztai farkast?;Hermann Hesse;Thomas Mann;Franz Kafka;Rainer Maria Rilke
+Ki írta az Ulysses című regényt?;James Joyce;Virginia Woolf;Samuel Beckett;Oscar Wilde
+Ki írta a Godot-ra várva című drámát?;Samuel Beckett;Eugène Ionesco;Harold Pinter;Jean Genet
+Ki írta a Dorian Gray arcképét?;Oscar Wilde;Bram Stoker;Robert Louis Stevenson;Charles Dickens
+Ki írta a Drakulát?;Bram Stoker;Mary Shelley;Edgar Allan Poe;Oscar Wilde
+Ki írta a Frankensteint?;Mary Shelley;Bram Stoker;Jane Austen;Emily Brontë
+Ki írta a Büszkeség és balítéletet?;Jane Austen;Charlotte Brontë;Emily Brontë;George Eliot
+Ki írta az Üvöltő szeleket?;Emily Brontë;Charlotte Brontë;Jane Austen;Anne Brontë
+Ki írta a Twist Olivért?;Charles Dickens;William Thackeray;Thomas Hardy;Anthony Trollope
+Ki írta az 1984 című regényt?;George Orwell;Aldous Huxley;Ray Bradbury;H. G. Wells
+Ki írta a Szép új világot?;Aldous Huxley;George Orwell;Ray Bradbury;Jevgenyij Zamjatyin
+Ki írta a Fahrenheit 451 című regényt?;Ray Bradbury;Aldous Huxley;George Orwell;Isaac Asimov
+Ki írta Az öreg halász és a tengert?;Ernest Hemingway;John Steinbeck;William Faulkner;Jack London
+Ki írta a Száz év magányt?;Gabriel García Márquez;Jorge Luis Borges;Mario Vargas Llosa;Julio Cortázar
+Ki írta A nagy Gatsbyt?;F. Scott Fitzgerald;Ernest Hemingway;J. D. Salinger;John Steinbeck
+Ki írta a Zabhegyezőt?;J. D. Salinger;Jack Kerouac;F. Scott Fitzgerald;John Updike
+Ki írta Az idegen című regényt?;Albert Camus;Jean-Paul Sartre;André Gide;Simone de Beauvoir
+Ki írta az Isteni színjátékot?;Dante Alighieri;Francesco Petrarca;Giovanni Boccaccio;Ludovico Ariosto
+Ki írta a Dekameront?;Giovanni Boccaccio;Dante Alighieri;Francesco Petrarca;Niccolò Machiavelli
+Ki írta A fejedelem című művet?;Niccolò Machiavelli;Thomas More;Rotterdami Erasmus;Baldassare Castiglione
+Ki írta az Utópia című művet?;Morus Tamás;Niccolò Machiavelli;Tommaso Campanella;Francis Bacon
+Ki írta a Faustot?;J. W. Goethe;Friedrich Schiller;Heinrich Heine;Thomas Mann
+Ki írta a Tell Vilmos című drámát?;Friedrich Schiller;J. W. Goethe;Gotthold Lessing;Heinrich von Kleist
+Ki írta az Oidipusz király című tragédiát?;Szophoklész;Euripidész;Aiszkhülosz;Arisztophanész
+Ki írta az Aeneist?;Vergilius;Ovidius;Horatius;Homérosz
+Ki írta az Átváltozások (Metamorphoses) című művet?;Ovidius;Vergilius;Horatius;Catullus
+Melyik nyelven írta verseit Janus Pannonius?;latinul;magyarul;görögül;horvátul
+Ki írta a Narnia krónikáit?;C. S. Lewis;J. R. R. Tolkien;Roald Dahl;Lewis Carroll
+Ki írta az Alice Csodaországban című könyvet?;Lewis Carroll;C. S. Lewis;J. M. Barrie;Kenneth Grahame
+Ki írta a Pán Pétert?;J. M. Barrie;Lewis Carroll;A. A. Milne;Kenneth Grahame
+Ki írta a Charlie és a csokigyárat?;Roald Dahl;Enid Blyton;Lewis Carroll;Michael Ende
+Ki írta A végtelen történetet?;Michael Ende;Erich Kästner;Cornelia Funke;Otfried Preußler
+Ki írta A két Lotti című regényt?;Erich Kästner;Michael Ende;Astrid Lindgren;Otfried Preußler
+Ki írta a Harisnyás Pippit?;Astrid Lindgren;Selma Lagerlöf;Tove Jansson;Erich Kästner
+Ki írta a Nils Holgersson csodálatos utazását?;Selma Lagerlöf;Astrid Lindgren;H. C. Andersen;Tove Jansson
+Ki írta Az arany embert?;Jókai Mór;Mikszáth Kálmán;Eötvös József;Kemény Zsigmond
+Ki írta A Noszty fiú esete Tóth Marival című regényt?;Mikszáth Kálmán;Jókai Mór;Krúdy Gyula;Herczeg Ferenc
+Ki írta A falu jegyzőjét?;Eötvös József;Jókai Mór;Kemény Zsigmond;Mikszáth Kálmán
+Ki írta a Szindbád-történeteket?;Krúdy Gyula;Mikszáth Kálmán;Kosztolányi Dezső;Karinthy Frigyes
+Ki írta az Utazás a koponyám körül című regényt?;Karinthy Frigyes;Örkény István;Kosztolányi Dezső;Krúdy Gyula
+Ki írta az Egyperces novellákat?;Örkény István;Karinthy Frigyes;Mándy Iván;Esterházy Péter
+Ki írta a Tóték című kisregényt?;Örkény István;Déry Tibor;Sánta Ferenc;Moldova György
+Ki írta a Sorstalanságot?;Kertész Imre;Esterházy Péter;Nádas Péter;Krasznahorkai László
+Ki írta a Sátántangót?;Krasznahorkai László;Nádas Péter;Esterházy Péter;Kertész Imre
+Ki írta a Harmonia caelestist?;Esterházy Péter;Nádas Péter;Krasznahorkai László;Spiró György
+Ki írta az Emlékiratok könyvét?;Nádas Péter;Esterházy Péter;Konrád György;Spiró György
+Ki írta Az ajtó című regényt?;Szabó Magda;Németh László;Ottlik Géza;Polcz Alaine
+Ki írta az Iskola a határon című regényt?;Ottlik Géza;Déry Tibor;Mészöly Miklós;Szabó Magda
+Ki írta az Iszony című regényt?;Németh László;Móricz Zsigmond;Szabó Magda;Illyés Gyula
+Ki írta a Puszták népét?;Illyés Gyula;Németh László;Szabó Pál;Veres Péter
+Ki írta a Rozsdatemető című regényt?;Fejes Endre;Örkény István;Moldova György;Sánta Ferenc
+Ki írta a Csongor és Tündét?;Vörösmarty Mihály;Kisfaludy Károly;Madách Imre;Katona József
+Ki írta A helység kalapácsát?;Petőfi Sándor;Arany János;Vörösmarty Mihály;Csokonai Vitéz Mihály
+Ki írta a Lilla-verseket?;Csokonai Vitéz Mihály;Kazinczy Ferenc;Berzsenyi Dániel;Kisfaludy Sándor
+Ki írta A magyarokhoz című ódát (Romlásnak indult...)?;Berzsenyi Dániel;Kölcsey Ferenc;Vörösmarty Mihály;Csokonai Vitéz Mihály
+Ki írta a Szigeti veszedelmet?;Zrínyi Miklós;Balassi Bálint;Gyöngyösi István;Pázmány Péter
+Melyik folyóirat köré csoportosult Ady, Babits és Kosztolányi?;Nyugat;A Holnap;Válasz;Szép Szó
+Ki írta a Héja-nász az avaron című verset?;Ady Endre;Babits Mihály;Kosztolányi Dezső;Juhász Gyula
+Ki teremtette meg Esti Kornél alakját?;Kosztolányi Dezső;Krúdy Gyula;Karinthy Frigyes;Babits Mihály
+Ki írta a Jónás könyvét?;Babits Mihály;Ady Endre;Kosztolányi Dezső;Weöres Sándor
+Ki írta a Bolond Istók című elbeszélő költeményt?;Arany János;Petőfi Sándor;Tompa Mihály;Vajda János
+Ki írta a Psychét, Lónyay Erzsébet kitalált költőnő verseit?;Weöres Sándor;Pilinszky János;Nemes Nagy Ágnes;Radnóti Miklós
+Ki írta a Razglednicákat?;Radnóti Miklós;Pilinszky János;József Attila;Szép Ernő
+Ki írta az Apokrif című verset?;Pilinszky János;Radnóti Miklós;Nagy László;Weöres Sándor
+Melyik költő verse kezdődik így: „Nem tudhatom, hogy másnak e tájék mit jelent”?;Radnóti Miklós;József Attila;Illyés Gyula;Babits Mihály
+Hány versszakból áll a Himnusz?;8;1;20
+Hány versszakból áll a Szózat?;14;5;30
+Hány énekből áll Arany János Toldija?;12;5;30
+Hány kötetből áll a Harry Potter-regénysorozat?;7;3;15
+Hány magánhangzó van a magyar ábécében?;14;5;25
+Hány betűből áll a magyar ábécé?;44;20;60
+Hány éves volt Petőfi Sándor, amikor meghalt?;26;20;40
+Melyik évben született Petőfi Sándor?;1823;1750;1900
+Melyik évben jelent meg az első Harry Potter-könyv?;1997;1980;2010
+Melyik évben kapott irodalmi Nobel-díjat Kertész Imre?;2002;1950;2025
+Hány éves volt József Attila, amikor meghalt?;32;15;60
+Hány éves volt Ady Endre, amikor meghalt?;41;20;70
+Hány éves volt Radnóti Miklós, amikor meghalt?;35;15;70
+Melyik évben született William Shakespeare?;1564;1500;1650
+Hány szonettet írt Shakespeare?;154;50;300
+Hány énekből áll Dante Isteni színjátéka?;100;30;200
+Hány énekből áll Homérosz Iliásza?;24;10;50
+Hány novellából áll Boccaccio Dekameronja?;100;20;300
+Hány színből áll Az ember tragédiája?;15;5;30
+Melyik évben jelent meg Az ember tragédiája először könyv alakban?;1861;1800;1900
+Melyik évben jelent meg a Nyugat első száma?;1908;1880;1950
+Melyik évben jelent meg Orwell 1984 című regénye?;1949;1920;1990
+Melyik évben született Jókai Mór?;1825;1780;1880
+Melyik évben született Arany János?;1817;1780;1880
+Hány kötetben jelent meg eredetileg A Gyűrűk Ura?;3;1;10
+Hány versszakból áll Petőfi Szeptember végén című verse?;3;1;10
+Hány sorból áll egy szonett?;14;4;30
+Hány szótagból áll egy haiku?;17;5;30
+Melyik évben készült el Gutenberg 42 soros Bibliája (kb.)?;1455;1300;1600
+Hány könyvből áll Az Újszövetség?;27;10;60
+#
+# kategória: Művészet
+Ki zenésítette meg a Himnuszt?;Erkel Ferenc;Egressy Béni;Liszt Ferenc;Kodály Zoltán
+Ki zenésítette meg a Szózatot?;Egressy Béni;Erkel Ferenc;Liszt Ferenc;Mosonyi Mihály
+Ki írta a Magyar rapszódiákat?;Liszt Ferenc;Bartók Béla;Kodály Zoltán;Erkel Ferenc
+Ki komponálta a Háry Jánost?;Kodály Zoltán;Bartók Béla;Erkel Ferenc;Lehár Ferenc
+Ki írta A kékszakállú herceg vára című operát?;Bartók Béla;Kodály Zoltán;Erkel Ferenc;Dohnányi Ernő
+Ki írta A víg özvegy című operettet?;Lehár Ferenc;Kálmán Imre;Huszka Jenő;Johann Strauss
+Ki írta A csárdáskirálynő című operettet?;Kálmán Imre;Lehár Ferenc;Jacobi Viktor;Jacques Offenbach
+Melyik hangszer virtuóza volt Paganini?;hegedű;zongora;gitár;cselló
+Ki festette A magányos cédrust?;Csontváry;Munkácsy;Szinyei Merse;Rippl-Rónai
+Ki festette a Majálist?;Szinyei Merse Pál;Munkácsy Mihály;Mednyánszky László;Paál László
+Ki festette a Krisztus Pilátus előtt című képet?;Munkácsy Mihály;Mednyánszky László;Zichy Mihály;Benczúr Gyula
+Ki festette A magyarok bejövetele című körképet?;Feszty Árpád;Munkácsy Mihály;Benczúr Gyula;Than Mór
+Ki festette A csillagos éjt?;Vincent van Gogh;Claude Monet;Paul Gauguin;Paul Cézanne
+Ki festette a Sixtus-kápolna mennyezetfreskóit?;Michelangelo;Raffaello;Leonardo da Vinci;Botticelli
+Ki festette a Guernicát?;Pablo Picasso;Salvador Dalí;Joan Miró;Francisco Goya
+Melyik múzeumban látható a Mona Lisa?;a Louvre-ban;a Pradóban;az Uffiziben;a British Museumban
+Melyik ókori világcsoda áll ma is?;a gízai nagy piramis;a rodoszi kolosszus;a pharoszi torony;a babiloni függőkertek
+Melyik városban van az Uffizi képtár?;Firenzében;Rómában;Velencében;Milánóban
+Melyik ókori világcsoda állt Alexandria kikötőjében?;a világítótorony;a függőkertek;a kolosszus;Zeusz szobra
+Ki festette Az utolsó vacsorát a milánói Santa Maria delle Grazie kolostorban?;Leonardo da Vinci;Raffaello;Michelangelo;Tiziano
+Ki faragta a híres firenzei márvány Dávid-szobrot?;Michelangelo;Donatello;Bernini;Verrocchio
+Ki festette A Vénusz születését?;Sandro Botticelli;Tiziano;Raffaello;Giotto
+Ki festette Az athéni iskola című freskót?;Raffaello;Michelangelo;Leonardo da Vinci;Perugino
+Ki festette Az éjjeli őrjáratot?;Rembrandt;Jan Vermeer;Rubens;Frans Hals
+Ki festette a Leány gyöngy fülbevalóval című képet?;Jan Vermeer;Rembrandt;Van Dyck;Frans Hals
+Ki festette A sikolyt?;Edvard Munch;Gustav Klimt;Egon Schiele;Vincent van Gogh
+Ki festette A csók című, aranyfüsttel díszített festményt?;Gustav Klimt;Egon Schiele;Edvard Munch;Alfons Mucha
+Ki készítette A gondolkodó című szobrot?;Auguste Rodin;Camille Claudel;Constantin Brâncuși;Henry Moore
+Ki festette a Napraforgók sorozatot?;Vincent van Gogh;Claude Monet;Paul Gauguin;Renoir
+Melyik festményről kapta nevét az impresszionizmus?;Impresszió, napfelkelte;Tavirózsák;Reggeli a szabadban;Olympia
+Ki festette a Tavirózsák sorozatot?;Claude Monet;Édouard Manet;Edgar Degas;Renoir
+Melyik festő híres a balett-táncosnőket ábrázoló képeiről?;Edgar Degas;Claude Monet;Toulouse-Lautrec;Paul Cézanne
+Ki festette a Reggeli a szabadban című képet?;Édouard Manet;Claude Monet;Renoir;Gustave Courbet
+Melyik irányzatot alapította Pablo Picasso és Georges Braque?;kubizmus;szürrealizmus;fauvizmus;dadaizmus
+Ki festette Az emlékezet állandósága (olvadó órák) című képet?;Salvador Dalí;René Magritte;Joan Miró;Max Ernst
+Melyik festő képén olvasható: „Ez nem pipa”?;René Magritte;Salvador Dalí;Marcel Duchamp;Joan Miró
+Ki festette a Campbell-levesesdobozokat?;Andy Warhol;Roy Lichtenstein;Jasper Johns;Keith Haring
+Melyik irányzathoz tartozik Andy Warhol?;pop-art;kubizmus;op-art;minimalizmus
+Melyik magyar származású művészt tartják az op-art atyjának?;Victor Vasarely;Moholy-Nagy László;Kassák Lajos;Amerigo Tot
+Melyik magyar művész tanított a weimari Bauhausban?;Moholy-Nagy László;Victor Vasarely;Kassák Lajos;Rippl-Rónai József
+Ki festette a Siralomházat?;Munkácsy Mihály;Szinyei Merse Pál;Paál László;Mednyánszky László
+Ki festette az Országházban látható Honfoglalás című képet?;Munkácsy Mihály;Feszty Árpád;Benczúr Gyula;Lotz Károly
+Ki festette Buda visszavétele 1686-ban című képet?;Benczúr Gyula;Madarász Viktor;Than Mór;Székely Bertalan
+Ki festette az Egri nők című képet?;Székely Bertalan;Madarász Viktor;Benczúr Gyula;Munkácsy Mihály
+Ki festette a Hunyadi László siratása című képet?;Madarász Viktor;Székely Bertalan;Benczúr Gyula;Lotz Károly
+Melyik városban alapított festőiskolát Hollósy Simon 1896-ban?;Nagybányán;Szolnokon;Gödöllőn;Szentendrén
+Ki festette a Zarándoklás a cédrusokhoz Libanonban című képet?;Csontváry;Munkácsy Mihály;Mednyánszky László;Gulácsy Lajos
+Ki tervezte az Országházat?;Steindl Imre;Ybl Miklós;Lechner Ödön;Hauszmann Alajos
+Ki tervezte a Magyar Állami Operaházat?;Ybl Miklós;Steindl Imre;Lechner Ödön;Feszl Frigyes
+Ki tervezte az Iparművészeti Múzeum épületét?;Lechner Ödön;Ybl Miklós;Steindl Imre;Alpár Ignác
+Melyik stílusban épültek Lechner Ödön Zsolnay-kerámiával díszített épületei?;szecesszió;barokk;klasszicizmus;gótika
+Ki tervezte a Pesti Vigadót?;Feszl Frigyes;Ybl Miklós;Steindl Imre;Hild József
+Ki tervezte a barcelonai Sagrada Famíliát?;Antoni Gaudí;Le Corbusier;Santiago Calatrava;Ricardo Bofill
+Melyik építész tervezte a bilbaói Guggenheim Múzeumot?;Frank Gehry;Zaha Hadid;Norman Foster;Renzo Piano
+Ki tervezte a Louvre üvegpiramisát?;I. M. Pei;Frank Gehry;Jean Nouvel;Renzo Piano
+Ki tervezte a Sydney-i Operaházat?;Jørn Utzon;Frank Gehry;Norman Foster;Oscar Niemeyer
+Melyik stílusban épült a párizsi Notre-Dame?;gótikus;román;barokk;reneszánsz
+Melyik római épület kupolája volt bő ezer évig a világ legnagyobb kupolája?;Pantheon;Colosseum;Szent Péter-bazilika;Hagia Sophia
+Ki tervezte a firenzei dóm kupoláját?;Filippo Brunelleschi;Michelangelo;Leon Battista Alberti;Donato Bramante
+Ki tervezte a római Szent Péter-bazilika kupoláját?;Michelangelo;Bramante;Bernini;Raffaello
+Melyik szobrász alkotása a római Szent Teréz extázisa?;Gian Lorenzo Bernini;Michelangelo;Antonio Canova;Donatello
+Melyik görög szobrász alkotta az eredeti Diszkoszvetőt?;Mürón;Pheidiász;Praxitelész;Polükleitosz
+Ki festette Az udvarhölgyeket (Las Meninas)?;Diego Velázquez;Francisco Goya;El Greco;Murillo
+Melyik spanyol festő festette az 1808. május harmadikát?;Francisco Goya;Diego Velázquez;El Greco;Pablo Picasso
+Melyik múzeumban látható Rembrandt Éjjeli őrjárata?;Rijksmuseum;Louvre;Prado;Uffizi
+Melyik magyar származású fotós készítette a Milicista halála képet?;Robert Capa;André Kertész;Brassaï;Moholy-Nagy László
+Mi volt a Brassaï néven ismert fotós eredeti neve?;Halász Gyula;Kertész Andor;Friedmann Endre;Moholy-Nagy László
+Ki komponálta A varázsfuvolát?;W. A. Mozart;Joseph Haydn;Ludwig van Beethoven;Christoph Gluck
+Ki komponálta az Aidát?;Giuseppe Verdi;Giacomo Puccini;Gioachino Rossini;Gaetano Donizetti
+Ki komponálta a Pillangókisasszonyt?;Giacomo Puccini;Giuseppe Verdi;Ruggero Leoncavallo;Pietro Mascagni
+Ki komponálta a Carment?;Georges Bizet;Jules Massenet;Charles Gounod;Hector Berlioz
+Ki komponálta A sevillai borbélyt?;Gioachino Rossini;Giuseppe Verdi;Gaetano Donizetti;Vincenzo Bellini
+Ki komponálta A diótörőt?;Pjotr Csajkovszkij;Szergej Prokofjev;Igor Sztravinszkij;Rimszkij-Korszakov
+Ki komponálta A tavaszi áldozatot?;Igor Sztravinszkij;Szergej Prokofjev;Claude Debussy;Maurice Ravel
+Ki komponálta a Bolerót?;Maurice Ravel;Claude Debussy;Erik Satie;Manuel de Falla
+Ki komponálta A négy évszakot?;Antonio Vivaldi;Johann Sebastian Bach;Georg Friedrich Händel;Arcangelo Corelli
+Ki komponálta a Messiás című oratóriumot?;Georg Friedrich Händel;Johann Sebastian Bach;Joseph Haydn;Mozart
+Ki komponálta a Brandenburgi versenyeket?;Johann Sebastian Bach;Antonio Vivaldi;Händel;Telemann
+Melyik Beethoven-szimfónia zárótételében hangzik el az Örömóda?;IX. szimfónia;V. szimfónia;III. szimfónia;VI. szimfónia
+Ki komponálta Az Újvilág-szimfóniát?;Antonín Dvořák;Bedřich Smetana;Gustav Mahler;Johannes Brahms
+Ki írta a Moldva című szimfonikus költeményt?;Bedřich Smetana;Antonín Dvořák;Leoš Janáček;Liszt Ferenc
+Ki komponálta A kék Duna keringőt?;ifj. Johann Strauss;id. Johann Strauss;Lehár Ferenc;Joseph Lanner
+Melyik zeneszerző dolgozta fel a Rákóczi-indulót a Faust elkárhozásában?;Hector Berlioz;Liszt Ferenc;Erkel Ferenc;Johannes Brahms
+Ki komponálta a Bánk bán című operát?;Erkel Ferenc;Liszt Ferenc;Kodály Zoltán;Mosonyi Mihály
+Ki komponálta a Psalmus Hungaricust?;Kodály Zoltán;Bartók Béla;Weiner Leó;Dohnányi Ernő
+Ki komponálta A csodálatos mandarint?;Bartók Béla;Kodály Zoltán;Igor Sztravinszkij;Dohnányi Ernő
+Melyik hangszer tartozik a rézfúvósok közé?;harsona;klarinét;fagott;oboa
+Melyik hangszer NEM fafúvós?;kürt;fuvola;oboa;fagott
+Melyik a legmélyebb hangú vonós hangszer a szimfonikus zenekarban?;nagybőgő;cselló;brácsa;hegedű
+Mit jelent a pianissimo jelzés a kottában?;nagyon halkan;nagyon gyorsan;nagyon lassan;nagyon hangosan
+Mit jelent az allegro tempójelzés?;gyorsan, élénken;lassan;mérsékelten;nagyon lassan
+Melyik balett zenéjét írta Csajkovszkij?;A hattyúk tava;Giselle;Coppélia;Bolero
+Hány szimfóniát írt Beethoven?;9;3;20
+Hány húrja van egy hagyományos gitárnak?;6;3;12
+Hány billentyűje van egy hagyományos zongorának?;88;50;150
+Hány méter magas az Országház kupolája?;96;50;200
+Hány éves volt Mozart, amikor meghalt?;35;20;60
+Melyik évben született Ludwig van Beethoven?;1770;1700;1850
+Melyik évben született Liszt Ferenc?;1811;1750;1900
+Melyik évben született Bartók Béla?;1881;1800;1950
+Melyik évben halt meg Liszt Ferenc?;1886;1820;1950
+Hány szimfóniát írt Mozart a hagyományos számozás szerint?;41;10;100
+Hány számozott szimfóniát írt Joseph Haydn?;104;20;200
+Hány befejezett szimfóniát írt Gustav Mahler?;9;1;20
+Hány tételből áll Vivaldi A négy évszak sorozata összesen?;12;4;24
+Hány vonalból áll egy kottasor?;5;1;10
+Melyik évben mutatták be Bartók A kékszakállú herceg vára című operáját?;1918;1900;1950
+Hány méter volt az Eiffel-torony eredeti magassága?;300;100;600
+Melyik évben készült el az Eiffel-torony?;1889;1800;1950
+Melyik évben nyílt meg a budapesti Operaház?;1884;1800;1950
+Hány méter magas a Szent István-bazilika?;96;50;200
+Melyik évben született Munkácsy Mihály?;1844;1800;1900
+Melyik évben halt meg Vincent van Gogh?;1890;1850;1950
+Hány méter hosszú a Feszty-körkép (kb.)?;120;30;500
+Hány évig festette Michelangelo a Sixtus-kápolna mennyezetét?;4;1;15
+Hány méter magas volt eredetileg a gízai nagy piramis (kb.)?;146;50;300
+Melyik évben alapította Hollósy Simon a nagybányai festőiskolát?;1896;1850;1950
+Melyik évben adták át a Pesti Vigadót?;1865;1800;1950
+Hány méter magas a pisai ferde torony (kb.)?;56;20;150
+Hány évig épült a kölni dóm (1248–1880)?;632;100;1000
+Melyik évben kezdték építeni a Sagrada Famíliát?;1882;1800;1950
+#
+# kategória: Természettudományok (biológia, kémia)
+Melyik állat NEM emlős?;pingvin;delfin;denevér;bálna
+Mi az óriáspanda fő tápláléka?;bambusz;eukaliptusz;hal;méz
+Mi a balatoni fogas másik neve?;süllő;csuka;harcsa;keszeg
+Mi a vas vegyjele?;Fe;V;Ir;Va
+Mi az arany vegyjele?;Au;Ag;Ar;Go
+Mi az ezüst vegyjele?;Ag;Au;Si;Ez
+Melyik gázból van a legtöbb a Föld légkörében?;nitrogén;oxigén;szén-dioxid;argon
+Melyik a legkönnyebb kémiai elem?;hidrogén;hélium;lítium;oxigén
+Melyik vitamin keletkezik a bőrben napfény hatására?;D-vitamin;C-vitamin;A-vitamin;B12-vitamin
+Melyik szervünk termeli az inzulint?;hasnyálmirigy;máj;vese;pajzsmirigy
+Mi az emberi test legnagyobb szerve?;bőr;máj;agy;tüdő
+Ki fedezte fel a penicillint?;Alexander Fleming;Louis Pasteur;Robert Koch;Semmelweis Ignác
+Kit neveznek az anyák megmentőjének?;Semmelweis Ignácot;Szent-Györgyi Albertet;Korányi Sándort;Hőgyes Endrét
+Melyik vitamin kutatásáért kapott Nobel-díjat Szent-Györgyi Albert?;C-vitamin;D-vitamin;A-vitamin;B1-vitamin
+Ki találta fel a zajtalan gyufát?;Irinyi János;Jedlik Ányos;Bíró László József;Puskás Tivadar
+Melyik fa termése a makk?;a tölgyé;a nyíré;a gesztenyéé;a dióé
+Melyik madarunk költözik ősszel melegebb vidékre?;gólya;veréb;szarka;cinege
+Melyik állat alszik téli álmot?;sün;nyúl;őz;róka
+Melyik a legnagyobb ragadozó hal a magyar vizekben?;harcsa;csuka;süllő;ponty
+Melyik gázból van a legtöbb a kilélegzett levegőben?;nitrogén;szén-dioxid;oxigén;vízgőz
+Mi a konyhasó kémiai neve?;nátrium-klorid;kálium-klorid;nátrium-karbonát;kalcium-karbonát
+Mi a szódabikarbóna képlete?;NaHCO3;NaCl;CaCO3;NH4NO3
+Melyik fém folyékony szobahőmérsékleten?;higany;ólom;cink;ón
+Mit mér a Mohs-skála?;ásványok keménységét;földrengéseket;a víz keménységét;a hangerőt
+Melyik a legkeményebb természetes anyag?;gyémánt;korund;kvarc;topáz
+Milyen színű a jegesmedve bőre?;fekete;fehér;rózsaszín;szürke
+Mi a DNS rövidítés feloldása?;dezoxiribonukleinsav;ribonukleinsav;dinukleotid-szulfát;deuteronukleinsav
+Melyik vércsoportú ember adhat vért szinte bárkinek?;0 Rh-negatív;AB Rh-pozitív;A Rh-negatív;B Rh-pozitív
+Melyik elem vegyjele a K?;kálium;kalcium;kripton;kobalt
+Melyik elem vegyjele a Na?;nátrium;nikkel;neon;nitrogén
+Melyik elem vegyjele a W?;volfrám;vanádium;xenon;ólom
+Melyik elem vegyjele a Pb?;ólom;platina;palládium;foszfor
+Melyik elem vegyjele a Hg?;higany;hidrogén;hélium;hafnium
+Melyik NEM nemesgáz?;nitrogén;argon;neon;kripton
+Melyik gáz a kéjgáz?;dinitrogén-oxid;szén-monoxid;metán;ammónia
+Milyen gáz keletkezik, ha mészkövet sósavval öntünk le?;szén-dioxid;hidrogén;oxigén;klór
+Mi a földgáz fő összetevője?;metán;etán;propán;bután
+Mi az oltatlan mész kémiai neve?;kalcium-oxid;kalcium-karbonát;kalcium-hidroxid;nátrium-oxid
+Melyik sav található a gyomornedvben?;sósav;kénsav;salétromsav;ecetsav
+Mi az ózon képlete?;O3;O2;CO;H2O2
+Mi a hidrogén-peroxid képlete?;H2O2;HO2;H2O;H3O
+Ki alkotta meg az elemek periódusos rendszerét?;Dmitrij Mengyelejev;Antoine Lavoisier;John Dalton;Niels Bohr
+Kik fedezték fel a rádiumot és a polóniumot?;a Curie házaspár;Ernest Rutherford;Henri Becquerel;Wilhelm Röntgen
+Mi a rozsda fő alkotórésze?;vas-oxid;vas-szulfid;réz-oxid;alumínium-oxid
+Milyen színű a réz-szulfát vizes oldata?;kék;zöld;sárga;vörös
+Melyik fém vezeti legjobban az elektromosságot?;ezüst;réz;arany;alumínium
+Melyik a legnagyobb sűrűségű elem?;ozmium;ólom;arany;higany
+Melyik elem atomjaiból áll a gyémánt?;szén;szilícium;bór;kalcium
+Melyik vitamin hiánya okozza a skorbutot?;C-vitamin;D-vitamin;B1-vitamin;A-vitamin
+Melyik vitamin hiánya okozza az angolkórt?;D-vitamin;C-vitamin;K-vitamin;B12-vitamin
+Melyik vitamin fontos a véralvadáshoz?;K-vitamin;E-vitamin;A-vitamin;C-vitamin
+Melyik ásványi anyag hiánya okoz leggyakrabban vérszegénységet?;vas;kalcium;cink;magnézium
+Melyik szervünk termeli az epét?;máj;epehólyag;hasnyálmirigy;lép
+Hol képződnek a vörösvértestek egy felnőttben?;a vörös csontvelőben;a lépben;a májban;a nyirokcsomókban
+Hogy hívják a szívizmot ellátó ereket?;koszorúerek;tüdőerek;nyaki verőerek;kapuér
+Melyik az emberi test leghosszabb csontja?;combcsont;sípcsont;felkarcsont;szárkapocscsont
+Melyik az emberi test legkisebb csontja?;kengyel;üllő;kalapács;járomcsont
+Melyik hormont termeli a pajzsmirigy?;tiroxin;inzulin;adrenalin;kortizol
+Melyik sejtalkotót nevezik a sejt erőművének?;mitokondrium;riboszóma;Golgi-készülék;sejtmag
+Melyik sejtalkotóban zajlik a fotoszintézis?;zöld színtest;mitokondrium;riboszóma;vakuólum
+Mi szállítja az oxigént a vörösvértestekben?;hemoglobin;mioglobin;inzulin;fibrinogén
+Mi a vér folyékony, sejtmentes része?;vérplazma;vérlemezke;hemoglobin;fibrin
+Ki írta A fajok eredete című művet?;Charles Darwin;Alfred Russel Wallace;Gregor Mendel;Jean-Baptiste Lamarck
+Ki kísérletezett borsóval, és lett az öröklődéstan atyja?;Gregor Mendel;Charles Darwin;Jean-Baptiste Lamarck;Thomas Morgan
+Kik írták le 1953-ban a DNS kettős spirál szerkezetét?;Watson és Crick;Darwin és Wallace;Pasteur és Koch;Curie és Bohr
+Ki fedezte fel a tuberkulózis kórokozóját?;Robert Koch;Louis Pasteur;Alexander Fleming;Edward Jenner
+Ki dolgozta ki a himlő elleni védőoltást?;Edward Jenner;Louis Pasteur;Robert Koch;Jonas Salk
+Ki dolgozta ki a veszettség elleni védőoltást?;Louis Pasteur;Robert Koch;Edward Jenner;Semmelweis Ignác
+Melyik magyar kutató kapott 2023-ban orvosi Nobel-díjat az mRNS-kutatásaiért?;Karikó Katalin;Krausz Ferenc;Szent-Györgyi Albert;Bárány Róbert
+Melyik madár tud hátrafelé is repülni?;kolibri;fecske;sarlósfecske;harkály
+Melyik a legnagyobb ma élő hüllő?;bordás krokodil;komodói varánusz;anakonda;kérgesteknős
+Melyik emlős képes valódi, aktív repülésre?;denevér;repülőmókus;kolugó;erszényes repülő
+Melyik emlős rak tojást?;kacsacsőrű emlős;koala;vombat;tatu
+Melyik állat gerinctelen?;polip;cápa;béka;kígyó
+Melyik állat NEM rovar?;pók;méh;hangya;szöcske
+Hogy hívják a lepke fejlődésében a hernyó és a kifejlett lepke közti állapotot?;báb;lárva;nimfa;imágó
+Melyik növény egyszikű?;kukorica;bab;napraforgó;tölgy
+Melyik a világ legmagasabbra növő fafaja?;parti mamutfenyő;óriás eukaliptusz;duglászfenyő;baobab
+Az agy melyik részében található a hipotalamusz?;köztiagyban;kisagyban;nyúltvelőben;nagyagykéregben
+Hány foga van egy felnőttnek a bölcsességfogakkal együtt?;32;10;50
+Hány szárnya van egy méhnek?;4;1;10
+Hány szíve van egy polipnak?;3;1;10
+Hány csontból áll egy felnőtt ember csontváza?;206;50;400
+Hány kromoszóma van egy egészséges emberi testi sejtben?;46;10;100
+Hány hétig tart átlagosan egy emberi terhesség?;40;20;60
+Hány napig kotlik a tyúk a tojásain?;21;5;60
+Hány elem szerepel ma a periódusos rendszerben?;118;80;200
+Mi a szén rendszáma?;6;1;20
+Mi az arany rendszáma?;79;20;120
+Mi az oxigén rendszáma?;8;1;20
+Mi a vas rendszáma?;26;5;60
+Mennyi a semleges vizes oldat pH-ja 25 °C-on?;7;1;14
+Hány üregből (pitvarból és kamrából) áll az emberi szív?;4;1;10
+Hány liter vér van egy felnőtt ember szervezetében (kb.)?;5;1;15
+Hány tejfoga van egy gyereknek?;20;5;40
+Hány napig él átlagosan egy vörösvértest?;120;10;400
+Hány százalék víz van egy felnőtt emberi testben (kb.)?;60;20;90
+Hány km/h a gepárd legnagyobb sebessége (kb.)?;110;40;200
+Hány méter hosszúra nőhet egy kék bálna (kb.)?;30;5;60
+Hány szeme van a legtöbb pókfajnak?;8;1;20
+Hány részből áll a szarvasmarha gyomra?;4;1;10
+Melyik évben fedezte fel Alexander Fleming a penicillint?;1928;1850;1990
+Melyik évben kapott Nobel-díjat Szent-Györgyi Albert?;1937;1900;1990
+Hány neutron van a szén-12 atommagjában?;6;1;20
+Hány atomból áll egy vízmolekula?;3;1;10
+#
+# kategória: Matematika, fizika
+Ki volt az első ember a világűrben?;Jurij Gagarin;Neil Armstrong;German Tyitov;Alan Shepard
+Ki volt az első magyar űrhajós?;Farkas Bertalan;Simonyi Károly;Kapu Tibor;Magyari Béla
+Melyik hónapban van a téli napforduló az északi féltekén?;decemberben;januárban;novemberben;februárban
+Melyik a legkisebb prímszám?;2;1;3;0
+Melyik bolygó kering a legközelebb a Naphoz?;Merkúr;Vénusz;Mars;Föld
+Melyik bolygónak van a legfeltűnőbb gyűrűrendszere?;Szaturnusz;Jupiter;Uránusz;Neptunusz
+Nagyjából mennyi idő alatt ér a Nap fénye a Földre?;8 perc;8 másodperc;1 óra;1 nap
+Ki találta fel a golyóstollat?;Bíró László József;Rubik Ernő;Kandó Kálmán;Irinyi János
+Ki építette a sakkozó törököt?;Kempelen Farkas;Neumann János;Jedlik Ányos;Bolyai Farkas
+Melyik magyar származású tudós nevét viseli a számítógépek ma is használt felépítési elve?;Neumann János;Kármán Tódor;Szilárd Leó;Teller Ede
+Melyik magyar matematikus dolgozta ki a nemeuklideszi geometriát?;Bolyai János;Bolyai Farkas;Riesz Frigyes;Erdős Pál
+Ki fogalmazta meg a relativitáselméletet?;Albert Einstein;Isaac Newton;Niels Bohr;Max Planck
+Melyik bolygó holdja az Io?;a Jupiteré;a Szaturnuszé;a Marsé;a Neptunuszé
+Melyik bolygó holdja a Titán?;a Szaturnuszé;a Jupiteré;az Uránuszé;a Neptunuszé
+Melyik bolygót fedezte fel William Herschel 1781-ben?;az Uránuszt;a Neptunuszt;a Plútót;a Szaturnuszt
+Melyik a Naprendszer legnagyobb holdja?;Ganümédész;Titán;a Hold;Kallisztó
+Melyik a Tejútrendszerhez legközelebbi nagy spirálgalaxis?;Androméda-köd;Nagy Magellán-felhő;Orion-köd;Sombrero-galaxis
+Melyik csillagkép része a Sarkcsillag?;Kis Medve;Nagy Medve;Orion;Kassziopeia
+Mi az elektromos ellenállás mértékegysége?;ohm;volt;amper;watt
+Mi a teljesítmény mértékegysége?;watt;joule;newton;pascal
+Mit mér a Beaufort-skála?;a szél erősségét;a tenger mélységét;a fényerősséget;a földrengéseket
+Melyik részecske töltése negatív?;az elektroné;a protoné;a neutroné;a fotoné
+Ki dolgozta ki a dinamó elvét még Siemens előtt?;Jedlik Ányos;Bláthy Ottó;Kandó Kálmán;Eötvös Loránd
+Kinek az ötlete volt a telefonközpont és a Telefonhírmondó?;Puskás Tivadar;Jedlik Ányos;Bánki Donát;Kempelen Farkas
+Mennyi a pi értéke két tizedesjegyre kerekítve?;3,14;3,41;3,12;3,16
+Mi a neve a 180°-nál nagyobb, de 360°-nál kisebb szögnek?;homorú szög;tompaszög;egyenesszög;hegyesszög
+Melyik szabályos test lapjai mind szabályos ötszögek?;dodekaéder;ikozaéder;oktaéder;tetraéder
+Melyik szabályos testnek van 20 háromszöglapja?;ikozaéder;dodekaéder;oktaéder;tetraéder
+Mi a neve a derékszögű háromszög leghosszabb oldalának?;átfogó;befogó;magasság;súlyvonal
+Melyik szám NEM prím?;91;89;97;83
+Melyik szám következik a Fibonacci-sorozatban: 1, 1, 2, 3, 5, 8, 13...?;21;20;18;26
+Hogy hívják az olyan számot, amely egyenlő a nála kisebb osztói összegével (pl. 6, 28)?;tökéletes szám;barátságos szám;prímszám;négyzetszám
+Mennyi a 0 faktoriálisa?;1;0;nem értelmezett;végtelen
+Mennyi a tízes alapú logaritmusa 1000-nek?;3;10;100;30
+Ki bizonyította be a nagy Fermat-tételt 1994-ben?;Andrew Wiles;Grigorij Perelman;Terence Tao;Erdős Pál
+Melyik híres sejtést bizonyította be Grigorij Perelman?;Poincaré-sejtés;Riemann-sejtés;Goldbach-sejtés;Fermat-sejtés
+Melyik magyar matematikusról szól Az ember, aki csak a számokat szerette című könyv?;Erdős Pál;Neumann János;Bolyai János;Lovász László
+Melyik magyar matematikus kapott Abel-díjat 2021-ben?;Lovász László;Erdős Pál;Szemerédi Endre;Laczkovich Miklós
+Ki írta az Elemeket, a geometria alapművét?;Eukleidész;Arkhimédész;Püthagorasz;Thalész
+Melyik ókori tudós kiáltott fel: „Heuréka!”?;Arkhimédész;Eukleidész;Püthagorasz;Eratoszthenész
+Ki mérte meg elsőként a Föld kerületét az i. e. 3. században?;Eratoszthenész;Arisztotelész;Ptolemaiosz;Arkhimédész
+Ki alkotta meg a heliocentrikus világképet a 16. században?;Kopernikusz;Galileo Galilei;Johannes Kepler;Tycho Brahe
+Ki fogalmazta meg a bolygómozgás három törvényét?;Johannes Kepler;Galileo Galilei;Isaac Newton;Kopernikusz
+Milyen alakú pályán keringenek a bolygók Kepler szerint?;ellipszis;kör;parabola;hiperbola
+Milyen görbén repül egy elhajított kő közegellenállás nélkül?;parabola;hiperbola;ellipszis;spirál
+Mi az erő SI-mértékegysége?;newton;joule;pascal;watt
+Mi a nyomás SI-mértékegysége?;pascal;bar;newton;atmoszféra
+Mi az energia SI-mértékegysége?;joule;watt;newton;kalória
+Mi az elektromos töltés mértékegysége?;coulomb;amper;volt;farad
+Mi a frekvencia mértékegysége?;hertz;decibel;weber;tesla
+Mi a mágneses indukció SI-mértékegysége?;tesla;weber;henry;gauss
+Melyik SI-alapmennyiség az alábbiak közül?;fényerősség;feszültség;teljesítmény;nyomás
+Melyik törvény mondja ki, hogy F = m · a?;Newton II. törvénye;Newton I. törvénye;Hooke-törvény;Ohm-törvény
+Melyik képlet fejezi ki Ohm törvényét?;U = R · I;F = m · a;E = m · c²;P = U · I
+Melyik törvény magyarázza, miért úszik a vasból készült hajó?;Arkhimédész törvénye;Pascal törvénye;Bernoulli-elv;Hooke-törvény
+Mi keletkezik, amikor egy repülőgép átlépi a hangsebességet?;hangrobbanás;Doppler-hatás;rezonancia;interferencia
+Melyik jelenség miatt változik a közeledő mentőautó szirénájának hangmagassága?;Doppler-hatás;rezonancia;interferencia;diffrakció
+Hogy hívják a fény irányváltozását két közeg határán?;fénytörés;fényelhajlás;fényvisszaverődés;polarizáció
+Milyen színű a legrövidebb hullámhosszú látható fény?;ibolya;vörös;zöld;sárga
+Melyik részecske semleges töltésű az atommagban?;neutron;proton;elektron;pozitron
+Ki fedezte fel az atommagot az aranyfüst-kísérlettel?;Ernest Rutherford;Niels Bohr;J. J. Thomson;James Chadwick
+Ki fedezte fel az elektront?;J. J. Thomson;Ernest Rutherford;Niels Bohr;Robert Millikan
+Melyik magyar fizikus kapott Nobel-díjat 2023-ban az attoszekundumos fényimpulzusokért?;Krausz Ferenc;Karikó Katalin;Gábor Dénes;Wigner Jenő
+Ki kapott Nobel-díjat 1971-ben a holográfia feltalálásáért?;Gábor Dénes;Wigner Jenő;Szilárd Leó;Teller Ede
+Melyik magyar származású fizikus kapott Nobel-díjat 1963-ban?;Wigner Jenő;Gábor Dénes;Teller Ede;Szilárd Leó
+Kit neveznek a hidrogénbomba atyjának?;Teller Ede;Szilárd Leó;Wigner Jenő;Robert Oppenheimer
+Ki vezette a Manhattan-terv los alamosi laboratóriumát?;Robert Oppenheimer;Enrico Fermi;Teller Ede;Niels Bohr
+Melyik bolygón található a Naprendszer legnagyobb vulkánja, az Olympus Mons?;Marson;Vénuszon;Io holdon;Merkúron
+Melyik bolygó forog szinte „fekve”, tengelye közel van a pályasíkjához?;Uránusz;Neptunusz;Szaturnusz;Vénusz
+Melyik bolygón tart tovább egy nap, mint egy év?;Vénusz;Merkúr;Mars;Jupiter
+Melyik a Naprendszer legforróbb felszínű bolygója?;Vénusz;Merkúr;Mars;Jupiter
+Melyik a Mars egyik holdja?;Phobos;Io;Titán;Triton
+Melyik égitest számít 2006 óta törpebolygónak?;Plútó;Ganümédész;Titán;Európa
+Melyik a Naphoz legközelebbi csillag?;Proxima Centauri;Szíriusz;Betelgeuze;Vega
+Melyik a legfényesebb csillag az éjszakai égbolton?;Szíriusz;Sarkcsillag;Vega;Betelgeuze
+Minek a mértékegysége a fényév?;távolságnak;időnek;sebességnek;fényerőnek
+Ki volt az első nő a világűrben?;Valentyina Tyereskova;Sally Ride;Szvetlana Szavickaja;Jelena Kondakova
+Melyik űrszonda hagyta el elsőként a helioszférát?;Voyager–1;Voyager–2;Pioneer–10;New Horizons
+Mi volt az első mesterséges hold neve?;Szputnyik–1;Explorer–1;Vosztok–1;Vanguard–1
+Ki lett 2025-ben a második magyar űrhajós?;Kapu Tibor;Cserényi Gyula;Farkas Bertalan;Magyari Béla
+Hány perc van egy napban?;1440;100;5000
+Hány pötty van összesen egy dobókocka hat oldalán?;21;6;50
+Hány Fahrenheit-fokon fagy meg a víz?;32;0;100
+Hány Fahrenheit-fokon forr a víz?;212;100;400
+Hány liter egy hektoliter?;100;10;1000
+Hány négyzetméter egy hektár?;10000;1000;100000
+Hány milliméter egy hüvelyk (egészre kerekítve)?;25;10;50
+Hány méter egy angol mérföld (egészre kerekítve)?;1609;1000;3000
+Hány métert tesz meg a hang egy másodperc alatt a levegőben (kb.)?;343;100;1000
+Melyik évben repült először a Wright fivérek motoros repülőgépe?;1903;1850;1950
+Melyik évben repült az űrbe Farkas Bertalan?;1980;1960;2000
+Hány kilométert tesz meg a fény egy másodperc alatt vákuumban (kerekítve)?;300000;100000;1000000
+Hány fokkal van a nulla Celsius-fok alatt az abszolút nulla pont (egészre kerekítve)?;273;100;500
+Mennyi 2 a 10. hatványon?;1024;100;5000
+Hány prímszám van 1 és 100 között?;25;5;60
+Hány fokos egy szabályos hatszög egy belső szöge?;120;60;180
+Hány átlója van egy hatszögnek?;9;1;30
+Hány éle van egy kockának?;12;4;30
+Hány m/s² a nehézségi gyorsulás a Föld felszínén (egészre kerekítve)?;10;1;30
+Hány perc alatt kerüli meg a Földet a Nemzetközi Űrállomás (kb.)?;92;30;300
+Hány holdja van a Marsnak?;2;0;10
+Hány földi napig tart egy év a Marson (kb.)?;687;300;1500
+Hány kilométer a Föld és a Hold átlagos távolsága (kb.)?;384000;100000;1000000
+Hány millió kilométer a Föld átlagos távolsága a Naptól (kb.)?;150;50;500
+#
+# kategória: Életmód, mindennapok
+Melyik gyümölcsből készül a guacamole?;avokádó;mangó;kivi;banán
+Melyik cég gyártja az iPhone-t?;Apple;Samsung;Nokia;Sony
+Melyik a hagyományos magyar karácsonyi sütemény?;bejgli;kürtőskalács;fánk;pogácsa
+Melyik ünnep a jelmezek és a fánk ideje?;farsang;húsvét;pünkösd;szilveszter
+Hogyan folytatódik a közmondás: Lassan járj, ...?;tovább érsz;messzebb látsz;kevesebbet fáradsz;mindig odaérsz
+Hogyan folytatódik a közmondás: Ki korán kel, ...?;aranyat lel;sokat lát;hamar elfárad;messzire jut
+Hogyan folytatódik a közmondás: Addig üsd a vasat, ...?;amíg meleg;amíg bírod;amíg fényes;amíg el nem törik
+Hogyan folytatódik a közmondás: Nem esik messze az alma ...?;a fájától;a kosártól;a háztól;a kerttől
+Hogyan folytatódik a közmondás: Ajándék lónak ne nézd ...?;a fogát;a patáját;a színét;a farkát
+Melyik autómárka logója négy összefonódó karika?;Audi;Opel;Toyota;Mercedes-Benz
+Melyik autómárka logóján látható ágaskodó ló?;Ferrari;Lamborghini;Maserati;Alfa Romeo
+Mi a pesto fő zöld hozzávalója?;bazsalikom;petrezselyem;spenót;menta
+Melyik országból származik a sushi?;Japán;Kína;Korea;Vietnám
+Mi a hummusz fő alapanyaga?;csicseriborsó;lencse;bab;szójabab
+Miből készül a tofu?;szójababból;rizsből;csicseriborsóból;kölesből
+Melyik italt ízesítik komlóval?;sört;bort;pálinkát;whiskyt
+Melyik szín van a magyar kártyában?;makk;káró;pikk;treff
+Ki az após?;a házastárs apja;a nagyapa;a keresztapa;a nagybácsi
+Ki lehet a sógornőm?;a feleségem nővére;a nagynéném;az unokahúgom;a keresztanyám
+Mi a bocskor?;lábbeli;fejfedő;kabát;öv
+Mi a szűr?;posztóköpeny;lábbeli;kalap;szoknya
+Mi a pruszlik?;mellény;szoknya;csizma;kendő
+Mit készít a kádár?;hordót;kádat;bútort;kenyeret
+Mit készít a bognár?;szekeret és kereket;patkót;kötelet;hordót
+Mi a csizmadia?;csizmakészítő mester;katonai rang;lovas futár;vándorénekes
+Mit jelent a carpe diem?;Élj a mának!;Ismerd meg önmagad!;Jöttem, láttam, győztem.;A kocka el van vetve.
+Melyik magyar falu nevéből ered az angol coach (kocsi) szó?;Kocs;Komárom;Kecskemét;Kocsord
+Mit jelent az ad acta kifejezés?;lezártnak tekinteni;sürgősen intézni;titkosan kezelni;határidőre teljesíteni
+Hogyan folytatódik a közmondás: Aki másnak vermet ás, ...?;maga esik bele;sokat dolgozik;mélyre jut;maga is ott marad
+Hogyan folytatódik a közmondás: Sok lúd ...?;disznót győz;nagy zajt csap;sokat eszik;sok tojást tojik
+Melyik fűszert nyerik egy krókuszfaj virágának bibéjéből?;sáfrányt;kurkumát;fahéjat;szegfűszeget
+Melyik tésztafajta neve jelenti olaszul azt, hogy kis nyelvek?;linguine;spagetti;penne;fusilli
+Melyik süteményt nevezték el egy cigányprímásról?;Rigó Jancsi;Dobostorta;Esterházy-torta;Gerbeaud-szelet
+Melyik torta tetején van ropogós karamellréteg?;Dobostorta;Esterházy-torta;Sachertorta;Rigó Jancsi
+Melyik ország nemzeti étele a paella?;Spanyolország;Portugália;Olaszország;Mexikó
+Mi a kecskeméti barackpálinka alapanyaga?;kajszibarack;őszibarack;szilva;körte
+Melyik márkanév kötődik a szegedi téliszalámihoz?;Pick;Herz;Gyermelyi;Univer
+Mit jelent a www rövidítés?;World Wide Web;World Web Wide;Wide World Web;Web World Wide
+Ki alapította Paul Allennel a Microsoftot?;Bill Gates;Steve Jobs;Steve Wozniak;Larry Page
+Melyik országban alapították a Nokiát?;Finnországban;Svédországban;Norvégiában;Dániában
+Melyik ország autómárkája a Skoda?;Csehország;Szlovákia;Lengyelország;Németország
+Melyik ország autómárkája a Volvo?;Svédország;Norvégia;Németország;Dánia
+Melyik nyelvből került a magyarba a papucs szó?;a törökből;a németből;a latinból;a szlovákból
+Mi a besamelmártás alapja?;vaj, liszt és tej;tojás és olaj;paradicsom;tejszín és sajt
+Melyik tészta készül eredetileg tojással, pecorinóval és guancialéval?;carbonara;bolognai;amatriciana;arrabbiata
+Melyik szőlőfajtából készül elsősorban a tokaji aszú?;furmint;olaszrizling;kékfrankos;cserszegi fűszeres
+Mi a tempura?;bundában sült étel;nyers halszelet;húsleves;rizsgombóc
+Melyik gabonából készül a bulgur?;búza;rizs;kukorica;árpa
+Melyik gabona malátájából készül a skót single malt whisky?;árpa;rozs;kukorica;búza
+Mi a kombucha?;erjesztett tea;kecsketej;rizsbor;gyümölcslé
+Mi a pho?;vietnami leves;koreai savanyúság;japán édesség;thai curry
+Melyik országból származik a kimcsi?;Korea;Japán;Kína;Vietnám
+Melyik olasz sajt készül eredetileg bivalytejből?;mozzarella;parmezán;gorgonzola;pecorino
+Mi a tiramisu egyik fő hozzávalója?;mascarpone;ricotta;túró;tejföl
+Melyik fűszer adja a gulyás jellegzetes színét?;fűszerpaprika;kurkuma;sáfrány;szegfűbors
+Mi a hagyományos magyar halászlé fő hala?;ponty;harcsa;csuka;pisztráng
+Hány 31 napos hónap van egy évben?;7;1;12
+Hány lapból áll a magyar kártya?;32;10;60
+Hány lapból áll a francia kártya jokerek nélkül?;52;20;100
+Hány éves kortól lehet Magyarországon szavazni?;18;10;30
+Hány csillag van az Európai Unió zászlaján?;12;5;30
+Hány képviselője van az Országgyűlésnek?;199;100;500
+Hány tagállama van az Európai Uniónak?;27;10;40
+Hány darab egy gros?;144;50;500
+Melyik évben vezették be a forintot?;1946;1900;2000
+Melyik évben mutatták be az első iPhone-t?;2007;1995;2015
+Melyik évben alapították a Google-t?;1998;1985;2010
+Hány gramm egy dekagramm?;10;1;100
+Hány milliliter egy deciliter?;100;10;1000
+Hány forint a legnagyobb címletű forintbankjegy?;20000;1000;100000
+Hány milliméter széles egy A4-es papírlap?;210;100;500
+Hány milliméter hosszú egy A4-es papírlap?;297;100;500
+Hány számjegyből áll a magyar adóazonosító jel?;10;4;20
+Hány számjegyből áll egy háromszor nyolc jegyű magyar bankszámlaszám?;24;8;40
+#
+# kategória: Szórakozás (zene, film, popkultúra)
+Hogy hívják Batmant a civil életben?;Bruce Wayne;Clark Kent;Tony Stark;Peter Parker
+Hogy hívják Supermant a civil életben?;Clark Kent;Bruce Wayne;Peter Parker;Steve Rogers
+Ki Luke Skywalker apja?;Darth Vader;Obi-Wan Kenobi;Han Solo;Yoda
+Melyik együttes énekese volt Freddie Mercury?;Queen;The Rolling Stones;Led Zeppelin;Pink Floyd
+Kit neveztek a rock and roll királyának?;Elvis Presley;Chuck Berry;Little Richard;Buddy Holly
+Melyik rajzfilm főhőse Simba?;Az oroszlánkirály;A dzsungel könyve;Madagaszkár;Bambi
+Hogy hívják Bart Simpson apját?;Homer;Ned;Moe;Abe
+Mitől lesz erős Popeye?;spenóttól;répától;sóskától;babtól
+Milyen fajtájú kutya Scooby-Doo?;dán dog;bernáthegyi;labrador;beagle
+Hogy hívják Popeye kedvesét?;Olívia;Betty;Wilma;Daisy
+Ki játszotta Forrest Gumpot?;Tom Hanks;Tom Cruise;Kevin Costner;Robin Williams
+Ki játszotta a Terminátort?;Arnold Schwarzenegger;Sylvester Stallone;Bruce Willis;Dolph Lundgren
+Melyik filmsorozat szereplője Jack Sparrow kapitány?;A Karib-tenger kalózai;Pán Péter;Hook;A kincses sziget
+Melyik országból származik az ABBA együttes?;Svédország;Norvégia;Dánia;Finnország
+Melyik városból indult a Beatles?;Liverpool;London;Manchester;Birmingham
+Ki rendezte a Jurassic Parkot?;Steven Spielberg;George Lucas;James Cameron;Ridley Scott
+Ki rendezte az 1997-es Titanic című filmet?;James Cameron;Steven Spielberg;Ridley Scott;Peter Jackson
+Melyik filmet rendezte Quentin Tarantino?;Ponyvaregény;Forrest Gump;Gladiátor;Titanic
+Melyik filmben hangzik el: Az élet nem habostorta?;A tanú;Indul a bakterház;Az ötödik pecsét;Csinibaba
+Ki rendezte az Oscar-díjas Mephisto című filmet?;Szabó István;Jancsó Miklós;Fábri Zoltán;Makk Károly
+Melyik magyar film nyert Oscar-díjat 2016-ban?;Saul fia;Testről és lélekről;Kontroll;Üvegtigris
+Hogy hívják a Macskafogó titkosügynök egerét?;Grabowski;Lusta Dick;Mr. Teufel;Safranek
+Hogy hívják a Mézga család kutyáját?;Blöki;Bodri;Morzsi;Frakk
+Hogy hívják a Hupikék törpikék gonosz varázslóját?;Hókuszpók;Szundi;Törpapa;Okoska
+Hogy hívják Hókuszpók macskáját?;Sziamiaú;Szilveszter;Cirmi;Garfield
+Melyik együttest alapította Presser Gábor 1971-ben?;Locomotiv GT;Omega;Illés;Fonográf
+Melyik zenekar dala a Gyöngyhajú lány?;Omega;Illés;Metro;Locomotiv GT
+Melyik filmet rendezte Christopher Nolan?;Eredet;Avatar;Gladiátor;Mátrix
+Ki rendezte A keresztapát?;Francis Ford Coppola;Martin Scorsese;Brian De Palma;Sergio Leone
+Ki játszotta Vito Corleonét A keresztapában?;Marlon Brando;Al Pacino;Robert De Niro;James Caan
+Melyik filmben hangzik el: „Houston, baj van.”?;Apollo 13;Gravitáció;Csillagok között;Armageddon
+Melyik filmben szerepel a HAL 9000 számítógép?;2001: Űrodüsszeia;Mátrix;Szárnyas fejvadász;Terminátor
+Ki alakította Indiana Jonest?;Harrison Ford;Mel Gibson;Kevin Costner;Michael Douglas
+Melyik dél-koreai film nyerte el elsőként a legjobb filmnek járó Oscart?;Élősködők;Oldboy;Vonat Busanba;A szolgálólány
+Melyik országban játszódik a Nyerd meg az életed (Squid Game)?;Dél-Korea;Japán;Kína;Tajvan
+Melyik sorozat főszereplője Walter White?;Breaking Bad;Better Call Saul;Ozark;Narcos
+Melyik sorozatban harcolnak a Vastrónért?;Trónok harca;Vikingek;Vaják;A hatalom gyűrűi
+Melyik kitalált városban él a Simpson család?;Springfield;Shelbyville;South Park;Quahog
+Melyik sorozatban játszotta Jennifer Aniston Rachelt?;Jóbarátok;Így jártam anyátokkal;Seinfeld;Szex és New York
+Melyik zenekar albuma a The Dark Side of the Moon?;Pink Floyd;Led Zeppelin;The Who;Genesis
+Melyik zenekar dala a Stairway to Heaven?;Led Zeppelin;Deep Purple;Pink Floyd;Black Sabbath
+Melyik zenekar dala a Smells Like Teen Spirit?;Nirvana;Pearl Jam;Soundgarden;Alice in Chains
+Kit neveztek a pop királyának?;Michael Jackson;Prince;Elvis Presley;Justin Timberlake
+Melyik énekesnő albuma a 21?;Adele;Amy Winehouse;Duffy;Lady Gaga
+Melyik zenekar énekese Mick Jagger?;The Rolling Stones;The Who;The Kinks;The Beatles
+Ki képviselte elsőként Magyarországot az Eurovíziós Dalfesztiválon 1994-ben?;Bayer Friderika;Charlie;Zámbó Jimmy;Szandi
+Melyik zenekart vezette Kovács Ákos az 1990-es évek elején?;Bonanza Banzai;Hooligans;Kispál és a Borz;Tankcsapda
+Melyik együttes frontembere Lovasi András?;Kispál és a Borz;Quimby;Tankcsapda;Hooligans
+Melyik együttes frontembere Lukács László?;Tankcsapda;Quimby;Kispál és a Borz;Ossian
+Melyik videojáték-sorozat főhőse egy vízvezeték-szerelő?;Super Mario;Sonic;The Legend of Zelda;Pac-Man
+Melyik országban fejlesztették ki a Tetrist?;Szovjetunió;Japán;Egyesült Államok;Egyesült Királyság
+Melyik képregénykiadó hőse Pókember?;Marvel;DC;Dark Horse;Image
+Melyik képregénykiadó hőse Batman?;DC;Marvel;Image;Dark Horse
+Hogy hívják Batman komornyikját?;Alfred;Jarvis;Sebastian;Jeeves
+Hogy hívják a törpöt, akit Hókuszpók teremtett, hogy viszályt szítson?;Törpilla;Törpicur;Okoska;Törperős
+Ki írta és rendezte az első Csillagok háborúja filmet?;George Lucas;Steven Spielberg;Ridley Scott;James Cameron
+Melyik filmben szerepel Hannibal Lecter?;A bárányok hallgatnak;Hetedik;Psycho;Ragyogás
+Ki rendezte a Psychót (1960)?;Alfred Hitchcock;Stanley Kubrick;Orson Welles;Billy Wilder
+Ki rendezte a Ragyogást?;Stanley Kubrick;Alfred Hitchcock;Steven Spielberg;John Carpenter
+Hány évadot ért meg a Jóbarátok?;10;3;20
+Hány Oscar-díjat nyert az 1997-es Titanic?;11;1;20
+Melyik évben mutatták be a Csillagok háborúja első filmjét?;1977;1960;1990
+Melyik évben mutatták be az első Toy Story filmet?;1995;1970;2010
+Melyik évben mutatták be a Mátrixot?;1999;1980;2010
+Hány Oscar-díjat nyert A Gyűrűk Ura: A király visszatér?;11;1;20
+Hány évadból áll a Trónok harca?;8;1;15
+Hány évadból áll a Breaking Bad?;5;1;12
+Melyik évben jelent meg a Nirvana Nevermind című albuma?;1991;1970;2010
+Melyik évben jelent meg a Beatles Abbey Road című albuma?;1969;1950;1990
+Melyik évben halt meg Elvis Presley?;1977;1950;2000
+Melyik évben halt meg Michael Jackson?;2009;1990;2020
+Hány hivatalos James Bond-filmben játszott Sean Connery?;6;1;15
+Hány James Bond-filmben játszott Daniel Craig?;5;1;15
+Melyik évben mutatták be a Macskafogót?;1986;1960;2010
+Melyik évben jelent meg az első Super Mario Bros. játék?;1985;1970;2010
+Melyik évben jelent meg a Minecraft teljes változata?;2011;1990;2020
+Hány perc hosszú a Bohemian Rhapsody (egészre kerekítve)?;6;1;15
+Melyik évben mutatták be Fábri Zoltán A Pál utcai fiúk című filmjét?;1969;1950;2000
+Melyik évben mutatták be Koltai Gábor Honfoglalás című filmjét?;1996;1970;2020
+Melyik évben indult a YouTube?;2005;1995;2015
+#
+# ======================================================== TÖRTÉNELEM (nincs a kategóriák között, kikapcsolva)
+# Ki volt Szigetvár hős kapitánya 1566-ban?;Zrínyi Miklós;Dobó István;Jurisics Miklós;Szondi György
+# Ki védte Kőszeg várát 1532-ben?;Jurisics Miklós;Dobó István;Zrínyi Miklós;Losonczy István
+# Melyik csata után halt meg II. Lajos király?;a mohácsi;a muhi;a nándorfehérvári;a várnai
+# Melyik győzelem emlékére szól a déli harangszó?;a nándorfehérvárié;a mohácsié;az egri ostromé;a pozsonyi csatáé
+# Ki volt Hunyadi Mátyás apja?;Hunyadi János;Szilágyi Mihály;Hunyadi László;Zsigmond király
+# Ki vezette a magyarokat a honfoglaláskor a hagyomány szerint?;Árpád;Álmos;Géza;Előd
+# Ki volt Szent István apja?;Géza fejedelem;Árpád;Taksony;Koppány
+# Ki volt az utolsó Árpád-házi király?;III. András;IV. Béla;II. András;V. István
+# Melyik király adta ki az Aranybullát?;II. András;IV. Béla;Szent László;Könyves Kálmán
+# Melyik királyunkat nevezik második honalapítónak?;IV. Bélát;Szent Istvánt;Mátyást;Nagy Lajost
+# Melyik királyunkat nevezték lovagkirálynak?;Szent Lászlót;Könyves Kálmánt;Nagy Lajost;IV. Bélát
+# Ki volt Mátyás király második felesége?;Aragóniai Beatrix;Podjebrád Katalin;Cillei Erzsébet;Habsburg Mária
+# Melyik magyar királyné becenevét ismeri mindenki Sisiként?;Erzsébet;Mária Terézia;Zita;Gizella
+# Kit nevezett Kossuth a legnagyobb magyarnak?;Széchenyi Istvánt;Deák Ferencet;Wesselényi Miklóst;Batthyány Lajost
+# Kit neveztek a haza bölcsének?;Deák Ferencet;Széchenyi Istvánt;Kossuth Lajost;Eötvös Józsefet
+# Ki ajánlotta fel egyévi jövedelmét a Magyar Tudományos Akadémia alapítására?;Széchenyi István;Wesselényi Miklós;Batthyány Lajos;Esterházy Pál
+# Ki volt az első felelős magyar miniszterelnök?;Batthyány Lajos;Kossuth Lajos;Deák Ferenc;Andrássy Gyula
+# Ki mondta: Jöttem, láttam, győztem?;Julius Caesar;Augustus;Nagy Sándor;Hannibál
+# Ki volt az Egyesült Államok első elnöke?;George Washington;Abraham Lincoln;Thomas Jefferson;John Adams
+# Hol szenvedte el Napóleon végső vereségét 1815-ben?;Waterloonál;Austerlitznél;Lipcsénél;Borogyinónál
+# Melyik birodalom bukását jelentette Konstantinápoly eleste 1453-ban?;a Bizánci Birodalomét;az Oszmán Birodalomét;a Frank Birodalomét;a Perzsa Birodalomét
+# Melyik királyunk rendelkezett úgy, hogy boszorkányok pedig nincsenek?;Könyves Kálmán;Szent László;Szent István;IV. Béla
+# Melyik királyunk alapította a pécsi egyetemet 1367-ben?;Nagy Lajos;Mátyás;Károly Róbert;Zsigmond
+# Ki vezette az 1703 és 1711 közötti szabadságharcot?;II. Rákóczi Ferenc;Bethlen Gábor;Thököly Imre;Bocskai István
+# Hány vezér vezette a honfoglaló törzseket a hagyomány szerint?;7;2;15
+# Hány aradi vértanút végeztek ki 1849. október 6-án?;13;5;30
+# Hány évig uralkodott Mátyás király?;32;10;50
+# Hány évig tartott a százéves háború?;116;80;150
+# Hány évig tartott a harmincéves háború?;30;10;50
+# Hány évig volt Buda török kézen?;145;100;200
+# Melyik évben volt a mohácsi csata?;1526;1400;1700
+# Melyik évben volt a muhi csata?;1241;1100;1400
+# Melyik évben volt a nándorfehérvári diadal?;1456;1300;1600
+# Melyik évben kezdődött a Rákóczi-szabadságharc?;1703;1600;1800
+# Melyik évben volt a kiegyezés?;1867;1800;1950
+# Melyik évben írták alá a trianoni békeszerződést?;1920;1900;1950
+# Melyik évben ünnepelték a honfoglalás ezredik évfordulóját, a millenniumot?;1896;1850;1950
+# Melyik évben csatlakozott Magyarország az Európai Unióhoz?;2004;1990;2020
+# Melyik évben lett Magyarország a NATO tagja?;1999;1980;2010
+# Melyik évben kezdődött az első világháború?;1914;1880;1950
+# Melyik évben ért véget a második világháború?;1945;1900;2000
+# Melyik évben omlott le a berlini fal?;1989;1950;2010
+# Melyik évben süllyedt el a Titanic?;1912;1880;1950
+# Melyik évben ostromolták meg a Bastille-t?;1789;1700;1900
+# Melyik évben fogadták el az Egyesült Államok függetlenségi nyilatkozatát?;1776;1700;1850
+#
+# ======================================================== TÚL KÖNNYŰ (kikapcsolva)
+# Melyik a Naprendszer legnagyobb bolygója?;Jupiter;Szaturnusz;Neptunusz;Föld
+# Melyik folyó szeli ketté Budapestet?;Duna;Tisza;Dráva;Rába
+# Ki írta a Himnuszt?;Kölcsey Ferenc;Vörösmarty Mihály;Petőfi Sándor;Arany János
+# Ki írta a Szózatot?;Vörösmarty Mihály;Kölcsey Ferenc;Petőfi Sándor;Jókai Mór
+# Ki írta a János vitézt?;Petőfi Sándor;Arany János;Jókai Mór;Mikszáth Kálmán
+# Ki írta az Egri csillagokat?;Gárdonyi Géza;Jókai Mór;Mikszáth Kálmán;Móricz Zsigmond
+# Ki írta A Pál utcai fiúkat?;Molnár Ferenc;Móricz Zsigmond;Gárdonyi Géza;Karinthy Frigyes
+# Milyen színű a smaragd?;zöld;kék;vörös;sárga
+# Melyik állatot nevezik a sivatag hajójának?;teve;ló;elefánt;szamár
+# Mi a víz kémiai képlete?;H2O;CO2;NaCl;O2
+# Melyik szervünk pumpálja a vért?;szív;máj;tüdő;vese
+# Milyen színt kapunk, ha a kéket és a sárgát összekeverjük?;zöld;lila;narancssárga;barna
+# Melyik állat a ravasz a mesékben?;róka;farkas;medve;nyúl
+# Mi a neve Micimackó szamár barátjának?;Füles;Tigris;Malacka;Kanga
+# Hogy hívják Mickey egér kutyáját?;Plútó;Goofy;Donald;Chip
+# Melyik országból származik a pizza?;Olaszország;Görögország;Spanyolország;Franciaország
+# Melyik ország zászlaja piros-fehér-zöld vízszintes sávos?;Magyarország;Olaszország;Mexikó;Írország
+# Melyik bolygót nevezik vörös bolygónak?;Mars;Vénusz;Jupiter;Merkúr
+# Ki festette a Mona Lisát?;Leonardo da Vinci;Michelangelo;Raffaello;Botticelli
+# Melyik eseményre emlékezünk március 15-én?;az 1848-as forradalomra;az államalapításra;az 1956-os forradalomra;a honfoglalásra
+# Kinek az ünnepe augusztus 20.?;Szent Istváné;Szent Lászlóé;Szent Imréé;Szent Gellérté
+# Ki találta fel a bűvös kockát?;Rubik Ernő;Bíró László József;Puskás Tivadar;Jedlik Ányos
+# Melyik bábfilm főszereplője egy egyfejű sárkány?;Süsü, a sárkány;Mazsola;Futrinka utca;Bob és Bobek
+# Milyen állat Babóca?;katicabogár;csiga;méhecske;lepke
+# Melyik madár tojja a legnagyobb tojást?;strucc;emu;kondor;pelikán
+# Melyik a leggyorsabb szárazföldi állat?;gepárd;oroszlán;antilop;agár
+# Melyik a legnagyobb élő állat?;kék bálna;afrikai elefánt;ámbráscet;zsiráf
+# Hol él a jegesmedve?;az Északi-sarkvidéken;a Déli-sarkvidéken;a tajgában;az Alpokban
+# Ki lépett elsőként a Holdra?;Neil Armstrong;Buzz Aldrin;Jurij Gagarin;Michael Collins
+# Melyik kontinensen él a koala?;Ausztrália;Afrika;Dél-Amerika;Ázsia
+# Melyik ünnephez kötődik a tojásfestés?;húsvét;karácsony;pünkösd;farsang
+# Melyik a világ legmagasabb hegye?;Mount Everest;K2;Kancsendzönga;Mont Blanc
+# Melyik vár ostromáról szól az Egri csillagok?;Egerről;Szigetvárról;Kőszegről;Drégelyről
+# Mit csinál a kovács?;fémet munkál meg;fát farag;bőrt cserez;kenyeret süt
+# Hány lába van egy póknak?;8;2;20
+# Hány lába van egy rovarnak?;6;2;20
+# Hány szín van a szivárványban a hagyományos felosztás szerint?;7;3;12
+# Hány törpe élt Hófehérkével?;7;3;15
+# Hány másodpercből áll egy óra?;3600;100;10000
+# Hány napos egy szökőév?;366;300;400
+# Hány hét van egy évben (egészre kerekítve)?;52;10;100
+# Hány darab egy tucat?;12;5;30
+# Hány játékos van egyszerre pályán egy labdarúgócsapatból?;11;5;20
+# Hány karika van az olimpiai zászlón?;5;1;10
+# Hány színe van a Rubik-kockának?;6;2;12
+# Hány Celsius-fokon forr a víz normál légköri nyomáson?;100;50;200
+# Hány fokos egy derékszög?;90;30;180
+# Hány fok a háromszög belső szögeinek összege?;180;90;360
+# Mennyi 7 x 8?;56;20;100
+# Mennyi 12 a négyzeten?;144;50;300
+# Hány nulla van egy millióban?;6;2;12
+# Hány évente rendeznek nyári olimpiát?;4;1;10
+# Hány kismalac szerepel a farkasos mesében?;3;1;10
+# Hány púpja van a dromedárnak?;1;1;5
+# Hány tagja volt a Beatlesnek a legismertebb felállásban?;4;2;10

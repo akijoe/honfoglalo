@@ -1,0 +1,15 @@
+<SERVER XSOCKETPORT="2002" />
+<LANG FILE="client/lang7.swf" LANGID="ru" JSON="dat/lang.json" />
+<EXTRACONFIG URL="clientquery_sysconf.php" />
+<LOAD2 PREFILE="client/nopreloader.swf" />
+<PRELOADER EXTRQ="aagetpreloader.php" FILE="" MINTIME="2000" TOTALBYTES="3000000" />
+<XTGPRELOADER EXTRQ="" FILE="preloader/preloader_testspiel2.html" MINTIME="12000" TOTALBYTES="800000" />
+<SYSCODE FILE="client/syscode.swf" />
+<WAITHALL FILE="client/waithall.swf" QGFILE="client/waithall_guest.swf" />
+<SOUNDS FILE="client/sounds.swf" QGFILE="client/sounds_mini.swf" />
+<MAP FILE="client/map_europe_east.swf" />
+<XTESTGAMEENDMOV FILE="client/testgameend_de.swf" />
+<SETTINGS NOSEPROOMS="0" FBSHARE="1" />
+<PROMOBOX PLACE="WHALL" PATH="banner/promobox_gold.swf" xLINK="" />
+<MINITOURNAMENT STATEMOV="client/minitournament_chatp.swf" />
+<TOURNAMENT PATH="" WHBOX="client/tournament_promobox.swf" MAIN="client/tournament_main.swf" STATEMOV="client/tournament_chatp.swf" />

@@ -1,0 +1,15 @@
+# Caddy a szerver elé: HTTPS (Let's Encrypt, automatikusan) és továbbítás a Go szerverhez.
+# A VPS címe: api.honfoglalo.online (Cloudflare DNS, "DNS only" / szürke felhő).
+#   sudo cp deploy/Caddyfile /etc/caddy/Caddyfile && sudo systemctl reload caddy
+# Nincs "encode gzip": az API válaszai néhány száz bájtosak, az eseményfolyamot pedig a tömörítés
+# visszatarthatná.
+api.honfoglalo.online {
+	reverse_proxy 127.0.0.1:8765 {
+		# az eseményfolyam (Server-Sent Events) azonnal menjen tovább
+		flush_interval -1
+		# a szerver (-trust-proxy) a CF-Connecting-IP fejlécből veszi a játékos címét, ha van ilyen;
+		# közvetlen kapcsolatnál ezt bárki beállíthatná, ezért töröljük. Ha a domain a Cloudflare
+		# proxyja (narancs felhő) mögött van, ezt a sort töröld ki.
+		header_up -CF-Connecting-IP
+	}
+}

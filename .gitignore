@@ -1,0 +1,15 @@
+# tools/build_site.py kimenete (Cloudflare Pages-re ez kerül)
+dist/
+# a szerver futás közben ide írja a visszajelzéseket
+feedback.jsonl
+# go build kimenete
+/honfoglalo-server
+# szerkesztők ideiglenes fájljai
+*.kate-swp
+*~
+# a Cloudflare-feltöltő (wrangler) helyi állapota
+.wrangler/
+# helyi eszközbeállítások
+.claude/
+# helyi hangfelvételek
+/*.wav

@@ -1,0 +1,23 @@
+{
+ "answer_pick": "answer_pick.mp3",
+ "answer_sent": "answer_sent.mp3",
+ "castle_appear": "castle_appear.mp3",
+ "castleattack_in": "castleattack_in.mp3",
+ "game_end": "game_end.mp3",
+ "game_start": "game_start.mp3",
+ "map_attackfail": "map_attackfail.mp3",
+ "map_select": "map_select.mp3",
+ "map_selectmouseover": "map_selectmouseover.mp3",
+ "map_territoryfill": "map_territoryfill.mp3",
+ "playerbox_scorechange": "playerbox_scorechange.mp3",
+ "question_goodappear": "question_goodappear.mp3",
+ "question_lose": "question_lose.mp3",
+ "question_resultsappear": "question_resultsappear.mp3",
+ "question_second": "question_lose.mp3",
+ "question_win": "question_win.mp3",
+ "tiktak_1": "tiktak_1.mp3",
+ "tiktak_2": "tiktak_3.mp3",
+ "tiktak_3": "tiktak_3.mp3",
+ "tip_appear": "question_resultsappear.mp3",
+ "turnwindow_roundchange": "turnwindow_roundchange.mp3"
+}

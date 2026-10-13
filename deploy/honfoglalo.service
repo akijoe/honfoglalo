@@ -1,0 +1,25 @@
+# A többjátékos szerver systemd-szolgáltatásként (csak API; a játék a Cloudflare Pages-ről jön).
+#   sudo cp honfoglalo-server /usr/local/bin/
+#   sudo cp deploy/honfoglalo.service /etc/systemd/system/
+#   sudo systemctl daemon-reload && sudo systemctl enable --now honfoglalo
+# Az -origins értékét írd át a saját Pages-címedre (több cím vesszővel elválasztva).
+[Unit]
+Description=Honfoglaló többjátékos szerver
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+ExecStart=/usr/local/bin/honfoglalo-server -addr 127.0.0.1:8765 -static=false -trust-proxy \
+    -origins https://honfoglalo.online,https://www.honfoglalo.online,https://honfoglalo.pages.dev -feedback /var/lib/honfoglalo/feedback.jsonl
+DynamicUser=yes
+StateDirectory=honfoglalo
+Restart=always
+RestartSec=2
+LimitNOFILE=65536
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+
+[Install]
+WantedBy=multi-user.target
