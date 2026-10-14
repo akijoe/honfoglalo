@@ -6,17 +6,26 @@
   <title>Honfoglaló</title>
   <link rel="icon" href="favicon.ico">
   <style>
-    :root { --side: 184px; --top: 0px; }
+    /* --foot: a játék alatt a láblécnek hagyott hely (csak telefonon; asztali gépen a térképsávban van) */
+    :root { --drawer: 184px; --side: var(--drawer); --foot: 0px; }
     html, body { margin: 0; height: 100%; overflow: hidden; }
     body { background: #000 url(img/bg.png) repeat-x 0 0; }
-    #game { position: fixed; top: var(--top); right: 0; bottom: 0; left: var(--side);
+    #game { position: fixed; top: 0; right: 0; bottom: var(--foot); left: var(--side); container-type: size;
             display: flex; align-items: center; justify-content: center; }
-    /* a testclient.swf színpada 600×500 – arányosan nagyítva */
-    #game > * { width: min(calc(100vw - var(--side)), calc((100vh - var(--top)) * 1.2));
-                height: min(calc((100vw - var(--side)) * 5 / 6), calc(100vh - var(--top))); }
+    /* a testclient.swf színpada 600×500 – arányosan nagyítva (a második sor a látható területhez
+       igazodik, telefonon a böngésző sávjai nélkül; az első a régebbi böngészőknek) */
+    #game > * { width: min(calc(100vw - var(--side)), calc((100vh - var(--foot)) * 1.2));
+                height: min(calc((100vw - var(--side)) * 5 / 6), calc(100vh - var(--foot)));
+                width: min(100cqw, 120cqh); height: min(calc(100cqw * 5 / 6), 100cqh); }
+
+    /* érintőképernyőn a Flash beviteli mezője helyén (js/hf.js: hfText) */
+    .hftext { position: fixed; z-index: 3; box-sizing: border-box; margin: 0; padding: 0 .3em;
+              border: 1px solid rgba(0, 0, 0, .35); border-radius: 2px; outline: none; resize: none;
+              font-family: 'Book Antiqua', Palatino, 'Palatino Linotype', Georgia, serif; line-height: normal;
+              transform-origin: 0 0; -webkit-appearance: none; appearance: none; }
 
     /* térképválasztó (js/hf.js) */
-    #maps { position: fixed; top: 0; left: 0; bottom: 0; width: var(--side); box-sizing: border-box;
+    #maps { position: fixed; top: 0; left: 0; bottom: 0; width: var(--drawer); box-sizing: border-box;
             padding: 12px 8px; overflow-y: auto; background: rgba(0, 0, 0, .25);
             border-right: 1px solid #6B4A24; font-family: 'Book Antiqua', Palatino, 'Palatino Linotype', Georgia, serif; }
     #maps .side { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
@@ -40,19 +49,40 @@
     #maps .note { margin: 10px 4px 0; font-size: 12px; line-height: 1.35; color: #C2A27A; text-align: center; }
     #maps .note:empty { display: none; }
 
-    /* keskeny (álló) képernyőn a térképek felül, vízszintesen görgethető sávban */
+    #mapsToggle { display: none; }
+
+    /* lábléc: a térképsáv alján (telefonon a lap alján, középen) */
+    #foot { position: fixed; left: 0; bottom: 0; width: calc(var(--drawer) - 1px); box-sizing: border-box; margin: 0;
+            padding: 6px 10px; text-align: center; line-height: 1.35; background: #0B0603; border-top: 1px solid #6B4A24;
+            color: #C2A27A; font: 12px 'Book Antiqua', Palatino, 'Palatino Linotype', Georgia, serif; }
+    #maps { padding-bottom: 72px; }
+    #foot .nowrap { white-space: nowrap; }
+    #foot a { color: #FFE39A; text-decoration: none; }
+    #foot a:hover { text-decoration: underline; }
+    #foot .sep { margin: 0 .4em; opacity: .6; }
+
+    /* telefonon: a játék felül (gépelés közben a billentyűzet fölött is látszik a nagy része), a
+       térképek bal oldalt, behúzható sávban (a "Térkép" fül nyitja) */
     @media (max-width: 700px) {
-      :root { --side: 0px; --top: 66px; }
-      #maps { right: 0; bottom: auto; width: auto; height: var(--top); padding: 4px 6px; display: flex;
-              align-items: center; gap: 8px; overflow-x: auto; overflow-y: hidden; border-right: 0;
-              border-bottom: 1px solid #6B4A24; }
-      #maps h2 { margin: 0; font-size: 15px; }
-      #maps .side { flex-direction: row; align-items: center; margin: 0; flex: none; }
-      #maps #home { white-space: nowrap; }
-      #maps .list { flex-direction: row; }
-      #maps button { flex-direction: column; gap: 0; width: auto; padding: 2px 4px; font-size: 11px; text-align: center; }
-      #maps img { width: 46px; height: 32px; }
-      #maps .note { margin: 0; min-width: 140px; }
+      :root { --side: 0px; --foot: 22px; }
+      #game { align-items: flex-start; }
+      #maps { z-index: 5; transform: translateX(-100%); visibility: hidden; background: rgba(28, 15, 6, .97);
+              box-shadow: 4px 0 16px rgba(0, 0, 0, .6); transition: transform .2s ease, visibility 0s .2s; }
+      body.maps-open #maps { transform: none; visibility: visible; transition: transform .2s ease; }
+      #mapsToggle { display: block; position: fixed; z-index: 6; left: 0; top: calc(100vw * 5 / 6 + 10px);
+                    padding: 6px 12px 6px 10px; border: 1px solid #C89B4A; border-left: 0; border-radius: 0 9px 9px 0;
+                    background: #7A4E1D; color: #FFF3D0; font: bold 14px 'Book Antiqua', Palatino, 'Palatino Linotype', Georgia, serif;
+                    cursor: pointer; transition: left .2s ease; }
+      body.maps-open #mapsToggle { left: var(--drawer); }
+      body.typing #mapsToggle { display: none; }
+      #maps { padding-bottom: 12px; }
+      #foot { right: 0; width: auto; height: var(--foot); padding: 0; line-height: var(--foot); white-space: nowrap;
+              font-size: 11px; background: none; border: 0; }
+      body.typing #foot { visibility: hidden; }
+    }
+    /* fekvő telefonon a játék mellett, a bal felső sarokban */
+    @media (max-width: 700px) and (orientation: landscape) {
+      #mapsToggle { top: 8px; }
     }
   </style>
   <script src="vendor/ruffle/ruffle.js"></script>
@@ -60,6 +90,7 @@
   <script src="js/hf.js"></script>
 </head>
 <body>
+  <button id="mapsToggle" type="button" aria-controls="maps" aria-expanded="false">Térkép ›</button>
   <nav id="maps" aria-label="Térkép">
     <div class="side">
       <button id="home" type="button" hidden>Főoldal</button>
@@ -70,5 +101,6 @@
     <p class="note"></p>
   </nav>
   <div id="game"></div>
+  <p id="foot"><span class="nowrap">v1.1<span class="sep">|</span><a href="https://github.com/akijoe/honfoglalo" target="_blank" rel="noopener">Source code</a><span class="sep">|</span></span> Not affiliated with or endorsed by THX Games</p>
 </body>
 </html>

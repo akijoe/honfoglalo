@@ -89,7 +89,8 @@ nem változtak. A kiegészítések ActionScript-forrásként a `src/` mappában 
 - `src/questions.as` – kérdésválasztás
 - `src/mp.as` – a többjátékos szinkron
 
-Teszteléshez: `?debugclock=3` (rövid óra), `?slot=a` (külön munkamenet), `?debug`, `?map=FR`.
+Teszteléshez: `?debugclock=3` (rövid óra), `?slot=a` (külön munkamenet), `?debug`, `?map=FR`,
+`?touchtext` (a telefonos beviteli mező asztali gépen is).
 
 ## Források
 

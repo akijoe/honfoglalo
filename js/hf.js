@@ -166,6 +166,107 @@
     return null;
   };
 
+  // ---------------------------------------------------------------------------- szövegbevitel érintőképernyőn
+
+  // Telefonon és tableten a Flash kijelölt beviteli mezője (a tippdoboz, a név, a szobakód) helyére
+  // egy valódi mező kerül (src/lobby.as: hf.touchText): a tippnél számbillentyűzettel, és nem tűnik
+  // el gépelés közben, mint a Ruffle rejtett mezője iOS-en. ?touchtext: kipróbáláshoz asztali gépen.
+  const touchText = params.has('touchtext') || !!(window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
+  const text = { el: null, box: null };
+
+  function flashCall(fn, arg) {
+    try { if (player && typeof player[fn] === 'function') return player[fn](arg); } catch (e) { /* a SWF még tölt */ }
+    return null;
+  }
+
+  const cssColor = n => '#' + ('00000' + (Number(n) >>> 0).toString(16)).slice(-6);
+
+  // a mező helye: a SWF színpada 600×500, a lejátszó ezt arányosan nagyítja
+  function placeText() {
+    const b = text.box;
+    const el = text.el;
+    if (!b || !el || !player) return;
+    const r = player.getBoundingClientRect();
+    const s = r.width / 600;
+    const font = Math.max(1, b.size * s);
+    const z = Math.max(1, 16 / font);       // 16 px alatti betűnél az iOS ránagyítana az oldalra
+    Object.assign(el.style, {
+      left: r.left + b.x * s + 'px', top: r.top + b.y * s + 'px',
+      width: b.w * s * z + 'px', height: b.h * s * z + 'px',
+      fontSize: font * z + 'px', transform: 'scale(' + 1 / z + ')',
+    });
+  }
+
+  function openText(b) {
+    closeText();
+    const el = document.createElement(b.multiline ? 'textarea' : 'input');
+    el.className = 'hftext';
+    if (!b.multiline) el.type = 'text';
+    if (b.numeric) {
+      el.inputMode = 'numeric';
+      el.pattern = '[0-9]*';
+    }
+    el.setAttribute('autocomplete', 'off');
+    el.setAttribute('autocorrect', 'off');
+    el.setAttribute('autocapitalize', b.numeric ? 'off' : /A-Z/.test(b.restrict) ? 'characters' : b.multiline ? 'sentences' : 'words');
+    el.setAttribute('enterkeyhint', b.multiline ? 'enter' : b.numeric ? 'send' : 'go');
+    el.spellcheck = b.multiline;
+    if (b.maxChars > 0) el.maxLength = b.maxChars;
+    el.value = b.value || '';
+    Object.assign(el.style, {
+      color: cssColor(b.color), background: b.background >= 0 ? cssColor(b.background) : 'transparent',
+      textAlign: ['left', 'center', 'right'].includes(b.align) ? b.align : 'left',
+      fontWeight: b.bold ? 'bold' : 'normal',
+    });
+    // a Flash restrict-je (pl. "0123456789", "A-Za-z0-9"): a többi karakter kimarad
+    const bad = /^[A-Za-z0-9-]+$/.test(b.restrict || '') ? new RegExp('[^' + b.restrict + ']', 'g') : null;
+    el.addEventListener('input', () => {
+      let v = el.value;
+      if (bad) v = v.replace(bad, '');
+      if (b.maxChars > 0) v = v.slice(0, b.maxChars);
+      if (v !== el.value) el.value = v;
+      flashCall('hfTextSet', v);
+    });
+    // a billentyűk ne jussanak el a Ruffle-ig (az ablakon figyel, és pl. a Backspace-t letiltaná)
+    for (const type of ['keydown', 'keyup', 'keypress', 'paste']) {
+      el.addEventListener(type, e => e.stopPropagation());
+    }
+    el.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !b.multiline) {
+        e.preventDefault();
+        flashCall('hfTextEnter');
+      }
+    });
+    document.body.appendChild(el);
+    text.el = el;
+    text.box = b;
+    placeText();
+    document.body.classList.add('typing');
+    showMaps(false);
+    el.focus({ preventScroll: true });
+  }
+
+  function closeText() {
+    if (text.el) {
+      text.el.blur();
+      text.el.remove();
+    }
+    text.el = null;
+    text.box = null;
+    document.body.classList.remove('typing');
+  }
+
+  window.hfText = function (cmd, b) {
+    try {
+      if (cmd === 'touch') return touchText;
+      if (cmd === 'open' && b) openText(b);
+      else if (cmd === 'close') closeText();
+    } catch (e) { /* a Flash ne kapjon kivételt */ }
+    return null;
+  };
+  window.addEventListener('resize', placeText);
+  if (window.visualViewport) window.visualViewport.addEventListener('resize', placeText);
+
   // ---------------------------------------------------------------------------- térképek
 
   // A SWF 13 országtérképe (MAP_XX). Egyjátékos módban a böngésző emlékszik a választásra; a
@@ -442,9 +543,17 @@
   let swfLoaded = false;
   function loadSwf(flashvars) {
     swfLoaded = true;
-    if (!player) {
-      player = window.RufflePlayer.newest().createPlayer();
-      document.getElementById('game').appendChild(player);
+    // Minden betöltéshez új lejátszó: ha a régibe töltenénk (a szobából indul a játék), annak a
+    // fókusza megmaradna, de az új SWF nem kapná meg, így a billentyűzet nem jutna el hozzá.
+    closeText();
+    if (player) player.remove();
+    player = window.RufflePlayer.newest().createPlayer();
+    document.getElementById('game').appendChild(player);
+    if (touchText) {
+      // érintőképernyőn a beviteli mezőket az oldal adja (lent): a Ruffle rejtett mezője ne vegye el
+      // a fókuszt (az hozná elő a betűs billentyűzetet)
+      const vk = player.shadowRoot && player.shadowRoot.getElementById('virtual-keyboard');
+      if (vk) vk.focus = () => {};
     }
     player.ruffle().load({
       url: 'swf/testclient.swf',
@@ -538,9 +647,21 @@
     else location.href = url;
   }
 
+  // telefonon (keskeny képernyőn) a sáv behúzható: a "Térkép" fül nyitja, mellé koppintva bezárul
+  function showMaps(open) {
+    document.body.classList.toggle('maps-open', open);
+    const t = document.getElementById('mapsToggle');
+    if (t) t.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+
   function buildMaps() {
     const box = document.getElementById('maps');
     if (!box) return;
+    const toggle = document.getElementById('mapsToggle');
+    toggle.addEventListener('click', () => showMaps(!document.body.classList.contains('maps-open')));
+    document.addEventListener('pointerdown', e => {
+      if (!box.contains(e.target) && e.target !== toggle) showMaps(false);
+    }, true);
     document.getElementById('home').addEventListener('click', goHome);
     document.getElementById('copy').addEventListener('click', () => {
       copyText(link());
@@ -560,7 +681,7 @@
       const label = document.createElement('span');
       label.textContent = name;
       b.append(img, label);
-      b.addEventListener('click', () => pickMap(id));
+      b.addEventListener('click', () => { showMaps(false); pickMap(id); });
       list.appendChild(b);
     }
     renderMaps();

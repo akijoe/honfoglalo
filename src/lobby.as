@@ -21,6 +21,7 @@
     var ui = {};
     hf.ui = ui;
     var panel = null;
+    var panelNo = 0;        // az ablakok sorszáma (az új ablak ugyanazon a néven jön létre, mint a régi)
     var onEnter = null;
 
     // ------------------------------------------------------------------ rajzolás
@@ -145,6 +146,7 @@
         ui.close();
         var p = _root.createEmptyMovieClip('hfPanel', 20000);
         panel = p;
+        panelNo++;
         var bg = p.createEmptyMovieClip('bg', 0);
         rect(bg, 0, 0, W, H, 0, 0x000000, 55);
         bg.onRelease = function () {
@@ -163,6 +165,7 @@
         if (panel) {
             panel.removeMovieClip();
             panel = null;
+            panelNo++;
         }
         hf.net.handler = null;
         onEnter = null;
@@ -181,6 +184,7 @@
         if (panel) {
             gmov.GAMESELECTWIN._visible = false;
         }
+        touch.tick();
     };
 
     // játék közbeni jelzés a jobb felső sarokban (pl. hogy a szoba megszűnt)
@@ -372,6 +376,97 @@
         }
     };
     Key.addListener(keys);
+
+    // ------------------------------------------------------------------ szövegbevitel érintőképernyőn
+
+    // Telefonon a Ruffle egy rejtett szövegmezővel hozza elő a billentyűzetet: az mindig betűs, és
+    // iOS-en folyton eltűnik. Érintőképernyőn ezért az oldal egy valódi beviteli mezőt tesz a
+    // kijelölt Flash-mező helyére (js/hf.js: hfText), a tippdoboznál számbillentyűzettel. Amit
+    // beírsz, a Flash-mezőbe kerül; az Enter azt teszi, amit a játékban (tipp elküldése, belépés).
+    var EIT = flash.external.ExternalInterface;
+    var touch = {cur: null, owner: null};
+    hf.touchText = touch;
+    touch.on = EIT.call('hfText', 'touch') == true;
+
+    function tipBox() {
+        return gmap.QUESTIONWIN.MYTIPBOX;
+    }
+
+    touch.show = function (t) {
+        var a = {x: t._x, y: t._y};
+        var b = {x: t._x + t._width, y: t._y + t._height};
+        t._parent.localToGlobal(a);
+        t._parent.localToGlobal(b);
+        var f = t.getNewTextFormat();
+        touch.cur = t;
+        touch.owner = t == tipBox() ? 'tip' : panelNo;
+        EIT.call('hfText', 'open', {
+            x: a.x, y: a.y, w: b.x - a.x, h: b.y - a.y,
+            size: f.size * (b.y - a.y) / t._height * t._yscale / 100,
+            value: t.text, color: t.textColor, background: t.background ? t.backgroundColor : -1,
+            align: f.align, bold: f.bold == true, font: f.font, multiline: t.multiline == true,
+            maxChars: t.maxChars > 0 ? t.maxChars : 0, restrict: t.restrict ? t.restrict : '',
+            numeric: t.restrict == '0123456789'
+        });
+    };
+
+    touch.hide = function () {
+        if (touch.cur != null) {
+            touch.cur = null;
+            touch.owner = null;
+            EIT.call('hfText', 'close');
+        }
+    };
+
+    // a mező még ott van-e: a tipp még nincs elküldve, ill. ugyanaz az ablak van nyitva
+    function alive(t) {
+        if (touch.owner == 'tip') {
+            return t == tipBox() && game.myanswer == -1 && gmap.QUESTIONWIN._visible;
+        }
+        return panel != null && touch.owner == panelNo && t.type == 'input';
+    }
+
+    touch.tick = function () {
+        if (touch.cur != null && !alive(touch.cur)) {
+            touch.hide();
+        }
+    };
+
+    if (touch.on) {
+        var focusWatch = {};
+        focusWatch.onSetFocus = function (oldF, newF) {
+            if (newF instanceof TextField && newF.type == 'input' && newF != touch.cur) {
+                touch.show(newF);
+            }
+        };
+        Selection.addListener(focusWatch);
+
+        EIT.addCallback('hfTextSet', null, function (v) {
+            var t = touch.cur;
+            if (t == null) {
+                return;
+            }
+            t.text = String(v);
+            if (t.variable != null && t.variable != '') {
+                t._parent[t.variable] = t.text;      // a tippdoboz a MYTIP változóhoz kötött
+            }
+            if (t.onChanged) {
+                t.onChanged(t);
+            }
+        });
+
+        EIT.addCallback('hfTextEnter', null, function () {
+            var t = touch.cur;
+            if (t == null) {
+                return;
+            }
+            if (touch.owner == 'tip') {
+                game.btnSendMyTipPressed(gmap.QUESTIONWIN.MYTIP);     // mint az Enter (gsys.OnKeyEnter)
+            } else if (panel && onEnter) {
+                onEnter();
+            }
+        });
+    }
 
     function status(t, msg, color) {
         t.textColor = color ? color : C.dim;
@@ -571,9 +666,21 @@
         // 1. oldal: helyezések
         var p1 = pages[0];
         var order = [1, 2, 3];
+        // egyenlő pontnál (a kiesettek: 0) aki később esett ki, előrébb végez
+        var outAt = function (p) {
+            for (var k = 0; k < hf.outOrder.length; k++) {
+                if (hf.outOrder[k] == p) {
+                    return k;
+                }
+            }
+            return 99;
+        };
         order.sort(function (x, y) {
             if (game.points[x] != game.points[y]) {
                 return game.points[x] > game.points[y] ? -1 : 1;
+            }
+            if (outAt(x) != outAt(y)) {
+                return outAt(x) > outAt(y) ? -1 : 1;
             }
             return x - y;
         });

@@ -6,7 +6,7 @@
 // A robotjátékban és a többjátékos játékban:
 //   nincsenek kék oktató üzenetek; a játék végén egy ablak mutatja az eredményt, utána a menü jön
 //   az óra élesben számol: területválasztásnál véletlen terület, feleletválasztósnál nincs válasz,
-//   tippnél 0 (az eredeti kliens kikapcsolt "rendes játék" kezelése)
+//   tippnél a beírt szám megy el, üres mezőnél 0 (az eredeti kliens kikapcsolt "rendes játék" kezelése)
 
 (function () {
     var hf = _global.hf;
@@ -170,7 +170,7 @@
     // a 4. kör vége (game.SqSetupRoundEnd: a körjelző lekapcsolása) - utána vége a harcnak
     game.hfOrigSqSetupRoundEnd = game.SqSetupRoundEnd;
     game.SqSetupRoundEnd = function () {
-        lastRoundEnd = game.state == 4 && game.gameround >= 4;
+        lastRoundEnd = game.state == 4 && (game.gameround >= 4 || hf.soleOwner() > 0);
         game.hfOrigSqSetupRoundEnd();
     };
 
@@ -203,10 +203,37 @@
         return list;
     };
 
-    // egy robot gondolkodási ideje egy kérdésnél (ms): 1,2 mp és az óra 45%-a között
-    A.thinkTime = function (secs) {
-        return 1200 + random(Math.max(500, Math.round(secs * 450) - 1200));
+    // Egy robot gondolkodási ideje egy kérdésnél (ms). Előbb elolvassa a kérdést (2 mp és a
+    // szöveg hosszával arányos idő), aztán gondolkodik: a hátralévő idő egy véletlen részéig (két
+    // véletlen szám átlaga, így a közepes idők a gyakoribbak). A játék elején, amíg mindenki
+    // belejön, még lassabb. A lejárt idő előtt mindig válaszol.
+    A.thinkTime = function (secs, tip) {
+        var q = tip ? game.tipquestiontag : game.questiontag;
+        var len = q == undefined ? 60 : String(q.QUESTION).length;
+        if (!tip && q != undefined) {
+            len += (String(q.A1) + q.A2 + q.A3 + q.A4).length / 2;
+        }
+        var limit = secs * 1000 - 800;
+        var read = Math.min(limit * 0.55, 2000 + len * 25);
+        var u = (random(1000) + random(1000)) / 2000;
+        var t = read + (limit - read) * u * (tip ? 0.85 : 0.5);
+        if (game.state == 3 && game.gameround <= 2) {
+            t += 1200 - (game.gameround - 1) * 600;     // az első két tippkérdés
+        } else if (game.state == 4 && game.gameround == 1) {
+            t += 1000;                                  // az első harci kör
+        }
+        return Math.round(Math.min(limit, t));
     };
+
+    // A próbajáték robotjai annál pontosabbak, minél jobban vezetsz (game.CalcRobotCompensation,
+    // -1..1): 800 pont előnynél a tippjük szinte hibátlan volt, a feleletválasztósnál 90%-ban jó. A
+    // kiegyenlítés itt a fele: a tippek szórása a tartomány 25-75%-a, a jó válasz esélye 30-70%.
+    if (hf.mode != 'mp') {
+        game.hfOrigCalcRobotCompensation = game.CalcRobotCompensation;
+        game.CalcRobotCompensation = function (pnum) {
+            return game.hfOrigCalcRobotCompensation(pnum) / 2;
+        };
+    }
 
     // a "Béla válaszát várjuk..." / "A többiek válaszát várjuk..." szöveg
     A.waitText = function (seats) {
@@ -217,12 +244,12 @@
     };
 
     // egyjátékos mód: a kérdés kezdetén (az óra indulásakor) a robotok kisorsolják a válaszidejüket
-    A.begin = function (robots, secs) {
+    A.begin = function (robots, secs, tip) {
         A.due = [];
         A.times = {};
         A.clockStart = getTimer();
         for (var i = 0; i < robots.length; i++) {
-            A.due.push({seat: robots[i], t: getTimer() + A.thinkTime(secs)});
+            A.due.push({seat: robots[i], t: getTimer() + A.thinkTime(secs, tip)});
         }
     };
     A.tick = function () {              // src/core.as: 100 ms-onként
@@ -250,21 +277,21 @@
         var origStartTip = game.StartTip;
         game.StartTip = function () {
             origStartTip.call(game);
-            A.begin(A.others(true), gcfg.TIMEOUT_TIP);
+            A.begin(A.others(true), gcfg.TIMEOUT_TIP, true);
             TC.reset();
         };
-        // a saját tipped ideje (lejárt időnél -1)
+        // a saját tipped ideje (ha lejárt az idő, és üres volt a mező: -1)
         var origSendMyTip = game.SendMyTip;
         game.SendMyTip = function (atip, ahuman) {
             if (game.myanswer == -1) {
-                TC.set(game.IAM, game.clocktimeout ? -1 : getTimer() - A.clockStart);
+                TC.set(game.IAM, game.clocktimeout && hf.noTip ? -1 : getTimer() - A.clockStart);
             }
             origSendMyTip.call(game, atip, ahuman);
         };
         var origStartAnswer = game.StartAnswer;
         game.StartAnswer = function () {
             origStartAnswer.call(game);
-            A.begin(A.others(false), gcfg.TIMEOUT_ANSWER);
+            A.begin(A.others(false), gcfg.TIMEOUT_ANSWER, false);
         };
         // a tippek gyorsasági sorrendje (az eredetiben véletlen): ki mikor válaszolt; aki nem
         // válaszolt (lejárt az ideje), a végére kerül
@@ -601,8 +628,46 @@
     };
     var robotThinking = false;
 
+    // ------------------------------------------------------------------ korai győzelem
+
+    // Ha valaki az összes ellenfele várát lerombolta, minden terület az övé: a játéknak vége. Az
+    // eredeti ilyenkor tovább sorsolta a köröket, és a győztes nem létező ("undefined") játékosokat
+    // támadott, a pontszámok is elromlottak. A kiesés sorrendje a végeredményben számít: aki később
+    // esett ki, az előrébb végez (src/lobby.as).
+    hf.soleOwner = function () {
+        var owner = game.areas[1].owner;
+        for (var i = 2; i <= gmap.areanum; i++) {
+            if (game.areas[i].owner != owner) {
+                return 0;
+            }
+        }
+        return owner > 0 ? owner : 0;
+    };
+    hf.outOrder = [];          // a kiesett játékosok, a kiesés sorrendjében
+    function noteKnockouts() {
+        for (var p = 1; p <= 3; p++) {
+            var known = false;
+            for (var i = 0; i < hf.outOrder.length; i++) {
+                if (hf.outOrder[i] == p) {
+                    known = true;
+                }
+            }
+            if (!known && game.points[p] <= 0) {
+                hf.outOrder.push(p);
+            }
+        }
+    }
+
     game.hfOrigHandleGamePhase = game.HandleGamePhase;
     game.HandleGamePhase = function () {
+        if (game.state == 4 && game.phase == 40) {
+            noteKnockouts();
+        }
+        if (game.state == 4 && game.phase == 1 && hf.soleOwner() > 0) {
+            game.SetNextState(15, 1, 0);
+            game.NextPhase();
+            return;
+        }
         // a főoldalon a bázissorsolás a menü mögött zajlik: ott a "Bemutató játék" gomb indítja a játékot
         if (game.state == 1 && game.phase == 0 && hf.mode != 'menu') {
             gsound.play('game_start');
@@ -699,8 +764,17 @@
         } else if (param == 2) {
             game.btnAnswerPressed(0);
         } else if (param == 3) {
-            gmap.QUESTIONWIN.MYTIP = '0';
-            game.SendMyTip('0', false);
+            // a beírt szám megy el (akkor is, ha nem küldted el); üres mezőnél 0, ez nem számít tippnek
+            var typed = '';
+            var s = String(gmap.QUESTIONWIN.MYTIP);
+            for (var i = 0; i < s.length; i++) {
+                if ('0123456789'.indexOf(s.charAt(i)) >= 0) {
+                    typed += s.charAt(i);
+                }
+            }
+            hf.noTip = typed == '';
+            gmap.QUESTIONWIN.MYTIP = hf.noTip ? '0' : typed;
+            game.SendMyTip(gmap.QUESTIONWIN.MYTIP, false);
         }
     };
 

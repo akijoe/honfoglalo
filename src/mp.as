@@ -293,7 +293,7 @@
             var s = seats[i];
             who[s] = true;
             if (!(M.humans[s] && M.online[s])) {
-                plan[s] = getTimer() + hf.answers.thinkTime(secs);
+                plan[s] = getTimer() + hf.answers.thinkTime(secs, tip);
             }
         }
         M.ans = {g: M.g, tip: tip, start: getTimer(), who: who, heard: {}, plan: plan, sent: {}};
@@ -504,8 +504,8 @@
         game.myanswer = Number(d);
         game.player_tips[game.IAM].value = game.myanswer;      // a kártyádon rögtön látszik
         var ms = getTimer() - M.tipStart;
-        if (game.clocktimeout) {
-            ms = 60000;
+        if (game.clocktimeout && hf.noTip) {
+            ms = 60000;                         // lejárt az idő, és üres volt a mező: nem tippelt
         }
         game.StopClock();
         M.send(game.IAM, {v: game.myanswer, ms: ms});
