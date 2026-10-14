@@ -42,12 +42,24 @@ Events folyamon kapják az eseményeket. IP-nkénti korlátok védik (`server/li
 
 ## Kérdések
 
-A `questions.xml`-ben 715 feleletválasztós és 245 tippkérdés van, nyolc kategóriában (földrajz,
-sport, irodalom, művészet, természettudományok, matematika–fizika, életmód, szórakozás). A játék
-előbb kategóriát sorsol, aztán kérdést; egy játékon belül nincs ismétlés.
+A `questions.xml`-ben 1000 feleletválasztós és 1000 tippkérdés van, nyolc kategóriában (földrajz,
+sport, irodalom, művészet, természettudományok, matematika–fizika, életmód, szórakozás), mindegyikben
+125–125, és nehézségenként (könnyű, közepes, nehéz) nagyjából egyharmad. A játék előbb kategóriát
+sorsol, aztán kérdést; egy játékon belül nincs ismétlés.
 
-A források: `questions_2013.csv` (a próbajáték eredeti kérdései) és `questions_extra.csv` (új
-kérdések). Új kérdések felvétele és a `questions.xml` újraépítése:
+| Forrás                           | Feleletválasztós | Tipp | Összesen     |
+| -------------------------------- | ---------------: | ---: | -----------: |
+| Beküldött (javított)             |              334 |  857 | 1191 (~60%) |
+| A próbajáték eredeti kérdései    |               56 |   38 |    94 (~5%) |
+| AI-val írt                       |              610 |  105 |  715 (~36%) |
+
+A beküldött kérdéseket [u/GrindChess](https://www.reddit.com/r/programmingHungary/comments/1x557z1/comment/pgjnd8i/)
+küldte az r/programmingHungary-n – innen is köszi! Helyesírásilag javítva, a válaszokat ellenőrizve
+kerültek be.
+
+A források: `questions_2013.csv` (a próbajáték eredeti kérdései) és `questions_extra.csv` (beküldött
+és AI-val írt kérdések; a végén a kikapcsolt tartalékkal). Új kérdések felvétele és a
+`questions.xml` újraépítése:
 
 ```bash
 python3 tools/import_questions.py kerdesek.csv
@@ -57,8 +69,8 @@ python3 tools/import_questions.py kerdesek.csv
 python3 tools/import_questions.py --rebuild
 ```
 
-CSV-sorok: `# kategória: Sport`, `kérdés;helyes;rossz;rossz;rossz` (feleletválasztós) vagy
-`kérdés;szám;min;max` (tippkérdés).
+CSV-sorok: `# kategória: Sport`, `# nehézség: közepes`, `kérdés;helyes;rossz;rossz;rossz`
+(feleletválasztós) vagy `kérdés;szám;min;max` (tippkérdés).
 
 ## Hangok
 

@@ -3,36 +3,45 @@
 # Feleletválasztós: kérdés;helyes válasz;rossz;rossz;rossz   Tippkérdés: kérdés;szám;legkisebb;legnagyobb
 #
 # kategória: Földrajz
-Hány méter hosszú a Pentagon egy-egy oldala?;281;100;500
+# nehézség: közepes
 Melyik évben nyílt meg Magyarországon az első földalatti kéregvasút?;1896;1820;1950
+# nehézség: nehéz
+Hány méter hosszú a Pentagon egy-egy oldala?;281;100;500
 Hány állomás van a budapesti 3-as (kék) metró vonalán?;20;5;30
 #
 # kategória: Irodalom
+# nehézség: könnyű
 Mi volt a foglalkozása Quasimodónak?;harangozó;pap;sekrestyés;katona
 Mi volt J.K. Rowling első Harry Potter könyvének a címe?;A Bölcsek Köve;A Titkok Kamrája;Az azkabani fogoly;A Tűz Serlege
 Milyen koporsóba tették Hófehérkét?;üveg;fa;arany;gyémánt
 #
 # kategória: Természettudományok (biológia, kémia)
-Melyik madár a természetvédelem címerállata?;nagy kócsag;bakcsó;szajkó;galamb
+# nehézség: könnyű
 Hány lába van 20 bölömbikának?;40;20;200
+# nehézség: közepes
+Melyik madár a természetvédelem címerállata?;nagy kócsag;bakcsó;szajkó;galamb
 A Föld légkörének hány %-a oxigén?;21;0;100
 #
 # kategória: Matematika, fizika
+# nehézség: könnyű
 Melyik NEM megújuló energiaforrás?;atomenergia;szélenergia;geotermikus energia;napenergia
-Mi a sebességváltó feladata?;nyomatékszabályzás;hűtés;légerő szabályzás;üzemanyag tárolás
 Melyik évben lépett a Holdra Neil Amstrong?;1969;1900;1980
 Mennyi 3333+5555?;8888;5555;9999
-Melyik év volt a XXI. század első szökőéve?;2004;2000;2009
 Hogy írjuk arab számmal a következő római számot: MCMLVI?;1956;1800;2200
-Mennyi a VICC szóban szereplő római számok összege?;206;50;500
 Hány órából áll 5 nap?;120;50;500
-Hány méter hosszú volt a Titanic?;269;50;500
-Melyik évben szabadalmaztatta Rubik Ernő a bűvös kockát?;1975;1950;1988
-Hányféleképpen ülhet egymás mellé 4 ember egy padon?;24;10;60
 Hányadik napja az évnek február elseje?;32;20;50
 Ha Zolinak van 5 lány és 2 fiútestvére, akkor hányan vannak testvérek?;8;1;20
+# nehézség: közepes
+Mi a sebességváltó feladata?;nyomatékszabályzás;hűtés;légerő szabályzás;üzemanyag tárolás
+Melyik év volt a XXI. század első szökőéve?;2004;2000;2009
+Mennyi a VICC szóban szereplő római számok összege?;206;50;500
+Melyik évben szabadalmaztatta Rubik Ernő a bűvös kockát?;1975;1950;1988
+Hányféleképpen ülhet egymás mellé 4 ember egy padon?;24;10;60
+# nehézség: nehéz
+Hány méter hosszú volt a Titanic?;269;50;500
 #
 # kategória: Életmód, mindennapok
+# nehézség: könnyű
 Ki van az 500 forintos elején?;II. Rákóczi Ferenc;Bethlen Gábor;Mátyás király;Deák Ferenc
 Milyen eredetű ital a Metaxa?;görög;portugál;francia;spanyol
 Milyen módra készített az ananászos húsétel?;hawaii módra;Budapest módra;Kedvessy módon;udvarmester módra
@@ -40,73 +49,78 @@ Melyik jegy tart augusztus 24-től szeptember 23-ig?;szűz;skorpió;ikrek;halak
 Hogy hívják az euró váltópénzét?;cent;pfenning;penny;groschen
 Mit csinál, aki rokkát hajt?;fon;kocsikázik;vadászik;őröl
 Melyik jegy tart május 22-től június 21-ig?;ikrek;vízöntő;nyilas;rák
-Melyik étel tartalmazza a legtöbb kalóriát?;körözött;eper;meggy;görögdinnye
-Melyik NEM (volt) üdítőmárka?;Pitralon;Márka;Sztár;Bambi
 Melyik magyar borvidék jellegzetes bora a bikavér?;Eger;Csongrád;Somló;Etyek
-Melyik égitestről nevezték el a rómaiak a szombatot?;Szaturnusz;Hold;Merkúr;Vénusz
 Hogyan nevezzük a sertés hússal fedett bordáit?;oldalas;hasaalja;hosszú karaj;lapocka
-Mit jelent oroszul a vodka szó?;vizecske;víz;varjú;vár
-Ki volt eredetileg a léhűtő?;sörfőzőinas;ügyvédbojtár;újságíró;cipész
 Mi a puliszka alapanyaga?;kukorica;rozs;rizs;búza
 A hét melyik napját nevezték el a rómaiak a Napról?;vasárnap;hétfő;péntek;szerda
-Milyen világnap van április 22-én?;Föld napja;anyák napja;gyereknap;tánc napja
 Melyik az a két egymást követő hónap, amelyik 31 napos?;július-augusztus;január-február;szeptember-október;június-július
 Melyik étel tartalmazza a legkevesebb kalóriát?;sóska;trappista sajt;méz;kaviár
 "Kik használták a ""Jó szerencsét!"" köszönést?";a bányászok;a pilóták;a vasutasok;a földművesek
 Melyik NEM állatövi jegy a horoszkópban?;juh;bak;kos;rák
-Melyik NEM kelt tésztából készül?;linzer;bukta;aranygaluska;fánk
 Hol dolgozik a krupié?;kaszinó;étterem;színház;tőzsde
-A mobiltelefon 5-ös gombjához az ABC mely betűi tartoznak?;JKL;KLM;IJK;GHI
-Milyen eredetű étel a pozsonyi kocka?;magyar;cseh;orosz;kínai
 Milyen állat látható a Lamborghini logóján?;bika;elefánt;kecske;béka
-Kim nekem az ángyom?;férfirokonom felesége;anyám;nagymamám;nővérem
 Kiről nevezték el a Jókai-bablevest?;egy íróról;egy mesterszakácsról;egy nagyétkű főúrról;egy huszárkapitányról
 Melyik mozgó ünnep?;húsvét;karácsony;vízkereszt;halottak napja
+Hány 30 napos hónap van egy naptári évben?;4;1;12
+# nehézség: közepes
+Melyik étel tartalmazza a legtöbb kalóriát?;körözött;eper;meggy;görögdinnye
+Melyik NEM (volt) üdítőmárka?;Pitralon;Márka;Sztár;Bambi
+Melyik égitestről nevezték el a rómaiak a szombatot?;Szaturnusz;Hold;Merkúr;Vénusz
+Mit jelent oroszul a vodka szó?;vizecske;víz;varjú;vár
+Milyen világnap van április 22-én?;Föld napja;anyák napja;gyereknap;tánc napja
+Melyik NEM kelt tésztából készül?;linzer;bukta;aranygaluska;fánk
+A mobiltelefon 5-ös gombjához az ABC mely betűi tartoznak?;JKL;KLM;IJK;GHI
+Milyen eredetű étel a pozsonyi kocka?;magyar;cseh;orosz;kínai
+Kim nekem az ángyom?;férfirokonom felesége;anyám;nagymamám;nővérem
 Ki NEM nőrokon?;ipa;meny;ángy;napa
 Hányszor van 29-e egy szökőévben?;12;1;12
 Legkevesebb hány forgalmi érmével fizethető ki pontosan 705 forint?;5;1;20
+Június hányadik napján van Szent Iván-éj?;24;1;30
+Hány forinttal ér többet legnagyobb címletű papírpénzünk a legkisebbnél?;19500;10000;20000
+Hány forintom van, ha minden forgalomban levő érméből van egy nálam?;385;111;1111
+Hányadik házassági évfordulón ünneplik a gyémántlakodalmat?;60;1;100
+# nehézség: nehéz
+Ki volt eredetileg a léhűtő?;sörfőzőinas;ügyvédbojtár;újságíró;cipész
 Melyik évben szabadalmaztatta Johan Vaaler a gemkapcsot?;1901;1750;1990
 Melyik évben tették kötelezővé a rendszámtáblát Magyarországon?;1901;1850;1980
 Melyik évben jelent meg az első dobozos Coca-Cola?;1950;1920;1980
 Hány éves koruktól mehetnek férjhez a kínai nők?;20;15;25
 Hány pontjuk volt az úttörőknek?;12;5;20
-Június hányadik napján van Szent Iván-éj?;24;1;30
-Hány forinttal ér többet legnagyobb címletű papírpénzünk a legkisebbnél?;19500;10000;20000
-Hány 30 napos hónap van egy naptári évben?;4;1;12
 Melyik évben jelent meg a Trabant 600?;1962;1940;1970
-Hány forintom van, ha minden forgalomban levő érméből van egy nálam?;385;111;1111
-Hányadik házassági évfordulón ünneplik a gyémántlakodalmat?;60;1;100
 #
 # kategória: Szórakozás (zene, film, popkultúra)
+# nehézség: könnyű
 Ki a macskák réme?;Frakk;Lassie;Bogáncs;Vahúr
 "Milyen fajta hal ""Némó""?";Bohóchal;Sügér;Ponty;Bálna
 Ki Garfield gazdija?;Jon;Ubul;Nermál;Luka
-Milyen néven vált ismertté Allen Stewart Konigsberg?;Woody Allen;Fred Astaire;Bob Dylan;Tony Curtis
 Milyen lény Shrek?;ogre;sárkány;manó;ember
 Milyen színű Hófehérke haja?;ébenfekete;szőkésbarna;hamvasszőke;lángvörös
 Milyen nemzetiségű Kylie Minogue?;ausztrál;francia;kanadai;angol
 Hol dolgozik Al Bundy?;cipőboltban;atomerőműben;orvosi rendelőben;szállodában
-Kinek a hangján szólal meg a Szamár a Shrek-filmekben?;Eddie Murphy;John Cleese;Antonio Banderas;Mike Myers
 Melyik egy híres rapper neve?;50 cent;1 dollar;50 font;100 euro
 Ki nem játszott James Bondot az alábbi színészek közül?;Joseph Barbera;Timothy Dalton;Roger Moore;Sean Connery
 Mi a Pókember neve a civil életben?;Peter Parker;Karel;Clark Kent;Bruce Wayne
 Ki NEM volt Beatles-tag?;Steve Morse;Paul McCartney;John Lennon;Ringo Starr
 Milyen állat Diego a Jégkorszak című animációs filmben?;kardfogú tigris;lajhár;oposszum;mamut
-Mi volt Antal Imre eredeti foglalkozása?;zongoraművész;énekes;rendező;karmester
-Melyik színésznő méretei kapcsán híresült el a számsor: 90-60-90?;Marilyn Monroe;Greta Garbo;Karády Katalin;Dobó Kata
-Ki volt a Playboy történetének első címlaplánya?;Marilyn Monroe;Rena Heffner;Bo Derek;Eldon Sellers
-Hogy hívják a családfőt a Besenyő családban?;Pista bácsi;Bandi bácsi;Jani bácsi;Lajos bácsi
 Hogy hívják James Bond főnökét?;M;C;K;CS
 Milyen színű tengeralattjáróról énekelt a Beatles?;sárga;kék;vörös;zöld
+Hány feje van Süsünek, a sárkánynak?;1;1;10
+# nehézség: közepes
+Milyen néven vált ismertté Allen Stewart Konigsberg?;Woody Allen;Fred Astaire;Bob Dylan;Tony Curtis
+Kinek a hangján szólal meg a Szamár a Shrek-filmekben?;Eddie Murphy;John Cleese;Antonio Banderas;Mike Myers
+Melyik színésznő méretei kapcsán híresült el a számsor: 90-60-90?;Marilyn Monroe;Greta Garbo;Karády Katalin;Dobó Kata
+Hogy hívják a családfőt a Besenyő családban?;Pista bácsi;Bandi bácsi;Jani bácsi;Lajos bácsi
 Melyik évben született Natalie Portman színésznő?;1981;1960;1990
+Melyik évben kezdte meg adását a Music Television?;1981;1960;1999
+"Hányas számú úton ""várhatsz rám dideregve"" a Republic dala szerint?";67;1;100
+Melyik évben indult útjára a Szomszédok című sorozat?;1987;1960;1990
+# nehézség: nehéz
+Mi volt Antal Imre eredeti foglalkozása?;zongoraművész;énekes;rendező;karmester
+Ki volt a Playboy történetének első címlaplánya?;Marilyn Monroe;Rena Heffner;Bo Derek;Eldon Sellers
 Melyik évben jelent meg Michael Jackson Off the Wall című albuma?;1979;1970;1999
 Melyik évben született híres színészünk, Bodrogi Gyula?;1934;1920;1960
 Hányadik adással ért véget a Szabó család című rádiós sorozat?;2500;500;3500
-Melyik évben kezdte meg adását a Music Television?;1981;1960;1999
 Melyik évben született híres színészünk, Bujtor István?;1942;1920;1960
-Hány feje van Süsünek, a sárkánynak?;1;1;10
-"Hányas számú úton ""várhatsz rám dideregve"" a Republic dala szerint?";67;1;100
-Melyik évben indult útjára a Szomszédok című sorozat?;1987;1960;1990
 #
 # ======================================================== TÖRTÉNELEM (nincs a kategóriák között, kikapcsolva)
 # Melyik évben rendezett először világkiállítást Párizs?;1855;1800;1950

@@ -9,6 +9,7 @@
 CSV (UTF-8; the separator may be ; , or tab; a first row starting with "kérdés" is a header,
 lines starting with # are comments):
     # kategória: Földrajz                           -> a következő kérdések kategóriája
+    # nehézség: könnyű (közepes, nehéz vagy 1-3)    -> a következő kérdések nehézsége (LEVEL)
     kérdés;helyes válasz;rossz 1;rossz 2;rossz 3      -> feleletválasztós kérdés
     kérdés;szám                                     -> tippkérdés (egész szám)
     kérdés;szám;legkisebb;legnagyobb                -> tippkérdés, a robotok tippjeinek határaival
@@ -18,8 +19,8 @@ gyakran jön): Földrajz, Sport, Irodalom, Művészet, Természettudományok, Ma
 Életmód/mindennapok, Szórakozás.
 
 JSON: a list of
-    {"question": "...", "answers": ["helyes", "rossz", "rossz", "rossz"], "category": "Sport"}
-    {"question": "...", "answer": 1987, "min": 1960, "max": 2000, "category": "Sport"}
+    {"question": "...", "answers": ["helyes", "rossz", "rossz", "rossz"], "category": "Sport", "level": 2}
+    {"question": "...", "answer": 1987, "min": 1960, "max": 2000, "category": "Sport", "level": 3}
 
 Questions already present (same text, ignoring case and spaces) are skipped.
 """
@@ -41,6 +42,8 @@ CATEGORIES = [('földrajz', 'foldrajz'), ('sport', 'sport'), ('irodalom', 'iroda
               ('művészet', 'muveszet'), ('természettudomány', 'termtud'), ('biológia', 'termtud'),
               ('matematika', 'matfiz'), ('életmód', 'eletmod'), ('szórakozás', 'szorakozas')]
 CAT_LINE = re.compile(r'^#\s*kategória\s*:\s*(.+?)\s*$', re.I)
+LEVEL_LINE = re.compile(r'^#\s*nehézség\s*:\s*(.+?)\s*$', re.I)
+LEVELS = {'könnyű': 1, 'közepes': 2, 'nehéz': 3, '1': 1, '2': 2, '3': 3}
 
 
 def norm(s):
@@ -57,6 +60,13 @@ def category(name):
         if n.startswith(prefix):
             return cat
     raise ValueError('ismeretlen kategória: %r' % name)
+
+
+def level(name):
+    n = norm(str(name))
+    if n not in LEVELS:
+        raise ValueError('ismeretlen nehézség: %r (könnyű, közepes vagy nehéz)' % name)
+    return LEVELS[n]
 
 
 def to_int(s):
@@ -89,15 +99,21 @@ def read_input(path):
         for q in out:
             if q.get('category'):
                 q['cat'] = category(q['category'])
+            if q.get('level'):
+                q['level'] = level(q['level'])
         return out
     sep = None
-    cat = None
+    cat = lvl = None
     out = []
     for n, line in enumerate(text.splitlines(), 1):
         m = CAT_LINE.match(line.strip())
-        if m:
+        k = LEVEL_LINE.match(line.strip())
+        if m or k:
             try:
-                cat = category(m.group(1))
+                if m:
+                    cat, lvl = category(m.group(1)), None
+                else:
+                    lvl = level(k.group(1))
             except ValueError as e:
                 sys.exit('%s, %d. sor: %s' % (path, n, e))
             continue
@@ -115,6 +131,8 @@ def read_input(path):
         if q:
             if cat:
                 q['cat'] = cat
+            if lvl:
+                q['level'] = lvl
             out.append(q)
     return out
 
@@ -124,6 +142,8 @@ def to_xml(q):
     if not str(text).strip():
         raise ValueError('üres kérdés')
     cat = ' CAT="%s"' % q['cat'] if q.get('cat') else ''
+    if q.get('level'):
+        cat += ' LEVEL="%d"' % q['level']
     if 'answers' in q:
         ans = q['answers']
         if len(ans) != 4 or any(not str(a).strip() for a in ans):
@@ -167,11 +187,16 @@ def stats(lines):
     count = {}
     for line in lines:
         m = re.search(r' CAT="([^"]*)"', line)
+        lv = re.search(r' LEVEL="(\d)"', line)
         kind = 'mc' if line.startswith('<QUESTION') else 'tip'
-        key = (m.group(1) if m else '-', kind)
-        count[key] = count.get(key, 0) + 1
-    for cat in sorted({c for c, _ in count}):
-        print('  %-11s %4d feleletválasztós, %3d tipp' % (cat, count.get((cat, 'mc'), 0), count.get((cat, 'tip'), 0)))
+        for key in ((m.group(1) if m else '-', kind), ('szint', kind, lv.group(1) if lv else '-')):
+            count[key] = count.get(key, 0) + 1
+    print('  %-11s %20s %24s' % ('', 'feleletválasztós', 'tipp'))
+    for cat in sorted({k[0] for k in count if k[0] != 'szint'}):
+        print('  %-11s %20d %24d' % (cat, count.get((cat, 'mc'), 0), count.get((cat, 'tip'), 0)))
+    levels = sorted({k[2] for k in count if k[0] == 'szint'})
+    print('  %-11s %20s %24s' % ('nehézség', ' / '.join('%d' % count.get(('szint', 'mc', l), 0) for l in levels),
+                                 ' / '.join('%d' % count.get(('szint', 'tip', l), 0) for l in levels)))
 
 
 def main():
