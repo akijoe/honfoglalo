@@ -280,6 +280,10 @@
   const cleanMap = id => (MAPS.find(m => m[0] === String(id || '').toUpperCase()) || [''])[0];
   // ?map=XX: csak erre a betöltésre (kipróbáláshoz)
   const myMap = () => cleanMap(params.get('map')) || cleanMap(load('localStorage', 'hfMap')) || 'HU';
+  // Hosszú hadjárat: 6 harci kör a 4 helyett (src/tweaks.as). A térképhez hasonlóan egyjátékos
+  // módban a böngésző emlékszik rá, a szobában a főnök választja. ?long=1 / ?long=0: csak most.
+  const myLong = () => (params.has('long') ? params.get('long') === '1' : load('localStorage', 'hfLong') === true);
+  const longVar = on => (on ? '1' : '0');
   // a szoba állapota a Flash-nek: a térkép magyar nevével (src/lobby.as: szoba-ablak)
   const flashState = st => st && Object.assign({ mapName: mapName(st.map) }, st);
 
@@ -421,11 +425,14 @@
     const s = net.session;
     if (!s) return;
     // sorban, egyenként, hogy a saját döntéseink sorrendje megmaradjon
+    // Egy elveszett döntésre a játék örökké várna (a házigazda döntéseit senki más nem küldi el),
+    // ezért amíg a szoba él, újra és újra próbálkozunk. A végleges hibát (hibás lépés, túl hosszú
+    // játék, nem vagy a szobában) nem ismételjük: az a többi döntést tartaná fel.
     net.sendChain = net.sendChain.then(async () => {
-      for (let i = 0; i < 5; i++) {
+      for (let i = 0; net.session === s; i++) {
         try { await api('send', { code: s.code, token: s.token, k: k, d: d }); return; } catch (e) {
-          if (/nem vagy|Nincs ilyen/.test(e.message)) return;
-          await new Promise(r => setTimeout(r, 1000 * (i + 1)));
+          if (e.status && e.status !== 429 && e.status < 500) return;
+          await new Promise(r => setTimeout(r, Math.min(1000 * (i + 1), 5000)));
         }
       }
     });
@@ -479,13 +486,16 @@
         }
         case 'create':
           save('localStorage', 'hfName', String(a));
-          call(api('create', { name: String(a), map: myMap() }).then(setSession));
+          call(api('create', { name: String(a), map: myMap(), long: myLong() }).then(setSession));
           return true;
         case 'join':
           save('localStorage', 'hfName', String(b));
           // ha a játék már megy (visszalépés a névvel), rögtön a játékba
           net.rejoining = true;
-          call(api('join', { code: String(a), name: String(b) }).then(setSession));
+          call(api('join', { code: String(a), name: String(b) }).then(setSession, e => {
+            net.rejoining = false;
+            throw e;
+          }));
           return true;
         case 'start':
           if (net.session) call(api('start', { code: net.session.code, token: net.session.token }));
@@ -570,7 +580,7 @@
   function startGame() {
     net.inGame = true;
     save('sessionStorage', playingKey, net.session.code);
-    loadSwf({ invitation: '0', mp: '1', map: cleanMap(net.state && net.state.map) || 'HU' });
+    loadSwf({ invitation: '0', mp: '1', map: cleanMap(net.state && net.state.map) || 'HU', long: longVar(net.state && net.state.long) });
     renderMaps();
   }
 
@@ -582,13 +592,13 @@
   //   különben (menü, bemutató, robotok): a saját választás; váltáskor a mostani mód újraindul
   function mapMode() {
     const st = net.state;
-    if (net.inGame) return { current: cleanMap(st && st.map), locked: 'Játék közben nem lehet térképet váltani.' };
+    if (net.inGame) return { current: cleanMap(st && st.map), long: !!(st && st.long), locked: 'Játék közben nem lehet térképet és szabályt váltani.' };
     if (net.session && st && !st.started) {
-      if (st.boss === net.session.seat) return { current: cleanMap(st.map), room: true };
+      if (st.boss === net.session.seat) return { current: cleanMap(st.map), long: !!st.long, room: true };
       const boss = st.players.find(p => p.seat === st.boss);
-      return { current: cleanMap(st.map), locked: 'A térképet a szoba főnöke' + (boss ? ' (' + boss.name + ')' : '') + ' választja.' };
+      return { current: cleanMap(st.map), long: !!st.long, locked: 'A térképet és a szabályt a szoba főnöke' + (boss ? ' (' + boss.name + ')' : '') + ' választja.' };
     }
-    return { current: myMap() };
+    return { current: myMap(), long: myLong() };
   }
 
   function renderMaps() {
@@ -602,7 +612,13 @@
       b.setAttribute('aria-pressed', on ? 'true' : 'false');
       b.disabled = !!mode.locked;
     }
-    box.querySelector('.note').textContent = mode.locked || (mode.room ? 'A szoba térképe: mindenki ezen játszik.' : '');
+    for (const b of box.querySelectorAll('.rules button')) {
+      const on = (b.dataset.long === '1') === mode.long;
+      b.classList.toggle('on', on);
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      b.disabled = !!mode.locked;
+    }
+    box.querySelector('.note').textContent = mode.locked || (mode.room ? 'A szoba térképe és szabálya: mindenki ezzel játszik.' : '');
 
     // főoldal gomb (a főoldalon a menüben nincs rá szükség) és a szoba kódja (a visszalépéshez)
     const home = document.getElementById('home');
@@ -654,6 +670,28 @@
     if (t) t.setAttribute('aria-expanded', open ? 'true' : 'false');
   }
 
+  // a szabály a robotjátékban és a szobában számít (a bemutató mindig normál)
+  function pickLong(on) {
+    const mode = mapMode();
+    if (mode.locked || on === mode.long) return;
+    save('localStorage', 'hfLong', on);
+    if (mode.room) {
+      const s = net.session;
+      api('long', { code: s.code, token: s.token, long: on }).catch(e => emit({ type: 'error', msg: e.message }));
+      return;
+    }
+    if (gamemode !== '1') { renderMaps(); return; }
+    if (!window.confirm('A játék újraindul ' + (on ? 'hosszú hadjárattal' : 'normál szabállyal') + '. Mehet?')) {
+      save('localStorage', 'hfLong', mode.long);
+      return;
+    }
+    const q = new URLSearchParams(location.search);
+    q.delete('long');
+    const url = location.pathname + (q.toString() ? '?' + q : '');
+    if (url === location.pathname + location.search) location.reload();
+    else location.href = url;
+  }
+
   function buildMaps() {
     const box = document.getElementById('maps');
     if (!box) return;
@@ -669,6 +707,9 @@
       note.textContent = 'A meghívó link a vágólapra került.';
       setTimeout(renderMaps, 2500);
     });
+    for (const b of box.querySelectorAll('.rules button')) {
+      b.addEventListener('click', () => { showMaps(false); pickLong(b.dataset.long === '1'); });
+    }
     const list = box.querySelector('.list');
     for (const [id, name] of MAPS) {
       const b = document.createElement('button');
@@ -693,7 +734,7 @@
     //   gamemode=0: bemutató játék menü nélkül (a játék végi menü "Bemutató játék" gombja)
     //   ?join=KÓD:  a főoldal, a szobához csatlakozás ablakával
     buildMaps();
-    if (gamemode === '1') { loadSwf({ invitation: '0', quickgame: '1', map: myMap() }); return; }
+    if (gamemode === '1') { loadSwf({ invitation: '0', quickgame: '1', map: myMap(), long: longVar(myLong()) }); return; }
     if (gamemode === '0') { loadSwf({ invitation: '0', map: myMap() }); return; }
     const menu = () => loadSwf({ invitation: '1', map: myMap() });
     let own = load('sessionStorage', tabKey);

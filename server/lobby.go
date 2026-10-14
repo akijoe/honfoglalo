@@ -58,6 +58,7 @@ type lobby struct {
 	seats     [maxPlayers + 1]*player // 1..3
 	boss      int
 	mapID     string // a térkép (validMaps), a főnök választja az indulás előtt
+	long      bool   // hosszú hadjárat (6 harci kör), a főnök választja az indulás előtt
 	started   bool
 	decs      []decision
 	seen      map[int]bool
@@ -79,6 +80,7 @@ type stateEvent struct {
 	Started bool         `json:"started"`
 	Boss    int          `json:"boss"`
 	Map     string       `json:"map"`
+	Long    bool         `json:"long"`
 	Players []playerView `json:"players"`
 	Live    *bool        `json:"live,omitempty"` // csak a /api/check válaszában: a kérdező helyén van-e élő kapcsolat
 }
@@ -140,7 +142,7 @@ func (l *lobby) seatOf(token string) int {
 }
 
 func (l *lobby) stateEvent() stateEvent {
-	ev := stateEvent{Type: "state", Code: l.code, Started: l.started, Boss: l.boss, Map: l.mapID, Players: []playerView{}}
+	ev := stateEvent{Type: "state", Code: l.code, Started: l.started, Boss: l.boss, Map: l.mapID, Long: l.long, Players: []playerView{}}
 	for s := 1; s <= maxPlayers; s++ {
 		if p := l.seats[s]; p != nil {
 			ev.Players = append(ev.Players, playerView{Seat: s, Name: p.name, Online: p.online, Left: p.left})

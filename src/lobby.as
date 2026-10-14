@@ -887,7 +887,7 @@
             }
             var boss = state.boss == me;
             // a térképet a főnök az oldal bal oldali sávjában választja (js/hf.js)
-            mapLine.text = 'Térkép: ' + state.mapName + (boss && !state.started ? '  (módosítható)' : '');
+            mapLine.text = 'Térkép: ' + state.mapName + (state.long ? ', hosszú hadjárat' : '') + (boss && !state.started ? '  (módosítható)' : '');
             start._visible = boss && !state.started;
             start.setOn(count >= 2);
             rejoin._visible = state.started;

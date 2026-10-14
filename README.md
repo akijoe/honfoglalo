@@ -24,7 +24,10 @@ Utána: <http://localhost:8765/>. Teszt: `go test ./server`.
 - **Gyors játék egy ismerőssel:** szoba létrehozása vagy csatlakozás (lent).
 - **Visszajelzés:** rövid üzenet a szervernek.
 
-Az oldal bal sávjában választható a térkép: a SWF mind a 13 országa játszható. A játék végén egy
+Az oldal bal sávjában választható a térkép: a SWF mind a 13 országa játszható. Ugyanott a szabály is:
+a **hosszú hadjáratban** 4 helyett 6 harci kör van, fix sorrendben (mindenki minden helyről egyszer
+támad), és csak az utolsó körben lehet bárhová támadni. Ez a robotos és a többjátékos játékra
+vonatkozik, a bemutató mindig normál. A játék végén egy
 eredményablak mutatja a helyezéseket és a saját statisztikádat.
 
 ## Többjátékos játék
@@ -90,7 +93,7 @@ nem változtak. A kiegészítések ActionScript-forrásként a `src/` mappában 
 - `src/mp.as` – a többjátékos szinkron
 
 Teszteléshez: `?debugclock=3` (rövid óra), `?slot=a` (külön munkamenet), `?debug`, `?map=FR`,
-`?touchtext` (a telefonos beviteli mező asztali gépen is).
+`?long=1` (hosszú hadjárat), `?touchtext` (a telefonos beviteli mező asztali gépen is).
 
 ## Források
 

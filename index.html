@@ -38,7 +38,10 @@
     #maps #copy { display: inline; width: auto; padding: 1px 8px; margin-left: 4px; border: 1px solid #C89B4A;
                   font-size: 12px; background: #5A3518; }
     #maps h2 { margin: 0 0 8px; font-size: 18px; color: #FFE39A; text-align: center; font-weight: bold; }
-    #maps .list { display: flex; flex-direction: column; gap: 4px; }
+    #maps .list, #maps .rules { display: flex; flex-direction: column; gap: 4px; }
+    #maps .rules { margin-bottom: 12px; }
+    #maps .rules button { justify-content: center; }
+    #maps.locked .rules button:not(.on) { opacity: .45; }
     #maps button { display: flex; align-items: center; gap: 8px; width: 100%; padding: 4px 6px; border: 1px solid transparent;
                    border-radius: 8px; background: none; color: #F3DDB0; font: inherit; font-size: 14px; text-align: left; cursor: pointer; }
     #maps button:hover:not(:disabled) { background: #5A3518; }
@@ -95,6 +98,11 @@
     <div class="side">
       <button id="home" type="button" hidden>Főoldal</button>
       <div id="room" hidden>Szoba: <b></b> <button id="copy" type="button" title="A meghívó link másolása">Link</button></div>
+    </div>
+    <h2>Szabály</h2>
+    <div class="rules">
+      <button type="button" data-long="0" title="4 harci kör, az utolsóban a pontok sorrendjében">Normál</button>
+      <button type="button" data-long="1" title="6 harci kör, mindenki minden helyről egyszer támad">Hosszú hadjárat</button>
     </div>
     <h2>Térkép</h2>
     <div class="list"></div>

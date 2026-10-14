@@ -179,6 +179,7 @@ func (s *server) handleCreate(w http.ResponseWriter, r *http.Request) {
 	var req struct {
 		Name string `json:"name"`
 		Map  string `json:"map"`
+		Long bool   `json:"long"`
 	}
 	if err := readJSON(w, r, &req); err != nil {
 		writeErr(w, err)
@@ -215,6 +216,10 @@ func (s *server) handleCreate(w http.ResponseWriter, r *http.Request) {
 	if m := cleanMap(req.Map); m != "" {
 		l.mapID = m
 	}
+	l.long = req.Long
+	l.mu.Lock()
+	s.goneAfterGrace(l, l.seats[1])
+	l.mu.Unlock()
 	s.lobbies[code] = l
 	s.mu.Unlock()
 	log.Printf("szoba %s létrehozva (%d szoba)", code, s.lobbyCount())
@@ -259,7 +264,8 @@ func (s *server) handleJoin(w http.ResponseWriter, r *http.Request) {
 			if p == nil || !strings.EqualFold(p.name, name) {
 				continue
 			}
-			if p.conns > 0 {
+			// (p.online: a lecsatlakozás utáni türelmi idő alatt is a régi gazdájáé a hely)
+			if p.conns > 0 || p.online {
 				writeErr(w, apiError{http.StatusConflict, "Ezzel a névvel most is játszik valaki ebben a szobában."})
 				return
 			}
@@ -289,6 +295,10 @@ func (s *server) handleJoin(w http.ResponseWriter, r *http.Request) {
 	}
 	tok := newToken()
 	l.seats[free] = &player{name: name, token: tok}
+	if l.boss == 0 {
+		l.boss = free // mindenki kilépett, de a szoba még nem szűnt meg
+	}
+	s.goneAfterGrace(l, l.seats[free])
 	l.broadcastState()
 	writeJSON(w, http.StatusOK, joinReply{Code: l.code, Seat: free, Token: tok})
 }
@@ -367,6 +377,31 @@ func (s *server) handleMap(w http.ResponseWriter, r *http.Request) {
 		}
 		if l.mapID != m {
 			l.mapID = m
+			l.broadcastState()
+		}
+		return nil
+	})
+}
+
+// handleLong: a főnök a játék indulása előtt átállítja a szabályt (normál / hosszú hadjárat).
+func (s *server) handleLong(w http.ResponseWriter, r *http.Request) {
+	var req struct {
+		tokenReq
+		Long bool `json:"long"`
+	}
+	if err := readJSON(w, r, &req); err != nil {
+		writeErr(w, err)
+		return
+	}
+	s.withSeat(w, r, &req.tokenReq, func(l *lobby, seat int) error {
+		switch {
+		case seat != l.boss:
+			return apiError{http.StatusForbidden, "A szabályt a szoba főnöke választja."}
+		case l.started:
+			return apiError{http.StatusConflict, "A játék már elkezdődött."}
+		}
+		if l.long != req.Long {
+			l.long = req.Long
 			l.broadcastState()
 		}
 		return nil
@@ -472,6 +507,9 @@ func (s *server) handleEvents(w http.ResponseWriter, r *http.Request) {
 		writeErr(w, errors.New("no flusher"))
 		return
 	}
+	// A ReadTimeout határideje a válasz alatt is érvényben maradna: lejártakor a szerver megszakítja
+	// a kérést, és az eseményfolyam 20 mp-enként újraindulna. Az eseményfolyamra nem vonatkozik.
+	_ = http.NewResponseController(w).SetReadDeadline(time.Time{})
 	l.mu.Lock()
 	seat := l.seatOf(q.Get("token"))
 	if l.closed || seat == 0 || l.seats[seat].left {
@@ -566,22 +604,33 @@ func (s *server) disconnect(l *lobby, sub *subscriber, p *player) {
 	if l.totalConns() == 0 {
 		l.idleSince = time.Now()
 	}
+	s.goneAfterGrace(l, p)
+}
+
+// goneAfterGrace: ha p a türelmi idő alatt sem csatlakozik (újra), távollévőnek számít, és a játék
+// indulása előtt a helye is felszabadul. A belépéskor is elindul: aki belép, de az eseményfolyamát
+// meg sem nyitja (pl. rögtön bezárja a lapot), ne foglalja a helyet. A hívó tartja a zárat.
+func (s *server) goneAfterGrace(l *lobby, p *player) {
 	gen := p.gen
 	time.AfterFunc(offlineGrace, func() {
 		l.mu.Lock()
 		defer l.mu.Unlock()
-		if l.closed || p.conns > 0 || p.gen != gen || !p.online {
+		if l.closed || p.conns > 0 || p.gen != gen {
 			return
 		}
+		changed := p.online
 		p.online = false
 		if !l.started {
 			for seat := 1; seat <= maxPlayers; seat++ {
 				if l.seats[seat] == p {
 					l.removeSeat(seat)
+					changed = true
 				}
 			}
 		}
-		l.broadcastState()
+		if changed {
+			l.broadcastState()
+		}
 	})
 }
 
@@ -709,9 +758,15 @@ func (s *server) handleStatic(w http.ResponseWriter, r *http.Request) {
 	for _, pre := range publicPrefixes {
 		allowed = allowed || strings.HasPrefix(p, pre)
 	}
-	full := filepath.Join(s.root, filepath.FromSlash(p))
+	// Windowson a "\" is elválasztó: a "/js/..\..\x" a path.Clean után is kivezetne a mappából
+	rel := filepath.FromSlash(strings.TrimPrefix(p, "/"))
+	if !allowed || strings.ContainsRune(p, '\\') || !filepath.IsLocal(rel) {
+		http.NotFound(w, r)
+		return
+	}
+	full := filepath.Join(s.root, rel)
 	st, err := os.Stat(full)
-	if !allowed || err != nil || st.IsDir() {
+	if err != nil || st.IsDir() {
 		http.NotFound(w, r)
 		return
 	}
@@ -750,6 +805,7 @@ func (s *server) routes() http.Handler {
 	mux.HandleFunc("POST /api/join", s.handleJoin)
 	mux.HandleFunc("POST /api/start", s.handleStart)
 	mux.HandleFunc("POST /api/map", s.handleMap)
+	mux.HandleFunc("POST /api/long", s.handleLong)
 	mux.HandleFunc("POST /api/leave", s.handleLeave)
 	mux.HandleFunc("POST /api/check", s.handleCheck)
 	mux.HandleFunc("POST /api/send", s.handleSend)
@@ -795,7 +851,7 @@ func main() {
 		Addr:              *addr,
 		Handler:           s.routes(),
 		ReadHeaderTimeout: 10 * time.Second,
-		ReadTimeout:       20 * time.Second, // csak a kérés beolvasása: az eseményfolyamot nem vágja el
+		ReadTimeout:       20 * time.Second, // a kérés beolvasása; az eseményfolyam feloldja (handleEvents)
 		IdleTimeout:       2 * time.Minute,
 		MaxHeaderBytes:    16 << 10,
 	}

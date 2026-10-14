@@ -35,6 +35,101 @@
         };
     }
 
+    // ------------------------------------------------------------------ hosszú hadjárat
+
+    // A próbajáték csak a normál szabályt játszotta: 4 harci kör, az utolsóban a pontok sorrendjében
+    // támadnak, és bárhová lehet támadni. A SWF-ben a teljes kliens hosszú hadjárata is benne maradt
+    // (gcfg.longrulesorder: 6 kör, mindenki minden helyről egyszer támad; a GAMEPHASE "WARLONG"
+    // képkockája 6 körjelzővel és 6 támadási sorrenddel), csak a játékmenet nem használta.
+    // long=1 (js/hf.js): ez a szabály a robot- és a többjátékos játékban. Itt is csak az utolsó kör
+    // szabad támadás. A bemutató mindig normál (az oktató szövegei arra szólnak).
+    hf.long = full && _level0.long == '1';
+    hf.warRounds = hf.long ? 6 : 4;
+    if (hf.long) {
+        game.hfOrigInitGameLong = game.InitGame;
+        game.InitGame = function () {
+            game.hfOrigInitGameLong();
+            var order = String(gcfg.longrulesorder);
+            game.warorder = [];
+            for (var i = 0; i < order.length; i++) {
+                game.warorder.push(Number(order.charAt(i)));
+            }
+        };
+
+        // a 4. állapot 1. fázisa: ki támad következőnek (az eredeti 4 körös, pontsorrendes változata helyett)
+        game.hfOrigHandleGamePhaseLong = game.HandleGamePhase;
+        game.HandleGamePhase = function () {
+            if (game.state != 4 || game.phase != 1) {
+                game.hfOrigHandleGamePhaseLong();
+                return;
+            }
+            while (true) {
+                game.lpnum++;
+                if (game.lpnum <= 3) {
+                    game.nextplayer = game.warorder[(game.gameround - 1) * 3 + game.lpnum - 1];
+                    if (game.points[game.nextplayer] != 0) {
+                        game.JumpPhase(2);
+                        return;
+                    }
+                } else {
+                    game.lpnum = 0;
+                    game.gameround++;
+                    if (game.gameround > hf.warRounds) {
+                        game.SetNextState(game.CalculateEqualPoints() > 0 ? 5 : 15, 1, 0);
+                        game.NextPhase();
+                        return;
+                    }
+                }
+            }
+        };
+
+        // az eredeti a 4. körtől enged bárhová támadni: itt csak az utolsóban
+        game.hfOrigGetAvailableArea = game.GetAvailableArea;
+        game.GetAvailableArea = function (pnum) {
+            var r = game.gameround;
+            if (game.state == 4 && r >= 4 && r < hf.warRounds) {
+                game.gameround = 3;
+            }
+            var res = game.hfOrigGetAvailableArea(pnum);
+            game.gameround = r;
+            return res;
+        };
+
+        game.UpdateAttackOrder = function () {
+            for (var r = 1; r <= hf.warRounds; r++) {
+                var ao = gmap.GAMEPHASE['AO' + r];
+                for (var i = 1; i <= 3; i++) {
+                    ao['PCOLOR' + i].gotoAndStop(game.warorder[(r - 1) * 3 + i - 1]);
+                }
+            }
+        };
+
+        // a harc kijelzője: a WAR4 képkocka helyett a 6 körös WARLONG (az eredeti WAR4 ága szerint)
+        game.hfOrigSetupPhaseDisplay = game.SetupPhaseDisplay;
+        game.SetupPhaseDisplay = function (afirst) {
+            if (game.state != 4) {
+                game.hfOrigSetupPhaseDisplay(afirst);
+                return;
+            }
+            var ph = gmap.GAMEPHASE;
+            var cur = game.gameround;
+            ph.gotoAndStop('WARLONG');
+            ph.ROUNDNAME = glang.fn_turnname(game.state);
+            game.SetupRoundProgress(ph.ROUNDPB, cur - (afirst ? 1 : 0), hf.warRounds);
+            game.UpdateAttackOrder();
+            for (var r = 1; r <= hf.warRounds; r++) {
+                var ao = ph['AO' + r];
+                if (r < cur) {
+                    ao.gotoAndStop('FINISHED');
+                } else if (r > cur || afirst) {
+                    ao.gotoAndStop('PLAYER0');
+                } else {
+                    ao.gotoAndStop('PLAYER' + game.game_lpnum);
+                }
+            }
+        };
+    }
+
     // ------------------------------------------------------------------ pontszámláló
 
     // A játékosdobozok pontszáma fehér, mint a többi szám. A számláló "hardlight" keverési módban
@@ -167,10 +262,10 @@
         return n;
     };
 
-    // a 4. kör vége (game.SqSetupRoundEnd: a körjelző lekapcsolása) - utána vége a harcnak
+    // az utolsó harci kör vége (game.SqSetupRoundEnd: a körjelző lekapcsolása) - utána vége a harcnak
     game.hfOrigSqSetupRoundEnd = game.SqSetupRoundEnd;
     game.SqSetupRoundEnd = function () {
-        lastRoundEnd = game.state == 4 && (game.gameround >= 4 || hf.soleOwner() > 0);
+        lastRoundEnd = game.state == 4 && (game.gameround >= hf.warRounds || hf.soleOwner() > 0);
         game.hfOrigSqSetupRoundEnd();
     };
 
@@ -323,6 +418,25 @@
         }
         game.hfOrigBtnSendMyTipPressed(atip);
     };
+
+    // Tippbeírás közben minden kattintás után a tippmezőé a fókusz. A Ruffle a lejátszóba tett
+    // legelső kattintáskor (a robotjáték újratöltéssel indul, így ez gyakran az első tippkérdés
+    // mezője) a billentyűzetet a saját elemére veszi át; a Flash szerint a mező fókuszban marad, így
+    // senki sem adja vissza, és a leütések elvesznek. A fókusz le- és visszarakása visszaadja.
+    // (Érintőképernyőn az oldal saját beviteli mezője kezeli a tippet: src/lobby.as, hf.touchText.)
+    var tipFocus = {};
+    tipFocus.onMouseUp = function () {
+        var box = gmap.QUESTIONWIN.MYTIPBOX;
+        if (hf.touchText && hf.touchText.on) {
+            return;
+        }
+        if (game.myanswer != -1 || box == undefined || !box._visible || !gmap.QUESTIONWIN._visible) {
+            return;
+        }
+        Selection.setFocus(null);
+        Selection.setFocus(box);
+    };
+    Mouse.addListener(tipFocus);
 
     game.hfOrigAnswerPressed = game.btnAnswerPressed;
     game.btnAnswerPressed = function (ans) {

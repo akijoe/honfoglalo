@@ -68,9 +68,18 @@ func (c *gzCache) warm(dir string) {
 
 func acceptsGzip(r *http.Request) bool {
 	for _, part := range strings.Split(r.Header.Get("Accept-Encoding"), ",") {
-		if strings.TrimSpace(strings.SplitN(part, ";", 2)[0]) == "gzip" && !strings.Contains(part, "q=0") {
-			return true
+		enc, params, _ := strings.Cut(part, ";")
+		if strings.TrimSpace(enc) != "gzip" {
+			continue
 		}
+		// "gzip;q=0" (vagy 0.0, 0.000) tiltja; a "gzip;q=0.5" megengedi
+		for _, prm := range strings.Split(params, ";") {
+			k, v, _ := strings.Cut(strings.TrimSpace(prm), "=")
+			if strings.EqualFold(strings.TrimSpace(k), "q") && strings.Trim(strings.TrimSpace(v), "0.") == "" {
+				return false
+			}
+		}
+		return true
 	}
 	return false
 }
