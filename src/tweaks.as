@@ -161,6 +161,48 @@
         }
     };
 
+    // ------------------------------------------------------------------ válaszdobozok
+
+    // A feleletválasztós válaszok mezője egy sornyi magas (22 px-es betű), de sortörő: a hosszabb
+    // válasz második sora levágódott ("olasz származású" a "...cukrász feltalálójáról" helyett). Ha
+    // nem fér el egy sorban, kisebb betűvel egy sorba írjuk; ha úgy túl apró lenne, két sorba, és a
+    // mező is magasabb lesz. A szöveg függőlegesen középen marad (mint a game.SetQTMText-ben).
+    game.hfOrigSetQTMText = game.SetQTMText;
+    game.SetQTMText = function (amov, atext) {
+        game.hfOrigSetQTMText(amov, atext);
+        if (amov._parent.answernumber == undefined) {
+            return;
+        }
+        var t = amov.TEXT;
+        if (t.hfSize == undefined) {
+            t.hfSize = t.getTextFormat().size;
+            t.hfHeight = t._height;
+        }
+        var f = t.getTextFormat();
+        f.size = t.hfSize;
+        t.wordWrap = false;
+        t._height = t.hfHeight;
+        t.setTextFormat(f);
+        var room = t._width / (t._xscale / 100) - 6;
+        if (t.textWidth > room) {
+            var one = Math.floor(t.hfSize * room / t.textWidth);
+            if (one >= 15) {
+                f.size = one;
+                t.setTextFormat(f);
+            } else {
+                t.wordWrap = true;
+                f.size = 15;
+                t.setTextFormat(f);
+                while (f.size > 11 && t.textHeight > f.size * 2.6) {
+                    f.size--;
+                    t.setTextFormat(f);
+                }
+                t._height = Math.max(t.hfHeight, (t.textHeight + 6) * t._yscale / 100);
+            }
+        }
+        t._y = amov.origheight / 2 - t.textHeight / 2 - 4;
+    };
+
     // ------------------------------------------------------------------ nevek
 
     // A nevek a térképen (a vár fölött), a tippkártyákon és a harc fejlécében egysoros magasságú,
