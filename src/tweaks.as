@@ -83,17 +83,23 @@
             }
         };
 
-        // az eredeti a 4. körtől enged bárhová támadni: itt csak az utolsóban
-        game.hfOrigGetAvailableArea = game.GetAvailableArea;
-        game.GetAvailableArea = function (pnum) {
-            var r = game.gameround;
-            if (game.state == 4 && r >= 4 && r < hf.warRounds) {
-                game.gameround = 3;
-            }
-            var res = game.hfOrigGetAvailableArea(pnum);
-            game.gameround = r;
-            return res;
+        // Az eredeti a gameround alapján dönti el, hová lehet támadni (a 4. körtől bárhová), és hová
+        // támadnak a robotok (a 3. körben a bázisuk mellé, az utolsóban a te váradra). Ezek a hívások
+        // idejére a hosszú hadjárat körét a normál szabály megfelelő körére fordítjuk: az utolsó
+        // előtti körök a 3., az utolsó a 4. (Mindkét függvény szinkron, közben semmi sem lép.)
+        var asNormalRound = function (fn) {
+            return function (a, b) {
+                var r = game.gameround;
+                if (game.state == 4 && r >= 4) {
+                    game.gameround = r >= hf.warRounds ? 4 : 3;
+                }
+                var res = fn(a, b);
+                game.gameround = r;
+                return res;
+            };
         };
+        game.GetAvailableArea = asNormalRound(game.GetAvailableArea);
+        game.GetRobotSelAreaPointsWar = asNormalRound(game.GetRobotSelAreaPointsWar);
 
         game.UpdateAttackOrder = function () {
             for (var r = 1; r <= hf.warRounds; r++) {
@@ -433,8 +439,17 @@
         if (game.myanswer != -1 || box == undefined || !box._visible || !gmap.QUESTIONWIN._visible) {
             return;
         }
+        // a setFocus az egész szöveget kijelölné (a következő leütés felülírná): ahol a kattintás
+        // hagyta a kurzort / kijelölést, ott marad; ha a mező nem volt fókuszban, a végére kerül
+        var b = Selection.getBeginIndex();
+        var e = Selection.getEndIndex();
+        if (b < 0) {
+            b = box.length;
+            e = box.length;
+        }
         Selection.setFocus(null);
         Selection.setFocus(box);
+        Selection.setSelection(b, e);
     };
     Mouse.addListener(tipFocus);
 
