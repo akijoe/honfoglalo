@@ -632,7 +632,7 @@
       b.setAttribute('aria-pressed', on ? 'true' : 'false');
       b.disabled = !!mode.locked;
     }
-    for (const b of box.querySelectorAll('.rules button')) {
+    for (const b of box.querySelectorAll('.rules button[data-long]')) {
       const on = (b.dataset.long === '1') === mode.long;
       b.classList.toggle('on', on);
       b.setAttribute('aria-pressed', on ? 'true' : 'false');
@@ -683,14 +683,73 @@
     else location.href = url;
   }
 
-  // telefonon (keskeny képernyőn) a sáv behúzható: a "Térkép" fül nyitja, mellé koppintva bezárul
+  // telefonon (keskeny képernyőn) a sáv behúzható: a "Menü" fül nyitja, mellé koppintva bezárul
   function showMaps(open) {
+    if (!open) hideRuleTip();
     document.body.classList.toggle('maps-open', open);
     const t = document.getElementById('mapsToggle');
     if (t) t.setAttribute('aria-expanded', open ? 'true' : 'false');
   }
 
-  // a szabály a robotjátékban és a szobában számít (a bemutató mindig normál)
+  // A szabályok magyarázata (index.html: .rule data-desc): asztali gépen az "i" jel fölé víve,
+  // telefonon az "i" jelre koppintva látszik; az újabb koppintás vagy máshová koppintás bezárja.
+  const ruleTip = { row: null, pinned: false };
+
+  function showRuleTip(row, pinned) {
+    const el = document.getElementById('ruleTip');
+    const title = document.createElement('b');
+    title.textContent = row.querySelector('button[data-long]').textContent + ':';
+    el.replaceChildren(title, ' ' + row.dataset.desc);
+    for (const i of document.querySelectorAll('#maps .rules .info')) {
+      i.setAttribute('aria-expanded', i.closest('.rule') === row ? 'true' : 'false');
+    }
+    ruleTip.row = row;
+    ruleTip.pinned = pinned;
+    // a sáv mellé jobbra (telefonon a nyitott sáv mellé), ha ott nincs hely, a sor alá
+    const vw = document.documentElement.clientWidth;
+    const r = row.getBoundingClientRect();
+    const side = document.getElementById('maps').getBoundingClientRect().right + 8;
+    const beside = vw - side - 8 >= 150;
+    el.style.width = (beside ? Math.min(260, vw - side - 8) : vw - 16) + 'px';
+    el.hidden = false;
+    const top = beside ? r.top : r.bottom + 6;
+    el.style.left = (beside ? side : 8) + 'px';
+    el.style.top = Math.max(8, Math.min(top, window.innerHeight - el.offsetHeight - 8)) + 'px';
+  }
+
+  function hideRuleTip() {
+    const el = document.getElementById('ruleTip');
+    if (el) el.hidden = true;
+    for (const i of document.querySelectorAll('#maps .rules .info')) i.setAttribute('aria-expanded', 'false');
+    ruleTip.row = null;
+    ruleTip.pinned = false;
+  }
+
+  function buildRuleTips(box) {
+    for (const row of box.querySelectorAll('.rule')) {
+      const mode = row.querySelector('button[data-long]');
+      const info = row.querySelector('.info');
+      info.addEventListener('mouseenter', () => { if (!ruleTip.pinned) showRuleTip(row, false); });
+      info.addEventListener('mouseleave', () => { if (!ruleTip.pinned) hideRuleTip(); });
+      info.addEventListener('focus', () => { if (!ruleTip.pinned) showRuleTip(row, false); });
+      info.addEventListener('blur', () => { if (!ruleTip.pinned) hideRuleTip(); });
+      info.addEventListener('click', () => {
+        if (ruleTip.pinned && ruleTip.row === row) hideRuleTip();
+        else showRuleTip(row, true);
+      });
+      mode.addEventListener('click', () => {
+        hideRuleTip();
+        showMaps(false);
+        pickLong(mode.dataset.long === '1');
+      });
+    }
+    document.addEventListener('pointerdown', e => { if (!e.target.closest || !e.target.closest('#maps .rule')) hideRuleTip(); }, true);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') hideRuleTip(); });
+    box.addEventListener('scroll', hideRuleTip);
+    window.addEventListener('resize', () => { if (ruleTip.row) showRuleTip(ruleTip.row, ruleTip.pinned); });
+  }
+
+  // a szabály a robotjátékban és a szobában számít (a bemutató mindig villámháború)
   function pickLong(on) {
     const mode = mapMode();
     if (mode.locked || on === mode.long) return;
@@ -701,7 +760,7 @@
       return;
     }
     if (gamemode !== '1') { renderMaps(); return; }
-    if (!window.confirm('A játék újraindul ' + (on ? 'hosszú hadjárattal' : 'normál szabállyal') + '. Mehet?')) {
+    if (!window.confirm('A játék újraindul ' + (on ? 'hosszú hadjárattal' : 'villámháborúval') + '. Mehet?')) {
       save('localStorage', 'hfLong', mode.long);
       return;
     }
@@ -727,9 +786,7 @@
       note.textContent = 'A meghívó link a vágólapra került.';
       setTimeout(renderMaps, 2500);
     });
-    for (const b of box.querySelectorAll('.rules button')) {
-      b.addEventListener('click', () => { showMaps(false); pickLong(b.dataset.long === '1'); });
-    }
+    buildRuleTips(box);
     const list = box.querySelector('.list');
     for (const [id, name] of MAPS) {
       const b = document.createElement('button');

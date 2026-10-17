@@ -24,11 +24,17 @@ Utána: <http://localhost:8765/>. Teszt: `go test ./server`.
 - **Gyors játék egy ismerőssel:** szoba létrehozása vagy csatlakozás (lent).
 - **Visszajelzés:** rövid üzenet a szervernek.
 
-Az oldal bal sávjában választható a térkép: a SWF mind a 13 országa játszható. Ugyanott a szabály is:
-a **hosszú hadjáratban** 4 helyett 6 harci kör van, fix sorrendben (mindenki minden helyről egyszer
-támad), és csak az utolsó körben lehet bárhová támadni. Ez a robotos és a többjátékos játékra
-vonatkozik, a bemutató mindig normál. A játék végén egy
-eredményablak mutatja a helyezéseket és a saját statisztikádat.
+Az oldal bal sávjában (telefonon a „Menü” fül alatt) választható a térkép: a SWF mind a 13 országa
+játszható. Ugyanott a szabály is (az „i” jel elmagyarázza):
+
+- **Villámháború** (a próbajáték szabálya): a bázisokat a gép sorsolja, 4 harci kör, az utolsóban a
+  pontok sorrendjében bárhová lehet támadni.
+- **Hosszú hadjárat:** nincs sorsolás, a játékosok véletlen sorrendben maguk választják ki a
+  kezdőterületüket (a bázisukat); 6 harci kör, fix sorrendben (mindenki minden helyről egyszer
+  támad), és csak az utolsó körben lehet bárhová támadni.
+
+A szabály a robotos és a többjátékos játékra vonatkozik, a bemutató mindig villámháború. A játék végén
+egy eredményablak mutatja a helyezéseket és a saját statisztikádat.
 
 ## Többjátékos játék
 

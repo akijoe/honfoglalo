@@ -383,7 +383,7 @@ func (s *server) handleMap(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-// handleLong: a főnök a játék indulása előtt átállítja a szabályt (normál / hosszú hadjárat).
+// handleLong: a főnök a játék indulása előtt átállítja a szabályt (villámháború / hosszú hadjárat).
 func (s *server) handleLong(w http.ResponseWriter, r *http.Request) {
 	var req struct {
 		tokenReq

@@ -37,12 +37,13 @@
 
     // ------------------------------------------------------------------ hosszú hadjárat
 
-    // A próbajáték csak a normál szabályt játszotta: 4 harci kör, az utolsóban a pontok sorrendjében
-    // támadnak, és bárhová lehet támadni. A SWF-ben a teljes kliens hosszú hadjárata is benne maradt
-    // (gcfg.longrulesorder: 6 kör, mindenki minden helyről egyszer támad; a GAMEPHASE "WARLONG"
-    // képkockája 6 körjelzővel és 6 támadási sorrenddel), csak a játékmenet nem használta.
-    // long=1 (js/hf.js): ez a szabály a robot- és a többjátékos játékban. Itt is csak az utolsó kör
-    // szabad támadás. A bemutató mindig normál (az oktató szövegei arra szólnak).
+    // A próbajáték csak a villámháborút játszotta: a bázisokat a gép sorsolja, 4 harci kör, az
+    // utolsóban a pontok sorrendjében támadnak, és bárhová lehet támadni. A SWF-ben a teljes kliens
+    // hosszú hadjárata is benne maradt (gcfg.longrulesorder: 6 kör, mindenki minden helyről egyszer
+    // támad; a GAMEPHASE "WARLONG" képkockája 6 körjelzővel és 6 támadási sorrenddel; a "Bázis
+    // választás" körnév), csak a játékmenet nem használta. long=1 (js/hf.js): ez a szabály a robot- és
+    // a többjátékos játékban: a bázisát mindenki maga választja ki, véletlen sorrendben, és itt is
+    // csak az utolsó kör szabad támadás. A bemutató mindig villámháború (az oktató szövegei arra szólnak).
     hf.long = full && _level0.long == '1';
     hf.warRounds = hf.long ? 6 : 4;
     if (hf.long) {
@@ -56,9 +57,77 @@
             }
         };
 
+        // Bázisválasztás (1. állapot) a sorsolás helyett. Választható terület: szabad, és nem
+        // szomszédos más bázissal (game.GetAvailableArea az 1. állapotban; ugyanezzel sorsolt az
+        // eredeti). Fázisok: 0 sorrend, 1 ki következik, 8 választ (te: kattintás, lejárt időnél
+        // véletlen; robot: véletlen), 9 a bázis a térképre kerül. src/mp.as: a sorrendet a házigazda
+        // sorsolja (hf.baseOrder), a bázist az választja, akié (vagy helyette a házigazda).
+        hf.baseOrder = function () {
+            var order = [1, 2, 3];
+            for (var i = 2; i > 0; i--) {
+                var j = random(i + 1);
+                var t = order[i];
+                order[i] = order[j];
+                order[j] = t;
+            }
+            return order;
+        };
+        var baseChoice = function () {
+            var ph = game.phase;
+            if (ph == 0) {
+                game.baseorder = hf.baseOrder();
+                game.hfBaseIdx = 0;
+                return false;                       // az eredeti: körváltás, -> 1
+            }
+            if (ph == 1) {
+                game.hfBaseIdx++;
+                if (game.hfBaseIdx > 3) {
+                    game.JumpPhase(2);              // -> a terjeszkedés (3. állapot)
+                    return true;
+                }
+                game.nextplayer = game.baseorder[game.hfBaseIdx - 1];
+                game.ClearPlayerSelections();
+                game.ShowSelectableAreas(game.GetAvailableArea(game.nextplayer));
+                game.JumpPhase(8);
+                return true;
+            }
+            if (ph == 8) {
+                if (game.nextplayer == game.IAM) {
+                    game.selectablearea = game.GetAvailableArea(game.IAM);
+                    game.ShowAreaButtons(game.selectablearea);
+                    game.ShowSelectableAreas(game.selectablearea);
+                    game.StartClock(gmap.INSANIM, 'Válassz bázist a térképen!', 1, gcfg.TIMEOUT_SELECT);
+                    game.SetNextPhase(9);           // a kattintás (game.btnAreaPressed) viszi tovább
+                } else {
+                    game.player_selections[game.nextplayer] = game.RandomSelectArea(game.GetAvailableArea(game.nextplayer));
+                    game.JumpPhase(9);
+                }
+                return true;
+            }
+            if (ph == 9) {
+                game.HideSelectableAreas();
+                game.OccupyArea(game.player_selections[game.nextplayer], game.nextplayer, 1000);
+                game.SqAddMapChanges();
+                game.SqAddScoreChanges(0);
+                game.SetNextPhase(1);
+                gsqc.Start();
+                return true;
+            }
+            return false;
+        };
+
+        // a körnév: "Bázis választás" (az eredeti a game_rules szerint választ, itt mindig 1 = sorsolás)
+        var turnName = glang.fn_turnname;
+        glang.fn_turnname = function (code) {
+            return code == 1 ? getlang('gameround_1') : turnName(code);
+        };
+
         // a 4. állapot 1. fázisa: ki támad következőnek (az eredeti 4 körös, pontsorrendes változata helyett)
         game.hfOrigHandleGamePhaseLong = game.HandleGamePhase;
         game.HandleGamePhase = function () {
+            if (game.state == 1 && baseChoice()) {
+                return;
+            }
             if (game.state != 4 || game.phase != 1) {
                 game.hfOrigHandleGamePhaseLong();
                 return;
@@ -85,7 +154,7 @@
 
         // Az eredeti a gameround alapján dönti el, hová lehet támadni (a 4. körtől bárhová), és hová
         // támadnak a robotok (a 3. körben a bázisuk mellé, az utolsóban a te váradra). Ezek a hívások
-        // idejére a hosszú hadjárat körét a normál szabály megfelelő körére fordítjuk: az utolsó
+        // idejére a hosszú hadjárat körét a villámháború megfelelő körére fordítjuk: az utolsó
         // előtti körök a 3., az utolsó a 4. (Mindkét függvény szinkron, közben semmi sem lép.)
         var asNormalRound = function (fn) {
             return function (a, b) {
@@ -890,9 +959,9 @@
             poll();
             return;
         }
-        // egyjátékos módban a robot is "gondolkodik" egy kicsit, mielőtt területet választ vagy
-        // támad; addig a várakozó doboz mutatja, ki lép (src/lobby.as: hf.wait)
-        if ((game.state == 3 || game.state == 4) && game.phase == 8 && game.nextplayer != game.IAM && !robotThinking) {
+        // egyjátékos módban a robot is "gondolkodik" egy kicsit, mielőtt bázist (hosszú hadjárat) vagy
+        // területet választ, vagy támad; addig a várakozó doboz mutatja, ki lép (src/lobby.as: hf.wait)
+        if ((game.state == 1 || game.state == 3 || game.state == 4) && game.phase == 8 && game.nextplayer != game.IAM && !robotThinking) {
             robotThinking = true;
             hf.wait.show(hf.wait.selectMsg(game.nextplayer));
             hf.later(hf.robotThinkTime(), function () {
