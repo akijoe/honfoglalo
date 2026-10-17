@@ -152,9 +152,16 @@
                 }
             } else {
                 others.push(e.seat);
-                // aki túl sokáig nem lép, helyette a házigazda lép (mintha lejárt volna az ideje)
-                if (e.seat > 0 && waited > 40000 && M.host() == M.seat && e.dflt) {
-                    M.send(e.seat, e.dflt());
+                // aki túl sokáig nem lép, helyette a házigazda lép (mintha lejárt volna az ideje). Ha
+                // maga a házigazda nem válaszol (pl. elaludt a telefonja, de a kapcsolata még élőnek
+                // látszik), 10 mp-cel később bármelyik másik ember lép helyette, a házigazda dolgait
+                // (kérdés, bázis) is elvégezve. A szerveren az első döntés számít, így ez nem ütközik.
+                if (waited > 40000 && (M.host() == M.seat || waited > 50000)) {
+                    if (e.seat > 0 && e.dflt) {
+                        M.send(e.seat, e.dflt());
+                    } else if (e.seat == 0 && e.make) {
+                        M.send(0, e.make());
+                    }
                 }
             }
         }

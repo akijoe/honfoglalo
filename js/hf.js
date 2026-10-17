@@ -302,6 +302,7 @@
     sendChain: Promise.resolve(),
     inGame: false,
     sawLobby: false,      // ebben a lapban láttuk a szobát indulás előtt (az indulás után rögtön játék)
+    heard: 0,             // az eseményfolyam utolsó üzenetének ideje (a szerver 15 mp-enként pingel)
   };
 
   function emit(ev) {
@@ -311,14 +312,20 @@
 
   async function api(path, body) {
     let res;
+    // egy beragadt kérés (pl. alvó Wi-Fi) ne tartsa fel örökre a döntések sorát (sendDecision)
+    const ctl = new AbortController();
+    const timer = setTimeout(() => ctl.abort(), 15000);
     try {
       res = await fetch(apiURL(path), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
+        signal: ctl.signal,
       });
     } catch (e) {
       throw new Error('Nem érem el a szervert.');
+    } finally {
+      clearTimeout(timer);
     }
     const data = await res.json().catch(() => ({}));
     if (!res.ok) {
@@ -339,7 +346,9 @@
     if (!s) return;
     const es = new EventSource(apiURL('events') + '?code=' + encodeURIComponent(s.code) + '&token=' + encodeURIComponent(s.token));
     net.es = es;
+    net.heard = Date.now();
     es.onmessage = function (e) {
+      net.heard = Date.now();
       let ev;
       try { ev = JSON.parse(e.data); } catch (err) { return; }
       if (ev.type === 'state') onState(ev);
@@ -366,6 +375,17 @@
       else setTimeout(recheck, 5000);
     });
   }
+
+  // Egy csendben elhalt kapcsolaton (alvó telefon, Wi-Fi-váltás) az EventSource nyitottnak látszik,
+  // de semmi sem jön rajta: a játék a következő döntésre várna örökké (nem jönne fel a kérdés). A
+  // szerver 15 mp-enként pingel; ha 35 mp-ig semmi sem jött, újracsatlakozunk (a szerver az összes
+  // döntést újraküldi, a már megvoltakat a seenKeys kiszűri). A lap előtérbe kerülésekor is megnézzük.
+  function watchStream() {
+    if (net.es && net.es.readyState !== EventSource.CLOSED && Date.now() - net.heard > 35000) connect();
+  }
+  setInterval(watchStream, 5000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) watchStream(); });
+  window.addEventListener('online', () => { if (net.es) connect(); });
 
   window.addEventListener('pagehide', () => { net.unloading = true; });
   window.addEventListener('pageshow', () => { net.unloading = false; });

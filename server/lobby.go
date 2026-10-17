@@ -18,6 +18,9 @@ const (
 
 	// A lecsatlakozott játékos ennyi idő múlva számít távollévőnek (közben az EventSource újracsatlakozhat).
 	offlineGrace = 10 * time.Second
+	// Az eseményfolyam pingje (a kliens 35 mp csend után újracsatlakozik), és egy írás leghosszabb ideje.
+	ssePing         = 15 * time.Second
+	sseWriteTimeout = 30 * time.Second
 	// Üres (senki sem csatlakozik) szoba élettartama, és bármely szoba legnagyobb kora.
 	idleLobbyTTL = 15 * time.Minute
 	maxLobbyAge  = 8 * time.Hour

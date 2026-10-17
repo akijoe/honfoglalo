@@ -927,9 +927,24 @@
         }
     };
 
+    // Az óraütem (gtimer) ez után a hívás után kikapcsolja az órát (gtimer.clock_on = false). Ha a
+    // lejárt lépés után azonnal a következő óra indulna (felzárkózáskor a köztes fázisok egy
+    // pillanat alatt lefutnak), az új óra sosem járna le, és a játék ennél a játékosnál megállna.
+    // Ezért a lépés egy ütemmel később megy el - ha közben nem léptél (kattintással), azaz a játék
+    // még ugyanabban a fázisban van.
     game.OnClockTimeout = function (param) {
         game.clocktimeout = true;
         game.StopClock();
+        var st = game.state;
+        var ph = game.phase;
+        hf.later(0, function () {
+            if (game.state == st && game.phase == ph) {
+                clockTimeoutStep(param);
+            }
+        });
+    };
+
+    function clockTimeoutStep(param) {
         if (param == 1) {
             game.btnAreaPressed(0);
         } else if (param == 2) {
@@ -947,7 +962,7 @@
             gmap.QUESTIONWIN.MYTIP = hf.noTip ? '0' : typed;
             game.SendMyTip(gmap.QUESTIONWIN.MYTIP, false);
         }
-    };
+    }
 
     // nincs "Lejárt az időd. A rendes játékban..." próbajáték-tipp
     game.OnClockTimeoutEnd = function () {

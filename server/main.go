@@ -509,7 +509,8 @@ func (s *server) handleEvents(w http.ResponseWriter, r *http.Request) {
 	}
 	// A ReadTimeout határideje a válasz alatt is érvényben maradna: lejártakor a szerver megszakítja
 	// a kérést, és az eseményfolyam 20 mp-enként újraindulna. Az eseményfolyamra nem vonatkozik.
-	_ = http.NewResponseController(w).SetReadDeadline(time.Time{})
+	rc := http.NewResponseController(w)
+	_ = rc.SetReadDeadline(time.Time{})
 	l.mu.Lock()
 	seat := l.seatOf(q.Get("token"))
 	if l.closed || seat == 0 || l.seats[seat].left {
@@ -546,6 +547,10 @@ func (s *server) handleEvents(w http.ResponseWriter, r *http.Request) {
 
 	defer s.disconnect(l, sub, p)
 
+	// Egy írás legfeljebb ennyi ideig akadhat el: egy eltűnt kliens (alvó telefon) kapcsolata így
+	// hamarabb lezárul, és a türelmi idő után távollévő lesz (helyette a házigazda lép).
+	deadline := func() { _ = rc.SetWriteDeadline(time.Now().Add(sseWriteTimeout)) }
+	deadline()
 	h := w.Header()
 	h.Set("Content-Type", "text/event-stream; charset=utf-8")
 	h.Set("Cache-Control", "no-store")
@@ -558,11 +563,13 @@ func (s *server) handleEvents(w http.ResponseWriter, r *http.Request) {
 	}
 	flusher.Flush()
 
-	ping := time.NewTicker(20 * time.Second)
+	// A ping adatüzenet (nem megjegyzés), hogy a kliens lássa, él-e a kapcsolat (js/hf.js: watchStream).
+	ping := time.NewTicker(ssePing)
 	defer ping.Stop()
 	for {
 		select {
 		case b := <-sub.ch:
+			deadline()
 			if !writeEvent(w, b) {
 				return
 			}
@@ -574,7 +581,8 @@ func (s *server) handleEvents(w http.ResponseWriter, r *http.Request) {
 			}
 			flusher.Flush()
 		case <-ping.C:
-			if _, err := io.WriteString(w, ": ping\n\n"); err != nil {
+			deadline()
+			if !writeEvent(w, pingEvent) {
 				return
 			}
 			flusher.Flush()
@@ -585,6 +593,8 @@ func (s *server) handleEvents(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 }
+
+var pingEvent = []byte(`{"type":"ping"}`)
 
 func writeEvent(w io.Writer, b []byte) bool {
 	_, err := io.WriteString(w, "data: "+string(b)+"\n\n")
