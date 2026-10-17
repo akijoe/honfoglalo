@@ -357,9 +357,11 @@
         return _root.hfWait != undefined;
     };
 
-    // a lépő játékos neve: "Béla támad" (harc) / "Béla választ területet" (felosztás)
+    // a lépő játékos neve: "Béla támad" (harc) / "Béla választ területet" (felosztás) / "Béla választ
+    // bázist" (a hosszú hadjárat eleje)
     wait.selectMsg = function (pnum) {
-        return getlang(game.state == 4 ? 'gameinfo_oppattacks' : 'gameinfo_selectingarea', game.player_name[pnum]);
+        var key = game.state == 4 ? 'gameinfo_oppattacks' : game.state == 1 ? 'gameinfo_selectingbase' : 'gameinfo_selectingarea';
+        return getlang(key, game.player_name[pnum]);
     };
 
     // amikor a saját órád indul (te jössz), a várakozó doboz eltűnik
@@ -886,8 +888,8 @@
                 r.name.text = p.name + (tags.length > 0 ? '  (' + tags.join(', ') + ')' : '');
             }
             var boss = state.boss == me;
-            // a térképet a főnök az oldal bal oldali sávjában választja (js/hf.js)
-            mapLine.text = 'Térkép: ' + state.mapName + (boss && !state.started ? '  (módosítható)' : '');
+            // a térképet és a szabályt a főnök az oldal bal oldali sávjában választja (js/hf.js)
+            mapLine.text = 'Térkép: ' + state.mapName + ', ' + (state.long ? 'hosszú hadjárat' : 'villámháború') + (boss && !state.started ? '  (módosítható)' : '');
             start._visible = boss && !state.started;
             start.setOn(count >= 2);
             rejoin._visible = state.started;

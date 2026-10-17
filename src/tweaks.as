@@ -35,6 +35,176 @@
         };
     }
 
+    // ------------------------------------------------------------------ hosszú hadjárat
+
+    // A próbajáték csak a villámháborút játszotta: a bázisokat a gép sorsolja, 4 harci kör, az
+    // utolsóban a pontok sorrendjében támadnak, és bárhová lehet támadni. A SWF-ben a teljes kliens
+    // hosszú hadjárata is benne maradt (gcfg.longrulesorder: 6 kör, mindenki minden helyről egyszer
+    // támad; a GAMEPHASE "WARLONG" képkockája 6 körjelzővel és 6 támadási sorrenddel; a "Bázis
+    // választás" körnév), csak a játékmenet nem használta. long=1 (js/hf.js): ez a szabály a robot- és
+    // a többjátékos játékban: a bázisát mindenki maga választja ki, véletlen sorrendben, és itt is
+    // csak az utolsó kör szabad támadás. A bemutató mindig villámháború (az oktató szövegei arra szólnak).
+    hf.long = full && _level0.long == '1';
+    hf.warRounds = hf.long ? 6 : 4;
+    if (hf.long) {
+        game.hfOrigInitGameLong = game.InitGame;
+        game.InitGame = function () {
+            game.hfOrigInitGameLong();
+            var order = String(gcfg.longrulesorder);
+            game.warorder = [];
+            for (var i = 0; i < order.length; i++) {
+                game.warorder.push(Number(order.charAt(i)));
+            }
+        };
+
+        // Bázisválasztás (1. állapot) a sorsolás helyett. Választható terület: szabad, és nem
+        // szomszédos más bázissal (game.GetAvailableArea az 1. állapotban; ugyanezzel sorsolt az
+        // eredeti). Fázisok: 0 sorrend, 1 ki következik, 8 választ (te: kattintás, lejárt időnél
+        // véletlen; robot: véletlen), 9 a bázis a térképre kerül. src/mp.as: a sorrendet a házigazda
+        // sorsolja (hf.baseOrder), a bázist az választja, akié (vagy helyette a házigazda).
+        hf.baseOrder = function () {
+            var order = [1, 2, 3];
+            for (var i = 2; i > 0; i--) {
+                var j = random(i + 1);
+                var t = order[i];
+                order[i] = order[j];
+                order[j] = t;
+            }
+            return order;
+        };
+        var baseChoice = function () {
+            var ph = game.phase;
+            if (ph == 0) {
+                game.baseorder = hf.baseOrder();
+                game.hfBaseIdx = 0;
+                return false;                       // az eredeti: körváltás, -> 1
+            }
+            if (ph == 1) {
+                game.hfBaseIdx++;
+                if (game.hfBaseIdx > 3) {
+                    game.JumpPhase(2);              // -> a terjeszkedés (3. állapot)
+                    return true;
+                }
+                game.nextplayer = game.baseorder[game.hfBaseIdx - 1];
+                game.ClearPlayerSelections();
+                game.ShowSelectableAreas(game.GetAvailableArea(game.nextplayer));
+                game.JumpPhase(8);
+                return true;
+            }
+            if (ph == 8) {
+                if (game.nextplayer == game.IAM) {
+                    game.selectablearea = game.GetAvailableArea(game.IAM);
+                    game.ShowAreaButtons(game.selectablearea);
+                    game.ShowSelectableAreas(game.selectablearea);
+                    game.StartClock(gmap.INSANIM, 'Válassz bázist a térképen!', 1, gcfg.TIMEOUT_SELECT);
+                    game.SetNextPhase(9);           // a kattintás (game.btnAreaPressed) viszi tovább
+                } else {
+                    game.player_selections[game.nextplayer] = game.RandomSelectArea(game.GetAvailableArea(game.nextplayer));
+                    game.JumpPhase(9);
+                }
+                return true;
+            }
+            if (ph == 9) {
+                game.HideSelectableAreas();
+                game.OccupyArea(game.player_selections[game.nextplayer], game.nextplayer, 1000);
+                game.SqAddMapChanges();
+                game.SqAddScoreChanges(0);
+                game.SetNextPhase(1);
+                gsqc.Start();
+                return true;
+            }
+            return false;
+        };
+
+        // a körnév: "Bázis választás" (az eredeti a game_rules szerint választ, itt mindig 1 = sorsolás)
+        var turnName = glang.fn_turnname;
+        glang.fn_turnname = function (code) {
+            return code == 1 ? getlang('gameround_1') : turnName(code);
+        };
+
+        // a 4. állapot 1. fázisa: ki támad következőnek (az eredeti 4 körös, pontsorrendes változata helyett)
+        game.hfOrigHandleGamePhaseLong = game.HandleGamePhase;
+        game.HandleGamePhase = function () {
+            if (game.state == 1 && baseChoice()) {
+                return;
+            }
+            if (game.state != 4 || game.phase != 1) {
+                game.hfOrigHandleGamePhaseLong();
+                return;
+            }
+            while (true) {
+                game.lpnum++;
+                if (game.lpnum <= 3) {
+                    game.nextplayer = game.warorder[(game.gameround - 1) * 3 + game.lpnum - 1];
+                    if (game.points[game.nextplayer] != 0) {
+                        game.JumpPhase(2);
+                        return;
+                    }
+                } else {
+                    game.lpnum = 0;
+                    game.gameround++;
+                    if (game.gameround > hf.warRounds) {
+                        game.SetNextState(game.CalculateEqualPoints() > 0 ? 5 : 15, 1, 0);
+                        game.NextPhase();
+                        return;
+                    }
+                }
+            }
+        };
+
+        // Az eredeti a gameround alapján dönti el, hová lehet támadni (a 4. körtől bárhová), és hová
+        // támadnak a robotok (a 3. körben a bázisuk mellé, az utolsóban a te váradra). Ezek a hívások
+        // idejére a hosszú hadjárat körét a villámháború megfelelő körére fordítjuk: az utolsó
+        // előtti körök a 3., az utolsó a 4. (Mindkét függvény szinkron, közben semmi sem lép.)
+        var asNormalRound = function (fn) {
+            return function (a, b) {
+                var r = game.gameround;
+                if (game.state == 4 && r >= 4) {
+                    game.gameround = r >= hf.warRounds ? 4 : 3;
+                }
+                var res = fn(a, b);
+                game.gameround = r;
+                return res;
+            };
+        };
+        game.GetAvailableArea = asNormalRound(game.GetAvailableArea);
+        game.GetRobotSelAreaPointsWar = asNormalRound(game.GetRobotSelAreaPointsWar);
+
+        game.UpdateAttackOrder = function () {
+            for (var r = 1; r <= hf.warRounds; r++) {
+                var ao = gmap.GAMEPHASE['AO' + r];
+                for (var i = 1; i <= 3; i++) {
+                    ao['PCOLOR' + i].gotoAndStop(game.warorder[(r - 1) * 3 + i - 1]);
+                }
+            }
+        };
+
+        // a harc kijelzője: a WAR4 képkocka helyett a 6 körös WARLONG (az eredeti WAR4 ága szerint)
+        game.hfOrigSetupPhaseDisplay = game.SetupPhaseDisplay;
+        game.SetupPhaseDisplay = function (afirst) {
+            if (game.state != 4) {
+                game.hfOrigSetupPhaseDisplay(afirst);
+                return;
+            }
+            var ph = gmap.GAMEPHASE;
+            var cur = game.gameround;
+            ph.gotoAndStop('WARLONG');
+            ph.ROUNDNAME = glang.fn_turnname(game.state);
+            game.SetupRoundProgress(ph.ROUNDPB, cur - (afirst ? 1 : 0), hf.warRounds);
+            game.UpdateAttackOrder();
+            for (var r = 1; r <= hf.warRounds; r++) {
+                var ao = ph['AO' + r];
+                if (r < cur) {
+                    ao.gotoAndStop('FINISHED');
+                } else if (r > cur || afirst) {
+                    ao.gotoAndStop('PLAYER0');
+                } else {
+                    ao.gotoAndStop('PLAYER' + game.game_lpnum);
+                }
+            }
+        };
+    }
+
     // ------------------------------------------------------------------ pontszámláló
 
     // A játékosdobozok pontszáma fehér, mint a többi szám. A számláló "hardlight" keverési módban
@@ -58,6 +228,48 @@
                 }
             }
         }
+    };
+
+    // ------------------------------------------------------------------ válaszdobozok
+
+    // A feleletválasztós válaszok mezője egy sornyi magas (22 px-es betű), de sortörő: a hosszabb
+    // válasz második sora levágódott ("olasz származású" a "...cukrász feltalálójáról" helyett). Ha
+    // nem fér el egy sorban, kisebb betűvel egy sorba írjuk; ha úgy túl apró lenne, két sorba, és a
+    // mező is magasabb lesz. A szöveg függőlegesen középen marad (mint a game.SetQTMText-ben).
+    game.hfOrigSetQTMText = game.SetQTMText;
+    game.SetQTMText = function (amov, atext) {
+        game.hfOrigSetQTMText(amov, atext);
+        if (amov._parent.answernumber == undefined) {
+            return;
+        }
+        var t = amov.TEXT;
+        if (t.hfSize == undefined) {
+            t.hfSize = t.getTextFormat().size;
+            t.hfHeight = t._height;
+        }
+        var f = t.getTextFormat();
+        f.size = t.hfSize;
+        t.wordWrap = false;
+        t._height = t.hfHeight;
+        t.setTextFormat(f);
+        var room = t._width / (t._xscale / 100) - 6;
+        if (t.textWidth > room) {
+            var one = Math.floor(t.hfSize * room / t.textWidth);
+            if (one >= 15) {
+                f.size = one;
+                t.setTextFormat(f);
+            } else {
+                t.wordWrap = true;
+                f.size = 15;
+                t.setTextFormat(f);
+                while (f.size > 11 && t.textHeight > f.size * 2.6) {
+                    f.size--;
+                    t.setTextFormat(f);
+                }
+                t._height = Math.max(t.hfHeight, (t.textHeight + 6) * t._yscale / 100);
+            }
+        }
+        t._y = amov.origheight / 2 - t.textHeight / 2 - 4;
     };
 
     // ------------------------------------------------------------------ nevek
@@ -167,10 +379,10 @@
         return n;
     };
 
-    // a 4. kör vége (game.SqSetupRoundEnd: a körjelző lekapcsolása) - utána vége a harcnak
+    // az utolsó harci kör vége (game.SqSetupRoundEnd: a körjelző lekapcsolása) - utána vége a harcnak
     game.hfOrigSqSetupRoundEnd = game.SqSetupRoundEnd;
     game.SqSetupRoundEnd = function () {
-        lastRoundEnd = game.state == 4 && (game.gameround >= 4 || hf.soleOwner() > 0);
+        lastRoundEnd = game.state == 4 && (game.gameround >= hf.warRounds || hf.soleOwner() > 0);
         game.hfOrigSqSetupRoundEnd();
     };
 
@@ -323,6 +535,34 @@
         }
         game.hfOrigBtnSendMyTipPressed(atip);
     };
+
+    // Tippbeírás közben minden kattintás után a tippmezőé a fókusz. A Ruffle a lejátszóba tett
+    // legelső kattintáskor (a robotjáték újratöltéssel indul, így ez gyakran az első tippkérdés
+    // mezője) a billentyűzetet a saját elemére veszi át; a Flash szerint a mező fókuszban marad, így
+    // senki sem adja vissza, és a leütések elvesznek. A fókusz le- és visszarakása visszaadja.
+    // (Érintőképernyőn az oldal saját beviteli mezője kezeli a tippet: src/lobby.as, hf.touchText.)
+    var tipFocus = {};
+    tipFocus.onMouseUp = function () {
+        var box = gmap.QUESTIONWIN.MYTIPBOX;
+        if (hf.touchText && hf.touchText.on) {
+            return;
+        }
+        if (game.myanswer != -1 || box == undefined || !box._visible || !gmap.QUESTIONWIN._visible) {
+            return;
+        }
+        // a setFocus az egész szöveget kijelölné (a következő leütés felülírná): ahol a kattintás
+        // hagyta a kurzort / kijelölést, ott marad; ha a mező nem volt fókuszban, a végére kerül
+        var b = Selection.getBeginIndex();
+        var e = Selection.getEndIndex();
+        if (b < 0) {
+            b = box.length;
+            e = box.length;
+        }
+        Selection.setFocus(null);
+        Selection.setFocus(box);
+        Selection.setSelection(b, e);
+    };
+    Mouse.addListener(tipFocus);
 
     game.hfOrigAnswerPressed = game.btnAnswerPressed;
     game.btnAnswerPressed = function (ans) {
@@ -719,9 +959,9 @@
             poll();
             return;
         }
-        // egyjátékos módban a robot is "gondolkodik" egy kicsit, mielőtt területet választ vagy
-        // támad; addig a várakozó doboz mutatja, ki lép (src/lobby.as: hf.wait)
-        if ((game.state == 3 || game.state == 4) && game.phase == 8 && game.nextplayer != game.IAM && !robotThinking) {
+        // egyjátékos módban a robot is "gondolkodik" egy kicsit, mielőtt bázist (hosszú hadjárat) vagy
+        // területet választ, vagy támad; addig a várakozó doboz mutatja, ki lép (src/lobby.as: hf.wait)
+        if ((game.state == 1 || game.state == 3 || game.state == 4) && game.phase == 8 && game.nextplayer != game.IAM && !robotThinking) {
             robotThinking = true;
             hf.wait.show(hf.wait.selectMsg(game.nextplayer));
             hf.later(hf.robotThinkTime(), function () {
@@ -756,9 +996,24 @@
         }
     };
 
+    // Az óraütem (gtimer) ez után a hívás után kikapcsolja az órát (gtimer.clock_on = false). Ha a
+    // lejárt lépés után azonnal a következő óra indulna (felzárkózáskor a köztes fázisok egy
+    // pillanat alatt lefutnak), az új óra sosem járna le, és a játék ennél a játékosnál megállna.
+    // Ezért a lépés egy ütemmel később megy el - ha közben nem léptél (kattintással), azaz a játék
+    // még ugyanabban a fázisban van.
     game.OnClockTimeout = function (param) {
         game.clocktimeout = true;
         game.StopClock();
+        var st = game.state;
+        var ph = game.phase;
+        hf.later(0, function () {
+            if (game.state == st && game.phase == ph) {
+                clockTimeoutStep(param);
+            }
+        });
+    };
+
+    function clockTimeoutStep(param) {
         if (param == 1) {
             game.btnAreaPressed(0);
         } else if (param == 2) {
@@ -776,7 +1031,7 @@
             gmap.QUESTIONWIN.MYTIP = hf.noTip ? '0' : typed;
             game.SendMyTip(gmap.QUESTIONWIN.MYTIP, false);
         }
-    };
+    }
 
     // nincs "Lejárt az időd. A rendes játékban..." próbajáték-tipp
     game.OnClockTimeoutEnd = function () {

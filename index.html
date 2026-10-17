@@ -38,7 +38,21 @@
     #maps #copy { display: inline; width: auto; padding: 1px 8px; margin-left: 4px; border: 1px solid #C89B4A;
                   font-size: 12px; background: #5A3518; }
     #maps h2 { margin: 0 0 8px; font-size: 18px; color: #FFE39A; text-align: center; font-weight: bold; }
-    #maps .list { display: flex; flex-direction: column; gap: 4px; }
+    #maps .list, #maps .rules { display: flex; flex-direction: column; gap: 4px; }
+    #maps .rules { margin-bottom: 12px; }
+    #maps .rule { display: flex; align-items: center; gap: 4px; }
+    #maps .rules button[data-long] { flex: 1; min-width: 0; justify-content: center; }
+    #maps.locked .rules button[data-long]:not(.on) { opacity: .45; }
+    /* a szabály magyarázata: "i" jel a gomb mellett (js/hf.js: ruleTip) */
+    #maps .rules .info { flex: none; width: 22px; height: 22px; padding: 0; justify-content: center;
+                         border: 1px solid #C89B4A; border-radius: 50%; background: #5A3518; color: #FFE39A;
+                         font: italic bold 14px Georgia, 'Times New Roman', serif; }
+    #maps .rules .info:hover, #maps .rules .info[aria-expanded="true"] { background: #A9732C; color: #FFF3D0; }
+    #ruleTip { position: fixed; z-index: 7; box-sizing: border-box; margin: 0; padding: 8px 10px; border: 1px solid #C89B4A;
+               border-radius: 8px; background: rgba(28, 15, 6, .97); box-shadow: 0 4px 16px rgba(0, 0, 0, .6); color: #F3DDB0;
+               font: 13px/1.4 'Book Antiqua', Palatino, 'Palatino Linotype', Georgia, serif; pointer-events: none; }
+    #ruleTip[hidden] { display: none; }
+    #ruleTip b { color: #FFE39A; }
     #maps button { display: flex; align-items: center; gap: 8px; width: 100%; padding: 4px 6px; border: 1px solid transparent;
                    border-radius: 8px; background: none; color: #F3DDB0; font: inherit; font-size: 14px; text-align: left; cursor: pointer; }
     #maps button:hover:not(:disabled) { background: #5A3518; }
@@ -62,7 +76,7 @@
     #foot .sep { margin: 0 .4em; opacity: .6; }
 
     /* telefonon: a játék felül (gépelés közben a billentyűzet fölött is látszik a nagy része), a
-       térképek bal oldalt, behúzható sávban (a "Térkép" fül nyitja) */
+       szabály és a térképek bal oldalt, behúzható sávban (a "Menü" fül nyitja) */
     @media (max-width: 700px) {
       :root { --side: 0px; --foot: 22px; }
       #game { align-items: flex-start; }
@@ -90,17 +104,29 @@
   <script src="js/hf.js"></script>
 </head>
 <body>
-  <button id="mapsToggle" type="button" aria-controls="maps" aria-expanded="false">Térkép ›</button>
-  <nav id="maps" aria-label="Térkép">
+  <button id="mapsToggle" type="button" aria-controls="maps" aria-expanded="false">Menü ›</button>
+  <nav id="maps" aria-label="Menü">
     <div class="side">
       <button id="home" type="button" hidden>Főoldal</button>
       <div id="room" hidden>Szoba: <b></b> <button id="copy" type="button" title="A meghívó link másolása">Link</button></div>
+    </div>
+    <h2>Szabály</h2>
+    <div class="rules">
+      <div class="rule" data-desc="A bázisokat a gép sorsolja ki. 4 harci kör: az első háromban csak szomszédos területet lehet megtámadni, az utolsóban bárhová, a pontok sorrendjében.">
+        <button type="button" data-long="0">Villámháború</button>
+        <button type="button" class="info" aria-label="Mit jelent a villámháború?" aria-controls="ruleTip" aria-expanded="false">i</button>
+      </div>
+      <div class="rule" data-desc="Nincs sorsolás: a játékosok véletlen sorrendben maguk választják ki a kezdőterületüket (a bázisukat). 6 harci kör, fix sorrendben: mindenki minden helyről egyszer támad, és csak az utolsó körben lehet bárhová.">
+        <button type="button" data-long="1">Hosszú hadjárat</button>
+        <button type="button" class="info" aria-label="Mit jelent a hosszú hadjárat?" aria-controls="ruleTip" aria-expanded="false">i</button>
+      </div>
     </div>
     <h2>Térkép</h2>
     <div class="list"></div>
     <p class="note"></p>
   </nav>
   <div id="game"></div>
+  <p id="ruleTip" role="tooltip" hidden></p>
   <p id="foot"><span class="nowrap">v1.1<span class="sep">|</span><a href="https://github.com/akijoe/honfoglalo" target="_blank" rel="noopener">Source code</a><span class="sep">|</span></span> Not affiliated with or endorsed by THX Games</p>
 </body>
 </html>

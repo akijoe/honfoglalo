@@ -152,9 +152,16 @@
                 }
             } else {
                 others.push(e.seat);
-                // aki túl sokáig nem lép, helyette a házigazda lép (mintha lejárt volna az ideje)
-                if (e.seat > 0 && waited > 40000 && M.host() == M.seat && e.dflt) {
-                    M.send(e.seat, e.dflt());
+                // aki túl sokáig nem lép, helyette a házigazda lép (mintha lejárt volna az ideje). Ha
+                // maga a házigazda nem válaszol (pl. elaludt a telefonja, de a kapcsolata még élőnek
+                // látszik), 10 mp-cel később bármelyik másik ember lép helyette, a házigazda dolgait
+                // (kérdés, bázis) is elvégezve. A szerveren az első döntés számít, így ez nem ütközik.
+                if (waited > 40000 && (M.host() == M.seat || waited > 50000)) {
+                    if (e.seat > 0 && e.dflt) {
+                        M.send(e.seat, e.dflt());
+                    } else if (e.seat == 0 && e.make) {
+                        M.send(0, e.make());
+                    }
                 }
             }
         }
@@ -403,6 +410,24 @@
         return {v: 0};
     }
 
+    // hosszú hadjárat: a bázisválasztás sorrendje a házigazda döntése (src/tweaks.as: hf.baseOrder)
+    var randomBaseOrder = hf.baseOrder;
+    if (randomBaseOrder != undefined) {
+        hf.baseOrder = function () {
+            var o = M.forceOrder;
+            var seen = {};
+            var out = [];
+            for (var i = 0; o != undefined && i < 3; i++) {
+                var p = Number(o[i]);
+                if (p >= 1 && p <= 3 && !seen[p]) {
+                    seen[p] = true;
+                    out.push(p);
+                }
+            }
+            return out.length == 3 ? out : [1, 2, 3];
+        };
+    }
+
     // ------------------------------------------------------------------ kérdések
 
     // a házigazda választ (src/questions.as), mindenki ugyanazt alkalmazza
@@ -461,7 +486,7 @@
     };
 
     game.btnAreaPressed = function (anum) {
-        if (!((game.state == 3 || game.state == 4) && game.phase == 8 && game.nextplayer == game.IAM)) {
+        if (!((game.state == 1 || game.state == 3 || game.state == 4) && game.phase == 8 && game.nextplayer == game.IAM)) {
             return;
         }
         game.StopSelection();
@@ -559,13 +584,24 @@
         var s = game.state;
         var ph = game.phase;
 
-        // bázisok (1. állapot): a házigazda sorsolja
-        if (s == 1 && ph == 1 && game.nextplayer < 3) {
+        // bázisok (1. állapot), villámháború: a házigazda sorsolja
+        if (s == 1 && ph == 1 && game.nextplayer < 3 && !hf.long) {
             var bp = game.nextplayer + 1;
             M.gate([{seat: 0, make: function () {
                 return {v: game.hfOrigRandomSelectArea(game.GetAvailableArea(bp))};
             }}], function (v) {
                 M.forceArea = Number(v[0].v);
+                orig();
+            });
+            return;
+        }
+
+        // hosszú hadjárat: a bázisválasztás sorrendje (a házigazda sorsolja; src/tweaks.as)
+        if (s == 1 && ph == 0 && hf.long) {
+            M.gate([{seat: 0, make: function () {
+                return {v: randomBaseOrder()};
+            }}], function (v) {
+                M.forceOrder = v[0].v;
                 orig();
             });
             return;
@@ -624,8 +660,9 @@
             return;
         }
 
-        // területválasztás: aki soron van, maga választ (a többiek a 9. fázisban várnak rá)
-        if ((s == 3 || s == 4) && ph == 8) {
+        // bázis- (hosszú hadjárat) és területválasztás: aki soron van, maga választ (a többiek a 9.
+        // fázisban várnak rá)
+        if ((s == 1 || s == 3 || s == 4) && ph == 8) {
             if (game.nextplayer == game.IAM && !M.have(game.IAM)) {
                 M.finishCatchUp();
                 orig();
@@ -634,9 +671,11 @@
             }
             return;
         }
-        if ((s == 3 || s == 4) && ph == 9) {
+        if ((s == 1 || s == 3 || s == 4) && ph == 9) {
             var np = game.nextplayer;
-            M.gate([{seat: np, make: robotSelect(np), dflt: randomSelect(np), delay: hf.robotThinkTime()}], function (v) {
+            // a robot a bázisát véletlenül választja (mint az eredeti sorsolás)
+            var make = s == 1 ? randomSelect(np) : robotSelect(np);
+            M.gate([{seat: np, make: make, dflt: randomSelect(np), delay: hf.robotThinkTime()}], function (v) {
                 game.player_selections[np] = Number(v[0].v);
                 orig();
             }, {msg: hf.wait.selectMsg(np), now: true});

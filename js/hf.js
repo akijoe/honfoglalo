@@ -280,6 +280,10 @@
   const cleanMap = id => (MAPS.find(m => m[0] === String(id || '').toUpperCase()) || [''])[0];
   // ?map=XX: csak erre a betöltésre (kipróbáláshoz)
   const myMap = () => cleanMap(params.get('map')) || cleanMap(load('localStorage', 'hfMap')) || 'HU';
+  // Hosszú hadjárat: 6 harci kör a 4 helyett (src/tweaks.as). A térképhez hasonlóan egyjátékos
+  // módban a böngésző emlékszik rá, a szobában a főnök választja. ?long=1 / ?long=0: csak most.
+  const myLong = () => (params.has('long') ? params.get('long') === '1' : load('localStorage', 'hfLong') === true);
+  const longVar = on => (on ? '1' : '0');
   // a szoba állapota a Flash-nek: a térkép magyar nevével (src/lobby.as: szoba-ablak)
   const flashState = st => st && Object.assign({ mapName: mapName(st.map) }, st);
 
@@ -298,6 +302,7 @@
     sendChain: Promise.resolve(),
     inGame: false,
     sawLobby: false,      // ebben a lapban láttuk a szobát indulás előtt (az indulás után rögtön játék)
+    heard: 0,             // az eseményfolyam utolsó üzenetének ideje (a szerver 15 mp-enként pingel)
   };
 
   function emit(ev) {
@@ -307,14 +312,20 @@
 
   async function api(path, body) {
     let res;
+    // egy beragadt kérés (pl. alvó Wi-Fi) ne tartsa fel örökre a döntések sorát (sendDecision)
+    const ctl = new AbortController();
+    const timer = setTimeout(() => ctl.abort(), 15000);
     try {
       res = await fetch(apiURL(path), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
+        signal: ctl.signal,
       });
     } catch (e) {
       throw new Error('Nem érem el a szervert.');
+    } finally {
+      clearTimeout(timer);
     }
     const data = await res.json().catch(() => ({}));
     if (!res.ok) {
@@ -335,7 +346,9 @@
     if (!s) return;
     const es = new EventSource(apiURL('events') + '?code=' + encodeURIComponent(s.code) + '&token=' + encodeURIComponent(s.token));
     net.es = es;
+    net.heard = Date.now();
     es.onmessage = function (e) {
+      net.heard = Date.now();
       let ev;
       try { ev = JSON.parse(e.data); } catch (err) { return; }
       if (ev.type === 'state') onState(ev);
@@ -362,6 +375,17 @@
       else setTimeout(recheck, 5000);
     });
   }
+
+  // Egy csendben elhalt kapcsolaton (alvó telefon, Wi-Fi-váltás) az EventSource nyitottnak látszik,
+  // de semmi sem jön rajta: a játék a következő döntésre várna örökké (nem jönne fel a kérdés). A
+  // szerver 15 mp-enként pingel; ha 35 mp-ig semmi sem jött, újracsatlakozunk (a szerver az összes
+  // döntést újraküldi, a már megvoltakat a seenKeys kiszűri). A lap előtérbe kerülésekor is megnézzük.
+  function watchStream() {
+    if (net.es && net.es.readyState !== EventSource.CLOSED && Date.now() - net.heard > 35000) connect();
+  }
+  setInterval(watchStream, 5000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) watchStream(); });
+  window.addEventListener('online', () => { if (net.es) connect(); });
 
   window.addEventListener('pagehide', () => { net.unloading = true; });
   window.addEventListener('pageshow', () => { net.unloading = false; });
@@ -421,11 +445,14 @@
     const s = net.session;
     if (!s) return;
     // sorban, egyenként, hogy a saját döntéseink sorrendje megmaradjon
+    // Egy elveszett döntésre a játék örökké várna (a házigazda döntéseit senki más nem küldi el),
+    // ezért amíg a szoba él, újra és újra próbálkozunk. A végleges hibát (hibás lépés, túl hosszú
+    // játék, nem vagy a szobában) nem ismételjük: az a többi döntést tartaná fel.
     net.sendChain = net.sendChain.then(async () => {
-      for (let i = 0; i < 5; i++) {
+      for (let i = 0; net.session === s; i++) {
         try { await api('send', { code: s.code, token: s.token, k: k, d: d }); return; } catch (e) {
-          if (/nem vagy|Nincs ilyen/.test(e.message)) return;
-          await new Promise(r => setTimeout(r, 1000 * (i + 1)));
+          if (e.status && e.status !== 429 && e.status < 500) return;
+          await new Promise(r => setTimeout(r, Math.min(1000 * (i + 1), 5000)));
         }
       }
     });
@@ -479,13 +506,16 @@
         }
         case 'create':
           save('localStorage', 'hfName', String(a));
-          call(api('create', { name: String(a), map: myMap() }).then(setSession));
+          call(api('create', { name: String(a), map: myMap(), long: myLong() }).then(setSession));
           return true;
         case 'join':
           save('localStorage', 'hfName', String(b));
           // ha a játék már megy (visszalépés a névvel), rögtön a játékba
           net.rejoining = true;
-          call(api('join', { code: String(a), name: String(b) }).then(setSession));
+          call(api('join', { code: String(a), name: String(b) }).then(setSession, e => {
+            net.rejoining = false;
+            throw e;
+          }));
           return true;
         case 'start':
           if (net.session) call(api('start', { code: net.session.code, token: net.session.token }));
@@ -570,7 +600,7 @@
   function startGame() {
     net.inGame = true;
     save('sessionStorage', playingKey, net.session.code);
-    loadSwf({ invitation: '0', mp: '1', map: cleanMap(net.state && net.state.map) || 'HU' });
+    loadSwf({ invitation: '0', mp: '1', map: cleanMap(net.state && net.state.map) || 'HU', long: longVar(net.state && net.state.long) });
     renderMaps();
   }
 
@@ -582,13 +612,13 @@
   //   különben (menü, bemutató, robotok): a saját választás; váltáskor a mostani mód újraindul
   function mapMode() {
     const st = net.state;
-    if (net.inGame) return { current: cleanMap(st && st.map), locked: 'Játék közben nem lehet térképet váltani.' };
+    if (net.inGame) return { current: cleanMap(st && st.map), long: !!(st && st.long), locked: 'Játék közben nem lehet térképet és szabályt váltani.' };
     if (net.session && st && !st.started) {
-      if (st.boss === net.session.seat) return { current: cleanMap(st.map), room: true };
+      if (st.boss === net.session.seat) return { current: cleanMap(st.map), long: !!st.long, room: true };
       const boss = st.players.find(p => p.seat === st.boss);
-      return { current: cleanMap(st.map), locked: 'A térképet a szoba főnöke' + (boss ? ' (' + boss.name + ')' : '') + ' választja.' };
+      return { current: cleanMap(st.map), long: !!st.long, locked: 'A térképet és a szabályt a szoba főnöke' + (boss ? ' (' + boss.name + ')' : '') + ' választja.' };
     }
-    return { current: myMap() };
+    return { current: myMap(), long: myLong() };
   }
 
   function renderMaps() {
@@ -602,7 +632,13 @@
       b.setAttribute('aria-pressed', on ? 'true' : 'false');
       b.disabled = !!mode.locked;
     }
-    box.querySelector('.note').textContent = mode.locked || (mode.room ? 'A szoba térképe: mindenki ezen játszik.' : '');
+    for (const b of box.querySelectorAll('.rules button[data-long]')) {
+      const on = (b.dataset.long === '1') === mode.long;
+      b.classList.toggle('on', on);
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      b.disabled = !!mode.locked;
+    }
+    box.querySelector('.note').textContent = mode.locked || (mode.room ? 'A szoba térképe és szabálya: mindenki ezzel játszik.' : '');
 
     // főoldal gomb (a főoldalon a menüben nincs rá szükség) és a szoba kódja (a visszalépéshez)
     const home = document.getElementById('home');
@@ -647,11 +683,92 @@
     else location.href = url;
   }
 
-  // telefonon (keskeny képernyőn) a sáv behúzható: a "Térkép" fül nyitja, mellé koppintva bezárul
+  // telefonon (keskeny képernyőn) a sáv behúzható: a "Menü" fül nyitja, mellé koppintva bezárul
   function showMaps(open) {
+    if (!open) hideRuleTip();
     document.body.classList.toggle('maps-open', open);
     const t = document.getElementById('mapsToggle');
     if (t) t.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+
+  // A szabályok magyarázata (index.html: .rule data-desc): asztali gépen az "i" jel fölé víve,
+  // telefonon az "i" jelre koppintva látszik; az újabb koppintás vagy máshová koppintás bezárja.
+  const ruleTip = { row: null, pinned: false };
+
+  function showRuleTip(row, pinned) {
+    const el = document.getElementById('ruleTip');
+    const title = document.createElement('b');
+    title.textContent = row.querySelector('button[data-long]').textContent + ':';
+    el.replaceChildren(title, ' ' + row.dataset.desc);
+    for (const i of document.querySelectorAll('#maps .rules .info')) {
+      i.setAttribute('aria-expanded', i.closest('.rule') === row ? 'true' : 'false');
+    }
+    ruleTip.row = row;
+    ruleTip.pinned = pinned;
+    // a sáv mellé jobbra (telefonon a nyitott sáv mellé), ha ott nincs hely, a sor alá
+    const vw = document.documentElement.clientWidth;
+    const r = row.getBoundingClientRect();
+    const side = document.getElementById('maps').getBoundingClientRect().right + 8;
+    const beside = vw - side - 8 >= 150;
+    el.style.width = (beside ? Math.min(260, vw - side - 8) : vw - 16) + 'px';
+    el.hidden = false;
+    const top = beside ? r.top : r.bottom + 6;
+    el.style.left = (beside ? side : 8) + 'px';
+    el.style.top = Math.max(8, Math.min(top, window.innerHeight - el.offsetHeight - 8)) + 'px';
+  }
+
+  function hideRuleTip() {
+    const el = document.getElementById('ruleTip');
+    if (el) el.hidden = true;
+    for (const i of document.querySelectorAll('#maps .rules .info')) i.setAttribute('aria-expanded', 'false');
+    ruleTip.row = null;
+    ruleTip.pinned = false;
+  }
+
+  function buildRuleTips(box) {
+    for (const row of box.querySelectorAll('.rule')) {
+      const mode = row.querySelector('button[data-long]');
+      const info = row.querySelector('.info');
+      info.addEventListener('mouseenter', () => { if (!ruleTip.pinned) showRuleTip(row, false); });
+      info.addEventListener('mouseleave', () => { if (!ruleTip.pinned) hideRuleTip(); });
+      info.addEventListener('focus', () => { if (!ruleTip.pinned) showRuleTip(row, false); });
+      info.addEventListener('blur', () => { if (!ruleTip.pinned) hideRuleTip(); });
+      info.addEventListener('click', () => {
+        if (ruleTip.pinned && ruleTip.row === row) hideRuleTip();
+        else showRuleTip(row, true);
+      });
+      mode.addEventListener('click', () => {
+        hideRuleTip();
+        showMaps(false);
+        pickLong(mode.dataset.long === '1');
+      });
+    }
+    document.addEventListener('pointerdown', e => { if (!e.target.closest || !e.target.closest('#maps .rule')) hideRuleTip(); }, true);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') hideRuleTip(); });
+    box.addEventListener('scroll', hideRuleTip);
+    window.addEventListener('resize', () => { if (ruleTip.row) showRuleTip(ruleTip.row, ruleTip.pinned); });
+  }
+
+  // a szabály a robotjátékban és a szobában számít (a bemutató mindig villámháború)
+  function pickLong(on) {
+    const mode = mapMode();
+    if (mode.locked || on === mode.long) return;
+    save('localStorage', 'hfLong', on);
+    if (mode.room) {
+      const s = net.session;
+      api('long', { code: s.code, token: s.token, long: on }).catch(e => emit({ type: 'error', msg: e.message }));
+      return;
+    }
+    if (gamemode !== '1') { renderMaps(); return; }
+    if (!window.confirm('A játék újraindul ' + (on ? 'hosszú hadjárattal' : 'villámháborúval') + '. Mehet?')) {
+      save('localStorage', 'hfLong', mode.long);
+      return;
+    }
+    const q = new URLSearchParams(location.search);
+    q.delete('long');
+    const url = location.pathname + (q.toString() ? '?' + q : '');
+    if (url === location.pathname + location.search) location.reload();
+    else location.href = url;
   }
 
   function buildMaps() {
@@ -669,6 +786,7 @@
       note.textContent = 'A meghívó link a vágólapra került.';
       setTimeout(renderMaps, 2500);
     });
+    buildRuleTips(box);
     const list = box.querySelector('.list');
     for (const [id, name] of MAPS) {
       const b = document.createElement('button');
@@ -693,7 +811,7 @@
     //   gamemode=0: bemutató játék menü nélkül (a játék végi menü "Bemutató játék" gombja)
     //   ?join=KÓD:  a főoldal, a szobához csatlakozás ablakával
     buildMaps();
-    if (gamemode === '1') { loadSwf({ invitation: '0', quickgame: '1', map: myMap() }); return; }
+    if (gamemode === '1') { loadSwf({ invitation: '0', quickgame: '1', map: myMap(), long: longVar(myLong()) }); return; }
     if (gamemode === '0') { loadSwf({ invitation: '0', map: myMap() }); return; }
     const menu = () => loadSwf({ invitation: '1', map: myMap() });
     let own = load('sessionStorage', tabKey);

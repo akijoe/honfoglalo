@@ -444,3 +444,107 @@ func TestRejoinByName(t *testing.T) {
 		t.Fatalf("new token: %d", st)
 	}
 }
+
+func TestLobbyLong(t *testing.T) {
+	dir := t.TempDir()
+	os.WriteFile(filepath.Join(dir, "index.html"), []byte("<!doctype html>"), 0o644)
+	s := newServer(dir, filepath.Join(dir, "fb.jsonl"))
+	ts := httptest.NewServer(s.routes())
+	defer func() { ts.CloseClientConnections(); ts.Close() }()
+
+	// a létrehozáskor megadott szabály, utána a főnök állítja az indulásig
+	_, a := post(t, ts.URL, "/api/create", map[string]any{"name": "Anna", "long": true})
+	code, tokA := a["code"].(string), a["token"].(string)
+	evA := events(t, ts.URL, code, tokA)
+	if m := next(t, evA, "state"); m["long"] != true {
+		t.Fatalf("long at create: %v", m["long"])
+	}
+	_, b := post(t, ts.URL, "/api/join", map[string]string{"code": code, "name": "Béla"})
+	tokB := b["token"].(string)
+	next(t, evA, "state")
+	if st, _ := post(t, ts.URL, "/api/long", map[string]any{"code": code, "token": tokB, "long": false}); st != 403 {
+		t.Fatalf("long by guest: %d", st)
+	}
+	if st, _ := post(t, ts.URL, "/api/long", map[string]any{"code": code, "token": tokA, "long": false}); st != 200 {
+		t.Fatalf("long: %d", st)
+	}
+	if m := next(t, evA, "state"); m["long"] != false {
+		t.Fatalf("long after change: %v", m["long"])
+	}
+	post(t, ts.URL, "/api/start", map[string]string{"code": code, "token": tokA})
+	next(t, evA, "state")
+	if st, _ := post(t, ts.URL, "/api/long", map[string]any{"code": code, "token": tokA, "long": true}); st != 409 {
+		t.Fatalf("long after start: %d", st)
+	}
+}
+
+// ha mindenki kilépett, de a szoba még él, az új belépő lesz a főnök
+func TestBossAfterEmptyLobby(t *testing.T) {
+	dir := t.TempDir()
+	os.WriteFile(filepath.Join(dir, "index.html"), []byte("<!doctype html>"), 0o644)
+	s := newServer(dir, filepath.Join(dir, "fb.jsonl"))
+	ts := httptest.NewServer(s.routes())
+	defer func() { ts.CloseClientConnections(); ts.Close() }()
+
+	_, a := post(t, ts.URL, "/api/create", map[string]string{"name": "Anna"})
+	code, tokA := a["code"].(string), a["token"].(string)
+	if st, _ := post(t, ts.URL, "/api/leave", map[string]string{"code": code, "token": tokA}); st != 200 {
+		t.Fatalf("leave: %d", st)
+	}
+	_, b := post(t, ts.URL, "/api/join", map[string]string{"code": code, "name": "Béla"})
+	tokB := b["token"].(string)
+	if _, st := post(t, ts.URL, "/api/check", map[string]string{"code": code, "token": tokB}); st["boss"] != b["seat"] {
+		t.Fatalf("boss: %v, seat %v", st["boss"], b["seat"])
+	}
+	if st, _ := post(t, ts.URL, "/api/map", map[string]string{"code": code, "token": tokB, "map": "DE"}); st != 200 {
+		t.Fatalf("map by new boss: %d", st)
+	}
+}
+
+func TestStaticBackslash(t *testing.T) {
+	dir := t.TempDir()
+	os.MkdirAll(filepath.Join(dir, "js"), 0o755)
+	os.WriteFile(filepath.Join(dir, "js", "a.js"), []byte("x"), 0o644)
+	os.WriteFile(filepath.Join(dir, "secret.json"), []byte("{}"), 0o644)
+	s := newServer(dir, filepath.Join(dir, "fb.jsonl"))
+	ts := httptest.NewServer(s.routes())
+	defer ts.Close()
+
+	for _, p := range []string{"/js/..%5Csecret.json", "/js/%5C..%5C..%5Csecret.json"} {
+		resp, err := http.Get(ts.URL + p)
+		if err != nil {
+			t.Fatal(err)
+		}
+		resp.Body.Close()
+		if resp.StatusCode != 404 {
+			t.Fatalf("%s: %d", p, resp.StatusCode)
+		}
+	}
+	resp, err := http.Get(ts.URL + "/js/a.js")
+	if err != nil {
+		t.Fatal(err)
+	}
+	resp.Body.Close()
+	if resp.StatusCode != 200 {
+		t.Fatalf("js/a.js: %d", resp.StatusCode)
+	}
+}
+
+func TestAcceptsGzip(t *testing.T) {
+	for h, want := range map[string]bool{
+		"":                 false,
+		"gzip":             true,
+		"br, gzip":         true,
+		"gzip;q=0.5":       true,
+		"gzip; q=1.0":      true,
+		"gzip;q=0":         false,
+		"gzip;q=0.000, br": false,
+		"deflate":          false,
+	} {
+		r := httptest.NewRequest("GET", "/", nil)
+		r.Header.Set("Accept-Encoding", h)
+		if got := acceptsGzip(r); got != want {
+			t.Errorf("%q: %v", h, got)
+		}
+	}
+}
