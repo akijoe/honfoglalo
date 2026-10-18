@@ -11,7 +11,7 @@ import (
 // kell, ez a szokásos visszaéléseket fogja meg):
 //
 //   - szoba létrehozása / csatlakozás: IP-nként percenként maxJoinsPerMinute
-//   - egy IP-ről egyszerre legfeljebb maxRoomsPerIP nyitott szoba
+//   - egy IP-ről egyszerre legfeljebb maxRoomsPerIP, egy böngészőből maxRoomsPerClient nyitott szoba
 //   - API-hívások: IP-nként 10 másodpercenként legfeljebb maxCallsPer10s
 //   - eseményfolyamok (élő kapcsolatok): IP-nként maxStreamsPerIP, szobánként maxStreamsPerRoom,
 //     összesen maxStreams
@@ -21,6 +21,7 @@ import (
 const (
 	maxJoinsPerMinute    = 30
 	maxRoomsPerIP        = 5
+	maxRoomsPerClient    = 2
 	maxCallsPer10s       = 300
 	maxStreamsPerIP      = 20
 	maxStreamsPerRoom    = 12

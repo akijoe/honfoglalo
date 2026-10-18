@@ -352,6 +352,8 @@
       let ev;
       try { ev = JSON.parse(e.data); } catch (err) { return; }
       if (ev.type === 'state') onState(ev);
+      else if (ev.type === 'chat') onChat(ev);
+      else if (ev.type === 'closed') lost(ev.msg || 'A szoba megszűnt.');
       else if (ev.type === 'dec' && !net.seenKeys.has(ev.k)) {
         net.seenKeys.add(ev.k);
         net.decs.push({ k: ev.k, from: ev.from, d: ev.d });
@@ -385,6 +387,8 @@
   }
   setInterval(watchStream, 5000);
   document.addEventListener('visibilitychange', () => { if (!document.hidden) watchStream(); });
+  // a háttérben megállt játék visszatéréskor ne játssza végig a lemaradt animációkat (src/mp.as: resume)
+  document.addEventListener('visibilitychange', () => { if (!document.hidden && net.inGame) flashCall('hfResume'); });
   window.addEventListener('online', () => { if (net.es) connect(); });
 
   window.addEventListener('pagehide', () => { net.unloading = true; });
@@ -407,6 +411,9 @@
     net.state = null;
     save('sessionStorage', tabKey, null);
     save('sessionStorage', playingKey, null);
+    save('sessionStorage', chatOffKey, null);
+    chatReset();
+    setTimeout(hubPoll, 1200);
     renderMaps();
   }
 
@@ -420,6 +427,11 @@
     if (!s) return;
     const me = ev.players.find(p => p.seat === s.seat);
     if (!me || me.left) { lost('Már nem vagy a szobában.'); return; }
+    // új játék indult a szobában: a döntések elölről (a kulcsok újra 0-tól jönnek; server: handleStart)
+    if (net.state && ev.game !== net.state.game) {
+      net.decs = [];
+      net.seenKeys = new Set();
+    }
     net.state = ev;
     emit({ type: 'state', state: flashState(ev) });
     renderMaps();
@@ -437,6 +449,8 @@
     net.state = null;
     net.decs = [];
     net.seenKeys = new Set();
+    chatReset();
+    setTimeout(hubPoll, 1200);              // a Várók lista is frissüljön (a szerver másodpercenként számolja)
     emit({ type: 'joined', code: data.code, seat: data.seat, link: link() });
     connect();
   }
@@ -504,9 +518,10 @@
           net.events = [];
           return out;
         }
-        case 'create':
+        case 'create':        // b: a publikus váró neve (üres: privát szoba)
           save('localStorage', 'hfName', String(a));
-          call(api('create', { name: String(a), map: myMap(), long: myLong() }).then(setSession));
+          call(api('create', { name: String(a), map: myMap(), long: myLong(), public: !!b, title: b ? String(b) : '', client: clientId })
+            .then(setSession));
           return true;
         case 'join':
           save('localStorage', 'hfName', String(b));
@@ -527,6 +542,21 @@
           }
           forget();
           return true;
+        case 'again':         // a játék végén: vissza a szobába
+          if (net.session) {
+            const s = net.session;
+            api('again', { code: s.code, token: s.token }).then(backToRoom, e => emit({ type: 'error', msg: e.message }));
+          }
+          return true;
+        case 'exit': {        // a játék végén: kilépés a szobából, a főoldalra (a kilépés megvárva)
+          const s = net.session;
+          const home = () => { location.href = location.pathname + (slot ? '?slot=' + slot : ''); };
+          forget();
+          if (!s) { home(); return true; }
+          Promise.race([api('leave', { code: s.code, token: s.token }), new Promise(r => setTimeout(r, 1500))])
+            .catch(() => {}).then(home);
+          return true;
+        }
         case 'rejoin':        // visszalépés egy folyamatban lévő játékba (az első állapot után indul)
           if (net.session && !net.inGame) {
             net.rejoining = true;
@@ -597,8 +627,21 @@
     });
   }
 
+  // a játék végén "Vissza a váróba" (src/lobby.as: eredményablak): ha közben már új játék indult,
+  // rögtön abba; különben a szoba-ablak, ahol a főnök újat indíthat
+  function backToRoom() {
+    const st = net.state;
+    if (st && st.started && st.game !== net.playing) { startGame(); return; }
+    net.inGame = false;
+    net.sawLobby = true;
+    save('sessionStorage', playingKey, null);
+    loadSwf({ invitation: '1', map: myMap() });
+    renderMaps();
+  }
+
   function startGame() {
     net.inGame = true;
+    net.playing = net.state ? net.state.game : 0;
     save('sessionStorage', playingKey, net.session.code);
     loadSwf({ invitation: '0', mp: '1', map: cleanMap(net.state && net.state.map) || 'HU', long: longVar(net.state && net.state.long) });
     renderMaps();
@@ -635,19 +678,13 @@
     for (const b of box.querySelectorAll('.rules button[data-long]')) {
       const on = (b.dataset.long === '1') === mode.long;
       b.classList.toggle('on', on);
+      b.closest('.rule').classList.toggle('on', on);
       b.setAttribute('aria-pressed', on ? 'true' : 'false');
       b.disabled = !!mode.locked;
     }
-    box.querySelector('.note').textContent = mode.locked || (mode.room ? 'A szoba térképe és szabálya: mindenki ezzel játszik.' : '');
-
-    // főoldal gomb (a főoldalon a menüben nincs rá szükség) és a szoba kódja (a visszalépéshez)
-    const home = document.getElementById('home');
-    home.hidden = gamemode === null && !net.inGame;
-    home.textContent = net.inGame ? 'Kilépés a főoldalra' : 'Főoldal';
-    const room = document.getElementById('room');
-    room.hidden = !(net.session && net.state);
-    if (!room.hidden) room.querySelector('b').textContent = net.session.code;
-    box.querySelector('.side').hidden = home.hidden && room.hidden;
+    box.querySelector('.note').textContent = mode.locked || '';
+    renderChat();
+    renderRooms();
   }
 
   function goHome() {
@@ -681,6 +718,35 @@
     const url = location.pathname + (q.toString() ? '?' + q : '');
     if (url === location.pathname + location.search) location.reload();
     else location.href = url;
+  }
+
+  // A logó (img/logo*.gif, tools/make_gifs.py): mindig a főoldalra visz. Rámutatáskor egyszer
+  // végigfut rajta egy halvány csillanás: a GIF egyszer játszik le, ezért minden rámutatáskor új
+  // (blob) címmel töltjük be, hogy elölről induljon. A telefonos sávnak más a háttere: "-m" változat.
+  function buildLogo() {
+    const a = document.getElementById('logo');
+    const img = a.querySelector('img');
+    const phone = window.matchMedia('(max-width: 700px)');
+    const variant = () => (phone.matches ? '-m' : '');
+    const still = () => { img.src = 'img/logo' + variant() + '.gif'; };
+    const shine = {};       // változat -> a csillanó GIF (Blob)
+    let url = null;
+    const load = v => shine[v] || (shine[v] = fetch('img/logo-shine' + v + '.gif').then(r => r.blob()));
+    still();
+    if (phone.addEventListener) phone.addEventListener('change', still);
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      goHome();
+    });
+    a.addEventListener('mouseenter', () => {
+      load(variant()).then(blob => {
+        const old = url;
+        url = URL.createObjectURL(blob);
+        img.src = url;
+        if (old) URL.revokeObjectURL(old);
+      }).catch(() => {});
+    });
+    setTimeout(() => { load(variant()).catch(() => {}); }, 3000);     // hogy az első rámutatás se késsen
   }
 
   // telefonon (keskeny képernyőn) a sáv behúzható: a "Menü" fül nyitja, mellé koppintva bezárul
@@ -742,6 +808,7 @@
         showMaps(false);
         pickLong(mode.dataset.long === '1');
       });
+      row.addEventListener('click', e => { if (e.target === row) mode.click(); });   // a sor üres része
     }
     document.addEventListener('pointerdown', e => { if (!e.target.closest || !e.target.closest('#maps .rule')) hideRuleTip(); }, true);
     document.addEventListener('keydown', e => { if (e.key === 'Escape') hideRuleTip(); });
@@ -779,13 +846,7 @@
     document.addEventListener('pointerdown', e => {
       if (!box.contains(e.target) && e.target !== toggle) showMaps(false);
     }, true);
-    document.getElementById('home').addEventListener('click', goHome);
-    document.getElementById('copy').addEventListener('click', () => {
-      copyText(link());
-      const note = box.querySelector('.note');
-      note.textContent = 'A meghívó link a vágólapra került.';
-      setTimeout(renderMaps, 2500);
-    });
+    buildLogo();
     buildRuleTips(box);
     const list = box.querySelector('.list');
     for (const [id, name] of MAPS) {
@@ -805,12 +866,318 @@
     renderMaps();
   }
 
+  // ---------------------------------------------------------------------------- Várók
+
+  // A Várók (index.html: #rooms): a publikus szobák, ahová kód nélkül be lehet lépni, és hányan vannak
+  // most a honlapon. A lap pár másodpercenként lekérdezi (server/hub.go); nem tart nyitva kapcsolatot,
+  // mert HTTP/1.1-en a böngésző egy szerverhez csak 6-ot enged, és a szobák eseményfolyamának kell a
+  // hely. A böngésző azonosítójával több lap egy játékosnak számít.
+  const clientId = (() => {
+    let id = load('localStorage', 'hfClient');
+    if (typeof id !== 'string' || !/^[a-z0-9]{8,40}$/.test(id)) {
+      id = (Math.random().toString(36).slice(2) + Date.now().toString(36)).slice(0, 24);
+      save('localStorage', 'hfClient', id);
+    }
+    return id;
+  })();
+  const hub = { data: null, down: false, timer: 0 };   // data: {online, v, lobbies}
+  // a figura a "Játék robotokkal" gombjáról (az eredeti SWF 760-as alakja): teli a foglalt hely, üres a szabad
+  const FIGURE = 'M13.75 -29.8Q19.8 -36 28.35 -36.35Q37 -36.7 42.75 -30.75Q48.45 -24.8 47.65 -16.25Q46.85 -7.9 40.3 -2.35' +
+    'L36.95 0.05L51.2 1.55Q51.9 14.2 48.55 25.8Q45.2 37.45 38.3 46.1Q35.35 -16.35 35.3 46.1Q38.65 53.35 38 60.55L37.7 62.8' +
+    'L6.2 61.3L6.2 60.55Q6.2 52.4 9.5 45.1Q11.75 -13.25 6.05 45Q3.45 40.6 1.95 35.7Q-2 22.6 1.95 6.1L2.2 5.05Q9.75 2.55 17.4 1.3' +
+    'Q14.6 -0.05 12.4 -2.35Q7.2 -7.75 7.5 -15.65Q7.75 -23.75 13.75 -29.8Z';
+
+  function seatIcons(taken) {
+    const ns = 'http://www.w3.org/2000/svg';
+    const box = document.createElement('span');
+    box.className = 'seats';
+    box.title = taken + ' játékos van bent (legfeljebb 3)';
+    for (let i = 0; i < 3; i++) {
+      const svg = document.createElementNS(ns, 'svg');
+      svg.setAttribute('viewBox', '-2 -40 56 106');
+      svg.setAttribute('aria-hidden', 'true');
+      const p = document.createElementNS(ns, 'path');
+      p.setAttribute('d', FIGURE);
+      p.setAttribute('class', i < taken ? 'in' : 'free');
+      svg.append(p);
+      box.append(svg);
+    }
+    return box;
+  }
+  const ruleName = long => (long ? 'hosszú hadjárat' : 'villámháború');
+
+  // lekérdezés: látható lapon 6, háttérben 20 másodpercenként
+  function hubPoll() {
+    clearTimeout(hub.timer);
+    const ctl = new AbortController();
+    const abort = setTimeout(() => ctl.abort(), 10000);
+    // v: a nálunk lévő lista változata; ha nem változott, a szerver csak a létszámot küldi (same)
+    const v = hub.data ? '&v=' + hub.data.v : '';
+    fetch(apiURL('hub') + '?id=' + encodeURIComponent(clientId) + v, { cache: 'no-store', signal: ctl.signal })
+      .then(r => (r.ok ? r.json() : Promise.reject(new Error(r.status))))
+      .then(d => {
+        hub.data = { online: d.online, v: d.v, lobbies: d.same && hub.data ? hub.data.lobbies : (d.lobbies || []) };
+        hub.down = false;
+      }, () => { hub.down = true; })
+      .then(() => {
+        clearTimeout(abort);
+        renderRooms();
+        hub.timer = setTimeout(hubPoll, document.hidden ? 20000 : 6000);
+      });
+  }
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) hubPoll(); });
+
+  function renderRooms() {
+    const list = document.getElementById('roomList');
+    if (!list) return;
+    const d = hub.data;
+    document.getElementById('online').textContent = d ? d.online + ' játékos online' : '';
+    const note = text => {
+      const p = document.createElement('p');
+      p.className = 'empty';
+      p.textContent = text;
+      list.replaceChildren(p);
+    };
+    if (!d) { note(hub.down ? 'A szerver most nem érhető el.' : 'Betöltés...'); return; }
+    if (!d.lobbies.length) {
+      note('Most nincs nyitott publikus váró. Nyiss egyet: „Játék ismerősökkel”, és jelöld be a „Publikus váró” négyzetet.');
+      return;
+    }
+    const mine = net.session ? net.session.code : '';
+    list.replaceChildren(...d.lobbies.map(r => {
+      const el = document.createElement('div');
+      el.className = 'room' + (r.code === mine ? ' here' : '');
+      const line = (cls, text) => {
+        const div = document.createElement('div');
+        div.className = cls;
+        div.textContent = text;
+        return div;
+      };
+      const b = document.createElement('button');
+      b.type = 'button';
+      if (r.code === mine) {
+        b.textContent = 'Itt vagy';
+        b.disabled = true;
+      } else {
+        b.textContent = 'Belépés';
+        b.disabled = net.inGame;
+        if (net.inGame) b.title = 'Játék közben nem lehet másik szobába lépni.';
+        b.addEventListener('click', () => joinPublic(r));
+      }
+      const who = line('rm', r.players.join(', '));
+      who.prepend(seatIcons(r.players.length));
+      el.append(line('rt', r.title), who, line('rm', mapName(r.map) + ', ' + ruleName(r.long)), b);
+      return el;
+    }));
+  }
+
+  // belépés egy publikus szobába a listából: a Flash ablaka csak a nevedet kérdezi (src/lobby.as)
+  function joinPublic(r) {
+    if (net.inGame) return;
+    showRooms(false);
+    const viaLink = () => { location.href = location.pathname + '?join=' + r.code + (slot ? '&slot=' + slot : ''); };
+    if (gamemode !== null) {
+      if (window.confirm('A mostani játék véget ér. Belépsz ide: ' + r.title + '?')) viaLink();
+      return;
+    }
+    if (net.session) {
+      if (!window.confirm('Kilépsz a mostani szobádból (' + net.session.code + '), és belépsz ide: ' + r.title + '?')) return;
+      const s = net.session;
+      api('leave', { code: s.code, token: s.token }).catch(() => {});
+      forget();
+    }
+    if (flashCall('hfJoin', { code: r.code, title: r.title }) !== true) viaLink();
+  }
+
+  // 1000 px alatt a Várók jobb oldalt behúzható ("Várók" fül), mellé koppintva bezárul
+  function showRooms(open) {
+    document.body.classList.toggle('rooms-open', open);
+    const t = document.getElementById('roomsToggle');
+    if (t) t.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+
+  function buildRooms() {
+    const box = document.getElementById('rooms');
+    if (!box) return;
+    const toggle = document.getElementById('roomsToggle');
+    const chatBox = document.getElementById('chat');
+    toggle.addEventListener('click', () => showRooms(!document.body.classList.contains('rooms-open')));
+    document.addEventListener('pointerdown', e => {
+      if (!box.contains(e.target) && !chatBox.contains(e.target) && e.target !== toggle) showRooms(false);
+    }, true);
+    renderRooms();
+    hubPoll();
+  }
+
+  // ---------------------------------------------------------------------------- csevegés
+
+  // Csevegés a szobában (index.html: #chat, server: /api/chat), a játék előtt és alatt, fentről lefelé
+  // (a legújabb alul). Elküldéskor és egy másik játékos üzenetének érkezésekor a chat hang szól (a
+  // játék hangerejével). A szerver a trágár szavakat kicsillagozza, a linkeket nem engedi. Az X-szel
+  // ki lehet lépni a csevegésből: addig semmi sem látszik és nem szól (a többiek látják, hogy
+  // kiléptél), visszalépéskor az egész előzmény visszajön. Ez a lapé, a szobáig megmarad.
+  const SEATCOLORS = ['#8A7A64', '#C0242B', '#C9B320', '#3E9A2E'];   // az eredeti játékosszínek
+  const chatOffKey = 'hfChatOff' + slot;      // sessionStorage: annak a szobának a kódja, ahol kiléptél
+  const CHAT_KEEP = 80;
+  const chat = { last: 0, items: [] };        // items: a szoba üzenetei (a kilépés alatt is gyűlnek)
+  const inRoom = () => !!(net.session && net.state);
+  const chatOff = () => inRoom() && load('sessionStorage', chatOffKey) === net.session.code;
+  const SYS = { joined: ' belépett a váróba.', left: ' elhagyta a chatet.', back: ' visszatért a chatbe.' };
+
+  function renderChat() {
+    const input = document.getElementById('chatText');
+    if (!input) return;
+    const on = inRoom();
+    const title = document.getElementById('chatTitle');
+    if (on) {
+      const code = document.createElement('b');
+      code.textContent = net.session.code;
+      title.replaceChildren('Szoba: ', code);
+    } else {
+      title.textContent = 'Csevegés';
+    }
+    const off = chatOff();
+    document.getElementById('copy').hidden = !on;
+    document.getElementById('chatClose').hidden = !on || off;
+    document.getElementById('chatOff').hidden = !off;
+    input.disabled = !on || off;
+    input.placeholder = on ? 'Üzenet a szobának...' : 'Csatlakozz egy váróhoz!';
+    document.getElementById('chatSend').disabled = !on || off;
+  }
+
+  // kilépés a csevegésből (X) és vissza: a többiek a csevegésben látják
+  function setChatOff(off) {
+    const s = net.session;
+    if (!inRoom() || off === chatOff()) return;
+    save('sessionStorage', chatOffKey, off ? s.code : null);
+    chatRedraw();
+    renderChat();
+    api('chat', { code: s.code, token: s.token, presence: off ? 'left' : 'back' }).catch(() => {});
+  }
+
+  // a csevegés jele: szövegbuborék a játékos színében
+  function bubble(color) {
+    const ns = 'http://www.w3.org/2000/svg';
+    const svg = document.createElementNS(ns, 'svg');
+    svg.setAttribute('class', 'bub');
+    svg.setAttribute('viewBox', '0 0 17 14');
+    svg.setAttribute('aria-hidden', 'true');
+    const body = document.createElementNS(ns, 'path');
+    body.setAttribute('d', 'M8.5 1C4.4 1 1 3.3 1 6.1c0 1.6 1 3 2.7 3.9L2.8 13l3.5-1.9c.7.2 1.4.2 2.2.2 4.1 0 7.5-2.3 7.5-5.2S12.6 1 8.5 1z');
+    body.setAttribute('fill', color);
+    body.setAttribute('stroke', 'rgba(0, 0, 0, .6)');
+    const shine = document.createElementNS(ns, 'ellipse');
+    for (const [k, v] of [['cx', 7.2], ['cy', 4.1], ['rx', 4.3], ['ry', 1.5], ['fill', '#fff'], ['opacity', 0.45]]) shine.setAttribute(k, v);
+    svg.append(body, shine);
+    return svg;
+  }
+
+  // egy sor a csevegésben: {name, seat, text} üzenet, vagy {note} (rendszerüzenet, hiba)
+  function chatRow(item) {
+    const li = document.createElement('li');
+    if (item.note) {
+      li.className = 'sys';
+      li.textContent = item.note;
+      return li;
+    }
+    const who = document.createElement('span');
+    who.className = 'who';
+    who.textContent = item.name + ': ';
+    const body = document.createElement('span');
+    body.append(who, String(item.text));
+    li.append(bubble(SEATCOLORS[item.seat] || SEATCOLORS[0]), body);
+    return li;
+  }
+
+  // új sor alulra; ha az alján álltál (vagy te írtad), oda is görget
+  function chatAdd(item, scroll) {
+    chat.items.push(item);
+    if (chat.items.length > CHAT_KEEP) chat.items.shift();
+    const log = document.getElementById('chatLog');
+    if (!log || chatOff()) return;
+    const atEnd = log.scrollHeight - log.scrollTop - log.clientHeight < 40;
+    log.append(chatRow(item));
+    while (log.children.length > CHAT_KEEP) log.firstChild.remove();
+    if (atEnd || scroll) log.scrollTop = log.scrollHeight;
+  }
+
+  // az egész csevegés újra (visszalépéskor); kilépve üres
+  function chatRedraw() {
+    const log = document.getElementById('chatLog');
+    if (!log) return;
+    log.replaceChildren(...(chatOff() ? [] : chat.items.map(chatRow)));
+    log.scrollTop = log.scrollHeight;
+  }
+
+  function chatNote(text) {
+    chatAdd({ note: text }, true);
+  }
+
+  function chatSound() {
+    if (!chatOff()) start('chat');
+  }
+
+  // egy üzenet az eseményfolyamon; újracsatlakozáskor a korábbiak is jönnek (old), ezeket az
+  // azonosítójuk alapján csak egyszer vesszük fel
+  function onChat(ev) {
+    if (!(ev.id > chat.last)) return;
+    chat.last = ev.id;
+    const mine = !!(net.session && ev.seat === net.session.seat);
+    if (ev.sys) {
+      if (SYS[ev.sys]) chatAdd({ note: ev.name + SYS[ev.sys] }, false);
+      return;
+    }
+    chatAdd({ name: ev.name, seat: ev.seat, text: ev.text }, mine);
+    if (!ev.old && !mine) chatSound();
+  }
+
+  function chatReset() {
+    chat.last = 0;
+    chat.items = [];
+    chatRedraw();
+  }
+
+  function chatSend() {
+    const input = document.getElementById('chatText');
+    const text = input.value.trim();
+    const s = net.session;
+    if (!text || !inRoom() || chatOff()) return;
+    input.value = '';
+    chatSound();
+    api('chat', { code: s.code, token: s.token, text: text }).catch(e => {
+      chatNote(e.message);
+      if (!input.value) input.value = text;      // újraküldhető
+    });
+  }
+
+  function buildChat() {
+    const form = document.getElementById('chatForm');
+    if (!form) return;
+    const input = document.getElementById('chatText');
+    form.addEventListener('submit', e => { e.preventDefault(); chatSend(); });
+    // a billentyűk ne jussanak el a Ruffle-ig (az ablakon figyel, és pl. a Backspace-t letiltaná)
+    for (const type of ['keydown', 'keyup', 'keypress', 'paste']) {
+      input.addEventListener(type, e => e.stopPropagation());
+    }
+    document.getElementById('chatClose').addEventListener('click', () => setChatOff(true));
+    document.getElementById('chatBack').addEventListener('click', () => setChatOff(false));
+    const copy = document.getElementById('copy');
+    copy.addEventListener('click', () => {
+      copyText(link());
+      copy.textContent = 'Másolva';
+      setTimeout(() => { copy.textContent = 'Link'; }, 2000);
+    });
+    renderChat();
+  }
+
   function boot() {
     //   főoldal (nincs gamemode): menü – bemutató / robotok / ismerős / visszajelzés
-    //   gamemode=1: "Gyors játék robotokkal" – teljes játék oktató üzenetek nélkül, élesben számoló órával
+    //   gamemode=1: "Játék robotokkal" – teljes játék oktató üzenetek nélkül, élesben számoló órával
     //   gamemode=0: bemutató játék menü nélkül (a játék végi menü "Bemutató játék" gombja)
     //   ?join=KÓD:  a főoldal, a szobához csatlakozás ablakával
     buildMaps();
+    buildRooms();
+    buildChat();
     if (gamemode === '1') { loadSwf({ invitation: '0', quickgame: '1', map: myMap(), long: longVar(myLong()) }); return; }
     if (gamemode === '0') { loadSwf({ invitation: '0', map: myMap() }); return; }
     const menu = () => loadSwf({ invitation: '1', map: myMap() });

@@ -7,7 +7,7 @@ goes into js/config.js.
 
 Cloudflare Pages: build command "python3 tools/build_site.py", output directory "dist", and set the
 HF_API_URL environment variable (used when --api is not given). Without an API address the game
-still works, only the "Gyors játék egy ismerőssel" rooms and the feedback form cannot reach a server.
+still works, only the "Játék ismerősökkel" rooms and the feedback form cannot reach a server.
 """
 import argparse
 import glob
@@ -64,6 +64,8 @@ def main():
         if name.endswith('.wasm') or name.startswith('core.ruffle.'):
             hashed.append('vendor/ruffle/' + name)
     thumbs = ['img/maps/' + os.path.basename(p) for p in sorted(glob.glob(os.path.join(ROOT, 'img', 'maps', '*.png')))]
+    thumbs += ['img/' + os.path.basename(p) for p in sorted(glob.glob(os.path.join(ROOT, 'img', '*.gif')))]   # tools/make_gifs.py
+    thumbs += ['img/rules/' + os.path.basename(p) for p in sorted(glob.glob(os.path.join(ROOT, 'img', 'rules', '*.*')))]   # svg: az oldalnak, png: a Flash szoba-ablakának
     for rel in files + hashed + thumbs:
         copy(rel, out)
 

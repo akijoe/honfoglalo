@@ -15,13 +15,13 @@ Go 1.22 vagy újabb kell hozzá. A projekt mappájából:
 go run ./server
 ```
 
-Utána: <http://localhost:8765/>. Teszt: `go test ./server`.
+Utána: <http://localhost:8765/>. Teszt: `go test ./server`; terhelésteszt: `tools/loadtest/main.go`.
 
 ## A játék
 
 - **Bemutató játék:** az eredeti oktató játék.
-- **Gyors játék robotokkal:** teljes játék Jani és Éva ellen, élesben számoló órával.
-- **Gyors játék egy ismerőssel:** szoba létrehozása vagy csatlakozás (lent).
+- **Játék robotokkal:** teljes játék Jani és Éva ellen, élesben számoló órával.
+- **Játék ismerősökkel:** szoba létrehozása vagy csatlakozás (lent).
 - **Visszajelzés:** rövid üzenet a szervernek.
 
 Az oldal bal sávjában (telefonon a „Menü” fül alatt) választható a térkép: a SWF mind a 13 országa
@@ -39,7 +39,18 @@ egy eredményablak mutatja a helyezéseket és a saját statisztikádat.
 ## Többjátékos játék
 
 - Szoba létrehozásához csak név kell; a szobakódot vagy a meghívó linket (`?join=KÓD`) kell elküldeni.
-  Legfeljebb 3 játékos, a főnök indít; az üres hely robotja Jani vagy Éva.
+  Legfeljebb 3 játékos, a főnök indít; az üres hely robotja Jani vagy Éva. Ha a létrehozó az első
+  játék előtt kilép (vagy bezárja a lapot), a szoba megszűnik; egy böngészőből egyszerre legfeljebb 2
+  szoba lehet nyitva.
+- A játék végén a **Vissza a váróba** gombbal a szoba újra várakozik, a főnök új játékot indíthat; a
+  **Kilépés** a főoldalra visz.
+- **Publikus váró:** létrehozáskor bejelölhető, ekkor neve is van (alapból „Név lobbyja”). A jobb oldali
+  **Várók** listájában (telefonon a „Várók” fül alatt) bárki látja, és kód nélkül beléphet. A lista
+  fejléce mutatja, hányan vannak most a honlapon.
+- **Csevegés:** a szobában (a játék előtt és alatt is), a Várók alatt (telefonon a játék alatt). A
+  trágár szavakat a szerver kicsillagozza (magyar és angol szólista, `server/profanity.go`), linket
+  (rövidet sem) nem enged. Az X-szel ki lehet lépni belőle; a belépést a szobába és a csevegésből
+  való ki- és visszalépést mindenki látja. A hang ereje a játékéval együtt állítható.
 - Minden gépen ugyanaz az eredeti játék fut. A véletleneket és a döntéseket egy gép dönti el, és a
   szerver mindenkinek ugyanabban a sorrendben küldi el.
 - Aki kilép vagy elmegy a kapcsolata, helyette robot játszik. Frissítéskor a játék visszaviszi a

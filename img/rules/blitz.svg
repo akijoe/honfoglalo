@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 120" width="100" height="120">
+  <!-- villámháború: pajzs (egy kontúrvonal) és villám, a térképikonok bézs-barna színeivel -->
+  <path d="M50 4C64 11 79 11 94 8V52C94 83 75 102 50 116C25 102 6 83 6 52V8C21 11 36 11 50 4Z" fill="#CDB48E" stroke="#3B2213" stroke-width="3.2" stroke-linejoin="round"/>
+  <path d="M59 22L31 64H48L39 98L71 52H54L63 22Z" fill="#5A3A1E"/>
+</svg>

@@ -478,8 +478,8 @@ func TestLobbyLong(t *testing.T) {
 	}
 }
 
-// ha mindenki kilépett, de a szoba még él, az új belépő lesz a főnök
-func TestBossAfterEmptyLobby(t *testing.T) {
+// ha a létrehozó az első játék előtt elmegy, a szoba megszűnik (a bent lévők üzenetet kapnak)
+func TestCreatorLeavesClosesLobby(t *testing.T) {
 	dir := t.TempDir()
 	os.WriteFile(filepath.Join(dir, "index.html"), []byte("<!doctype html>"), 0o644)
 	s := newServer(dir, filepath.Join(dir, "fb.jsonl"))
@@ -488,16 +488,131 @@ func TestBossAfterEmptyLobby(t *testing.T) {
 
 	_, a := post(t, ts.URL, "/api/create", map[string]string{"name": "Anna"})
 	code, tokA := a["code"].(string), a["token"].(string)
+	_, b := post(t, ts.URL, "/api/join", map[string]string{"code": code, "name": "Béla"})
+	evB := events(t, ts.URL, code, b["token"].(string))
+	next(t, evB, "state")
 	if st, _ := post(t, ts.URL, "/api/leave", map[string]string{"code": code, "token": tokA}); st != 200 {
 		t.Fatalf("leave: %d", st)
 	}
+	if m := next(t, evB, "closed"); !strings.Contains(m["msg"].(string), "létrehozója") {
+		t.Fatalf("closed: %v", m)
+	}
+	if st, _ := post(t, ts.URL, "/api/join", map[string]string{"code": code, "name": "Cili"}); st != 404 {
+		t.Fatalf("join closed room: %d", st)
+	}
+}
+
+// a játék végén "Vissza a váróba": a szoba újra várakozik, aki elment, kikerül; az új játék új
+// sorszámot kap, a döntések elölről kezdődnek. A létrehozó távozása ekkor már nem szünteti meg.
+func TestAgainAfterGame(t *testing.T) {
+	dir := t.TempDir()
+	os.WriteFile(filepath.Join(dir, "index.html"), []byte("<!doctype html>"), 0o644)
+	s := newServer(dir, filepath.Join(dir, "fb.jsonl"))
+	ts := httptest.NewServer(s.routes())
+	defer func() { ts.CloseClientConnections(); ts.Close() }()
+
+	_, a := post(t, ts.URL, "/api/create", map[string]string{"name": "Anna"})
+	code, tokA := a["code"].(string), a["token"].(string)
 	_, b := post(t, ts.URL, "/api/join", map[string]string{"code": code, "name": "Béla"})
 	tokB := b["token"].(string)
-	if _, st := post(t, ts.URL, "/api/check", map[string]string{"code": code, "token": tokB}); st["boss"] != b["seat"] {
-		t.Fatalf("boss: %v, seat %v", st["boss"], b["seat"])
+	_, c := post(t, ts.URL, "/api/join", map[string]string{"code": code, "name": "Cili"})
+	evB := events(t, ts.URL, code, tokB)
+	evA := events(t, ts.URL, code, tokA)
+	next(t, evB, "state")
+	post(t, ts.URL, "/api/start", map[string]string{"code": code, "token": tokA})
+	m := next(t, evB, "state")
+	for m["started"] != true {
+		m = next(t, evB, "state")
 	}
-	if st, _ := post(t, ts.URL, "/api/map", map[string]string{"code": code, "token": tokB, "map": "DE"}); st != 200 {
-		t.Fatalf("map by new boss: %d", st)
+	if m["game"].(float64) != 1 {
+		t.Fatalf("start: %v", m)
+	}
+	post(t, ts.URL, "/api/send", map[string]any{"code": code, "token": tokB, "k": 6, "d": map[string]int{"v": 3}})
+	next(t, evB, "dec")
+	// Cili a játék végén kilép, Anna (a létrehozó) is
+	post(t, ts.URL, "/api/leave", map[string]string{"code": code, "token": c["token"].(string)})
+	if st, _ := post(t, ts.URL, "/api/again", map[string]string{"code": code, "token": tokB}); st != 200 {
+		t.Fatalf("again: %d", st)
+	}
+	m = next(t, evB, "state")
+	for m["started"] != false {
+		m = next(t, evB, "state")
+	}
+	if len(m["players"].([]any)) != 2 {
+		t.Fatalf("players after again: %v", m["players"])
+	}
+	post(t, ts.URL, "/api/leave", map[string]string{"code": code, "token": tokA})
+	_ = evA
+	if m := next(t, evB, "state"); m["boss"].(float64) != 2 || len(m["players"].([]any)) != 1 {
+		t.Fatalf("after creator left: %v", m)
+	}
+	// új játékos, új játék: a döntések kulcsai újra szabadok. Az új belépő a régi játék döntéseit
+	// nem kapja meg (Béla, aki játszott benne, újracsatlakozáskor igen).
+	_, d := post(t, ts.URL, "/api/join", map[string]string{"code": code, "name": "Dani"})
+	next(t, evB, "state")
+	evD := events(t, ts.URL, code, d["token"].(string))
+	next(t, evD, "state")
+	evB2 := events(t, ts.URL, code, tokB)
+	next(t, evB2, "dec")
+	select {
+	case m := <-evD:
+		for m != nil && m["type"] != "dec" {
+			select {
+			case m = <-evD:
+			case <-time.After(300 * time.Millisecond):
+				m = nil
+			}
+		}
+		if m != nil {
+			t.Fatalf("new player got an old decision: %v", m)
+		}
+	case <-time.After(300 * time.Millisecond):
+	}
+	post(t, ts.URL, "/api/start", map[string]string{"code": code, "token": tokB})
+	for m = next(t, evB, "state"); m["started"] != true; m = next(t, evB, "state") {
+	}
+	if m["game"].(float64) != 2 {
+		t.Fatalf("game: %v", m["game"])
+	}
+	post(t, ts.URL, "/api/send", map[string]any{"code": code, "token": d["token"].(string), "k": 6, "d": map[string]int{"v": 1}})
+	if m := next(t, evB, "dec"); m["k"].(float64) != 6 || m["from"] != d["seat"] {
+		t.Fatalf("new game decision: %v", m)
+	}
+}
+
+// egy böngészőből legfeljebb maxRoomsPerClient szoba lehet nyitva
+func TestRoomsPerClient(t *testing.T) {
+	dir := t.TempDir()
+	os.WriteFile(filepath.Join(dir, "index.html"), []byte("<!doctype html>"), 0o644)
+	s := newServer(dir, filepath.Join(dir, "fb.jsonl"))
+	ts := httptest.NewServer(s.routes())
+	defer func() { ts.CloseClientConnections(); ts.Close() }()
+
+	for i := 0; i < maxRoomsPerClient; i++ {
+		if st, _ := post(t, ts.URL, "/api/create", map[string]string{"name": "Anna", "client": "browserAAAA"}); st != 200 {
+			t.Fatalf("create %d: %d", i, st)
+		}
+	}
+	if st, _ := post(t, ts.URL, "/api/create", map[string]string{"name": "Anna", "client": "browserAAAA"}); st != 429 {
+		t.Fatalf("too many: %d", st)
+	}
+	if st, _ := post(t, ts.URL, "/api/create", map[string]string{"name": "Béla", "client": "browserBBBB"}); st != 200 {
+		t.Fatalf("other browser: %d", st)
+	}
+	// ha a létrehozó egy játék után kilépett, a szoba a többieké: már nem számít a böngészője korlátjába
+	// (új szerver: az IP-nkénti korlátba ne fusson bele)
+	s2 := newServer(dir, filepath.Join(dir, "fb2.jsonl"))
+	ts2 := httptest.NewServer(s2.routes())
+	defer func() { ts2.CloseClientConnections(); ts2.Close() }()
+	ts = ts2
+	_, c := post(t, ts.URL, "/api/create", map[string]string{"name": "Cili", "client": "browserCCCC"})
+	code, tokC := c["code"].(string), c["token"].(string)
+	post(t, ts.URL, "/api/join", map[string]string{"code": code, "name": "Dani"})
+	post(t, ts.URL, "/api/start", map[string]string{"code": code, "token": tokC})
+	post(t, ts.URL, "/api/leave", map[string]string{"code": code, "token": tokC})
+	post(t, ts.URL, "/api/create", map[string]string{"name": "Cili", "client": "browserCCCC"})
+	if st, _ := post(t, ts.URL, "/api/create", map[string]string{"name": "Cili", "client": "browserCCCC"}); st != 200 {
+		t.Fatalf("left room still counted: %d", st)
 	}
 }
 

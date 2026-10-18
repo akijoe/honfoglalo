@@ -2,7 +2,7 @@
 //
 // Mindig:
 //   a kezdőmenü 4. gombja (eredetileg Regisztráció) a "Visszajelzés" ablakot nyitja,
-//   a 3. gomb ("Gyors játék egy ismerőssel") a szoba-ablakot (src/lobby.as)
+//   a 3. gomb ("Játék ismerősökkel") a szoba-ablakot (src/lobby.as)
 // A robotjátékban és a többjátékos játékban:
 //   nincsenek kék oktató üzenetek; a játék végén egy ablak mutatja az eredményt, utána a menü jön
 //   az óra élesben számol: területválasztásnál véletlen terület, feleletválasztósnál nincs válasz,
@@ -827,6 +827,9 @@
     game.hfOrigSqSetupGameMenu = game.SqSetupGameMenu;
     game.SqSetupGameMenu = function () {
         game.hfOrigSqSetupGameMenu();
+        // a menü gombjainak felirata (az eredetiben "Gyors játék robotokkal / egy ismerőssel", Regisztráció)
+        gmov.GAMESELECTWIN.BTN2.tooltiptext = 'Játék robotokkal';
+        gmov.GAMESELECTWIN.BTN3.tooltiptext = 'Játék ismerősökkel';
         gmov.GAMESELECTWIN.BTN4.tooltiptext = 'Visszajelzés';
         // meghívó linkkel (?join=KÓD) vagy egy szobából frissítve rögtön a szoba-ablak jön
         if (!hf.autoLobbyDone) {
@@ -979,7 +982,7 @@
         game.hfOrigAddTutorial = game.AddTutorial;
         game.AddTutorial = function (apos, amsg, abtn) {
             if (game.state == 15) {
-                amsg = 'Gratulálunk! Sikeresen megküzdöttél virtuális ellenfeleiddel. Hívd meg a barátaidat a "Gyors játék egy ismerőssel" gombbal, és játssz valódi emberek ellen!';
+                amsg = 'Gratulálunk! Sikeresen megküzdöttél virtuális ellenfeleiddel. Hívd meg a barátaidat a "Játék ismerősökkel" gombbal, és játssz valódi emberek ellen!';
                 abtn = getlang('next');
             }
             game.hfOrigAddTutorial(apos, amsg, abtn);
@@ -989,11 +992,9 @@
 
     // ------------------------------------------------------------------ teljes játék
 
-    // nincsenek oktató ablakok (a játék végén az eredménytábla jön, src/lobby.as)
+    // nincsenek oktató ablakok (a játék végén az eredménytábla jön, src/lobby.as; többjátékos módban
+    // onnan lehet visszamenni a szobába vagy kilépni)
     game.AddTutorial = function (apos, amsg, abtn) {
-        if (game.state == 15 && hf.mode == 'mp') {
-            hf.net.call('leave');       // a szoba a játék végén megszűnik ennek a játékosnak
-        }
     };
 
     // Az óraütem (gtimer) ez után a hívás után kikapcsolja az órát (gtimer.clock_on = false). Ha a

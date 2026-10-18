@@ -6,16 +6,17 @@
   <title>Honfoglaló</title>
   <link rel="icon" href="favicon.ico">
   <style>
-    /* --foot: a játék alatt a láblécnek hagyott hely (csak telefonon; asztali gépen a térképsávban van) */
-    :root { --drawer: 184px; --side: var(--drawer); --foot: 0px; }
+    /* --foot: a játék alatt a láblécnek hagyott hely (csak telefonon; asztali gépen a térképsávban van);
+       --rside: a jobb oldali sáv (Várók és csevegés) szélessége, ha mindig látszik; --chat: a csevegés magassága */
+    :root { --drawer: 208px; --side: var(--drawer); --rdrawer: 250px; --rside: var(--rdrawer); --foot: 0px; --chat: 46vh; }
     html, body { margin: 0; height: 100%; overflow: hidden; }
     body { background: #000 url(img/bg.png) repeat-x 0 0; }
-    #game { position: fixed; top: 0; right: 0; bottom: var(--foot); left: var(--side); container-type: size;
+    #game { position: fixed; top: 0; right: var(--rside); bottom: var(--foot); left: var(--side); container-type: size;
             display: flex; align-items: center; justify-content: center; }
     /* a testclient.swf színpada 600×500 – arányosan nagyítva (a második sor a látható területhez
        igazodik, telefonon a böngésző sávjai nélkül; az első a régebbi böngészőknek) */
-    #game > * { width: min(calc(100vw - var(--side)), calc((100vh - var(--foot)) * 1.2));
-                height: min(calc((100vw - var(--side)) * 5 / 6), calc(100vh - var(--foot)));
+    #game > * { width: min(calc(100vw - var(--side) - var(--rside)), calc((100vh - var(--foot)) * 1.2));
+                height: min(calc((100vw - var(--side) - var(--rside)) * 5 / 6), calc(100vh - var(--foot)));
                 width: min(100cqw, 120cqh); height: min(calc(100cqw * 5 / 6), 100cqh); }
 
     /* érintőképernyőn a Flash beviteli mezője helyén (js/hf.js: hfText) */
@@ -27,24 +28,22 @@
     /* térképválasztó (js/hf.js) */
     #maps { position: fixed; top: 0; left: 0; bottom: 0; width: var(--drawer); box-sizing: border-box;
             padding: 12px 8px; overflow-y: auto; background: rgba(0, 0, 0, .25);
+            scrollbar-width: thin; scrollbar-color: #6B4A24 transparent;
             border-right: 1px solid #6B4A24; font-family: 'Book Antiqua', Palatino, 'Palatino Linotype', Georgia, serif; }
-    #maps .side { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
-    #maps .side[hidden] { display: none; }
-    #maps #home { justify-content: center; border: 1px solid #C89B4A; background: #7A4E1D; color: #FFF3D0; font-weight: bold; }
-    #maps #home:hover { background: #A9732C; }
-    #maps #home[hidden], #maps #room[hidden] { display: none; }
-    #room { color: #F3DDB0; font-size: 14px; text-align: center; }
-    #room b { color: #FFE39A; letter-spacing: 1px; font-size: 16px; }
-    #maps #copy { display: inline; width: auto; padding: 1px 8px; margin-left: 4px; border: 1px solid #C89B4A;
-                  font-size: 12px; background: #5A3518; }
+    /* a logó mindig a főoldalra visz (js/hf.js: goHome); rámutatáskor csillanás (js/hf.js: buildLogo) */
+    #logo { display: flex; justify-content: center; margin: 0 4px 12px; padding: 2px 0 12px; border-bottom: 1px solid rgba(107, 74, 36, .7); }
+    #maps #logo img { display: block; width: 162px; height: 36px; }
     #maps h2 { margin: 0 0 8px; font-size: 18px; color: #FFE39A; text-align: center; font-weight: bold; }
     #maps .list, #maps .rules { display: flex; flex-direction: column; gap: 4px; }
     #maps .rules { margin-bottom: 12px; }
-    #maps .rule { display: flex; align-items: center; gap: 4px; }
-    #maps .rules button[data-long] { flex: 1; min-width: 0; justify-content: center; }
+    /* a szabály sora egy gombnak látszik: ikon (img/rules/), felirat, közvetlenül mellette az "i" jel (js/hf.js: ruleTip);
+       a sor üres része is a szabályt választja */
+    #maps .rule { display: flex; align-items: center; gap: 2px; border: 1px solid transparent; border-radius: 8px; cursor: pointer; }
+    #maps:not(.locked) .rule:hover { background: #5A3518; }
+    #maps .rule.on { background: #6E4219; border-color: #C89B4A; }
+    #maps.locked .rule { cursor: default; }
     #maps.locked .rules button[data-long]:not(.on) { opacity: .45; }
-    /* a szabály magyarázata: "i" jel a gomb mellett (js/hf.js: ruleTip) */
-    #maps .rules .info { flex: none; width: 22px; height: 22px; padding: 0; justify-content: center;
+    #maps .rules .info { flex: none; width: 20px; height: 20px; padding: 0; justify-content: center;
                          border: 1px solid #C89B4A; border-radius: 50%; background: #5A3518; color: #FFE39A;
                          font: italic bold 14px Georgia, 'Times New Roman', serif; }
     #maps .rules .info:hover, #maps .rules .info[aria-expanded="true"] { background: #A9732C; color: #FFF3D0; }
@@ -59,11 +58,112 @@
     #maps button.on { background: #6E4219; border-color: #C89B4A; color: #FFE39A; font-weight: bold; }
     #maps button:disabled { cursor: default; }
     #maps.locked .list button:not(.on) { opacity: .45; }
+    #maps .rules button[data-long], #maps .rules button[data-long]:hover, #maps .rules button[data-long].on {
+      flex: 0 1 auto; width: auto; min-width: 0; gap: 6px; padding: 4px 2px 4px 4px; border-color: transparent; background: none;
+      line-height: 1.2; white-space: nowrap; }
+    #maps .rules img { width: 44px; }
     #maps img { width: 56px; height: 40px; object-fit: contain; flex: none; }
     #maps .note { margin: 10px 4px 0; font-size: 12px; line-height: 1.35; color: #C2A27A; text-align: center; }
     #maps .note:empty { display: none; }
 
-    #mapsToggle { display: none; }
+    #mapsToggle, #roomsToggle { display: none; }
+
+    /* Várók (js/hf.js: hub) és csevegés (js/hf.js: chat): asztali gépen a jobb oldali sávban, egymás alatt */
+    #rooms, #chat { position: fixed; right: 0; width: var(--rdrawer); box-sizing: border-box; border-left: 1px solid #6B4A24;
+                    color: #F3DDB0; font-family: 'Book Antiqua', Palatino, 'Palatino Linotype', Georgia, serif; }
+    #rooms { top: 0; bottom: var(--chat); display: flex; flex-direction: column; padding: 12px 8px 8px; background: rgba(0, 0, 0, .25); }
+    #rooms .head { display: flex; align-items: baseline; justify-content: space-between; gap: 6px; margin: 0 0 8px; }
+    #rooms h2 { margin: 0; font-size: 18px; color: #FFE39A; font-weight: bold; }
+    #online { font-size: 12px; color: #C2A27A; white-space: nowrap; }
+    /* pulzáló zöld fény (img/online.gif, tools/make_gifs.py; a behúzható sávban az -m változat) */
+    #online:not(:empty)::before { content: ''; display: inline-block; width: 14px; height: 14px; margin: 0 4px -2px 0;
+                                  background: url(img/online.gif) no-repeat; }
+    #roomList { flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 6px;
+                scrollbar-width: thin; scrollbar-color: #6B4A24 transparent; }
+    #roomList .room { padding: 6px 8px; border: 1px solid #6B4A24; border-radius: 8px; background: rgba(90, 53, 24, .35);
+                      font-size: 13px; line-height: 1.35; }
+    #roomList .room.here { border-color: #C89B4A; background: #6E4219; }
+    #roomList .rt { color: #FFE39A; font-weight: bold; font-size: 14px; overflow-wrap: anywhere; }
+    #roomList .rm { color: #C2A27A; font-size: 12px; overflow-wrap: anywhere; }
+    /* hányan vannak bent: a "Játék robotokkal" figurája, teli (foglalt) vagy üres (szabad hely) */
+    #roomList .seats { display: inline-flex; gap: 2px; margin-right: 6px; vertical-align: -3px; }
+    #roomList .seats svg { width: 8px; height: 15px; overflow: visible; }
+    #roomList .seats .in { fill: #F0C860; stroke: #3B2213; stroke-width: 4; }
+    #roomList .seats .free { fill: none; stroke: #C2A27A; stroke-width: 5; }
+    #roomList button { width: 100%; margin-top: 5px; padding: 3px 6px; border: 1px solid #C89B4A; border-radius: 7px;
+                       background: #7A4E1D; color: #FFF3D0; font: bold 13px 'Book Antiqua', Palatino, 'Palatino Linotype', Georgia, serif; cursor: pointer; }
+    #roomList button:hover:not(:disabled) { background: #A9732C; }
+    #roomList button:disabled { opacity: .55; cursor: default; }
+    #roomList .empty { margin: 6px 4px; font-size: 12px; line-height: 1.4; color: #C2A27A; text-align: center; }
+
+    #chat { bottom: 0; height: var(--chat); display: flex; padding: 8px; background: #0B0603; border-top: 1px solid #6B4A24; }
+    #chat .cbox { flex: 1; min-width: 0; display: flex; flex-direction: column; padding: 6px 8px 8px; border: 2px solid #5A3A1E;
+                  border-radius: 10px; background: linear-gradient(#4A2A14, #2B170A); box-shadow: inset 0 1px 0 rgba(255, 220, 160, .15); }
+    #chat .chead { display: flex; align-items: center; gap: 6px; min-height: 26px; margin-bottom: 6px; font-size: 14px; }
+    #chatTitle { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    #chatTitle b { color: #FFE39A; letter-spacing: 1px; }
+    #chat .chead button { flex: none; display: flex; align-items: center; padding: 1px 8px; border: 1px solid #C89B4A; border-radius: 6px;
+                          background: #5A3518; color: #F3DDB0; font: 12px 'Book Antiqua', Palatino, 'Palatino Linotype', Georgia, serif; cursor: pointer; }
+    #chat .chead button:hover { background: #A9732C; }
+    #chat .chead button[hidden] { display: none; }
+    #chatClose { padding: 3px 6px !important; }
+    /* kilépés a csevegésből (X): az üzenetek és a beviteli mező elsötétítve, rajta a visszalépés */
+    #chat .cbody { position: relative; flex: 1; min-height: 0; display: flex; flex-direction: column; }
+    #chatOff { position: absolute; inset: -3px -5px -5px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+               gap: 10px; padding: 8px; border-radius: 7px; background: rgba(12, 6, 2, .98); color: #C2A27A; font-size: 14px; text-align: center; }
+    #chatOff[hidden] { display: none; }
+    #chatOff p { margin: 0; }
+    #chatOff button { padding: 5px 18px; border: 1px solid #C89B4A; border-radius: 7px; background: #7A4E1D; color: #FFF3D0;
+                      font: bold 14px 'Book Antiqua', Palatino, 'Palatino Linotype', Georgia, serif; cursor: pointer; }
+    #chatOff button:hover { background: #A9732C; }
+    #chat .cin { display: flex; gap: 6px; margin: 0; }
+    #chatText { flex: 1; min-width: 0; box-sizing: border-box; height: 30px; padding: 2px 8px; border: 2px solid #C8B27A; border-radius: 6px;
+                background: #F6EBCB; color: #2D190E; font: 15px 'Book Antiqua', Palatino, 'Palatino Linotype', Georgia, serif; outline: none; }
+    #chatText:focus { border-color: #FFE39A; }
+    #chatText::placeholder { color: #7A6650; opacity: 1; }
+    #chatText:disabled { background: #BFAE8C; }
+    /* a küldés gombja: fényes, üveges (2010-es stílus), a boríték is csillog */
+    #chatSend { flex: none; width: 42px; height: 30px; display: flex; align-items: center; justify-content: center; padding: 0;
+                border: 1px solid #C89B4A; border-radius: 7px; cursor: pointer;
+                background: linear-gradient(#A9732C 0%, #7A4E1D 48%, #5A3518 52%, #3B2213 100%);
+                box-shadow: inset 0 1px 0 rgba(255, 236, 190, .55), 0 1px 3px rgba(0, 0, 0, .6); }
+    #chatSend:hover:not(:disabled) { background: linear-gradient(#C8913E 0%, #A9732C 48%, #7A4E1D 52%, #5A3518 100%); }
+    #chatSend:active:not(:disabled) { box-shadow: inset 0 2px 4px rgba(0, 0, 0, .6); }
+    #chatSend:disabled { filter: grayscale(.4) brightness(.8); }
+    #chatSend:disabled { cursor: default; }
+    #chatSend:not(:disabled) .strike { display: none; }
+    #chatLog { flex: 1; min-height: 0; overflow-y: auto; margin: 8px 0 0; padding: 0; list-style: none; font-size: 14px; line-height: 1.35;
+               scrollbar-width: thin; scrollbar-color: #6B4A24 transparent; }
+    #chatLog li { display: flex; gap: 6px; padding: 1px 0; overflow-wrap: anywhere; }
+    /* a csevegés jele: szövegbuborék a játékos színében */
+    #chatLog .bub { flex: none; width: 17px; height: 14px; margin-top: .15em; }
+    #chatLog .who { color: #FFE39A; }
+    #chatLog li.sys { color: #C2A27A; font-style: italic; font-size: 13px; }
+
+    /* 1000 px alatt a Várók behúzható sáv jobb oldalt ("Várók" fül), a csevegés álló képernyőn a játék alatt,
+       fekvőn a Várók sávjának alsó felében */
+    @media (max-width: 999px) {
+      :root { --rside: 0px; }
+      #online:not(:empty)::before { background-image: url(img/online-m.gif); }
+      #game { align-items: flex-start; }
+      #rooms { z-index: 5; bottom: 0; transform: translateX(100%); visibility: hidden; background: rgba(28, 15, 6, .97);
+               box-shadow: -4px 0 16px rgba(0, 0, 0, .6); transition: transform .2s ease, visibility 0s .2s; }
+      body.rooms-open #rooms { transform: none; visibility: visible; transition: transform .2s ease; }
+      #roomsToggle { display: block; position: fixed; z-index: 6; right: 0; top: calc((100vw - var(--side)) * 5 / 6 + 10px);
+                     padding: 6px 10px 6px 12px; border: 1px solid #C89B4A; border-right: 0; border-radius: 9px 0 0 9px;
+                     background: #7A4E1D; color: #FFF3D0; font: bold 14px 'Book Antiqua', Palatino, 'Palatino Linotype', Georgia, serif; cursor: pointer; transition: right .2s ease; }
+      body.rooms-open #roomsToggle { right: var(--rdrawer); }
+      body.typing #roomsToggle { display: none; }
+      #chat { left: calc(var(--side) + 8px); right: 8px; width: auto; height: auto; top: calc((100vw - var(--side)) * 5 / 6 + 48px);
+              bottom: calc(var(--foot) + 4px); padding: 0; border: 0; background: none; }
+    }
+    @media (max-width: 999px) and (orientation: landscape) {
+      #roomsToggle { top: 8px; }
+      #rooms { bottom: 50%; }
+      #chat { display: none; }
+      body.rooms-open #chat { display: flex; z-index: 5; left: auto; right: 0; width: var(--rdrawer); top: 50%; bottom: 0;
+                              padding: 0 8px 8px; border-left: 1px solid #6B4A24; background: rgba(28, 15, 6, .97); }
+    }
 
     /* lábléc: a térképsáv alján (telefonon a lap alján, középen) */
     #foot { position: fixed; left: 0; bottom: 0; width: calc(var(--drawer) - 1px); box-sizing: border-box; margin: 0;
@@ -106,18 +206,15 @@
 <body>
   <button id="mapsToggle" type="button" aria-controls="maps" aria-expanded="false">Menü ›</button>
   <nav id="maps" aria-label="Menü">
-    <div class="side">
-      <button id="home" type="button" hidden>Főoldal</button>
-      <div id="room" hidden>Szoba: <b></b> <button id="copy" type="button" title="A meghívó link másolása">Link</button></div>
-    </div>
+    <a id="logo" href="./"><img src="img/logo.gif" width="162" height="36" alt="Honfoglaló – főoldal"></a>
     <h2>Szabály</h2>
     <div class="rules">
       <div class="rule" data-desc="A bázisokat a gép sorsolja ki. 4 harci kör: az első háromban csak szomszédos területet lehet megtámadni, az utolsóban bárhová, a pontok sorrendjében.">
-        <button type="button" data-long="0">Villámháború</button>
+        <button type="button" data-long="0"><img src="img/rules/blitz.svg" alt=""><span>Villámháború</span></button>
         <button type="button" class="info" aria-label="Mit jelent a villámháború?" aria-controls="ruleTip" aria-expanded="false">i</button>
       </div>
       <div class="rule" data-desc="Nincs sorsolás: a játékosok véletlen sorrendben maguk választják ki a kezdőterületüket (a bázisukat). 6 harci kör, fix sorrendben: mindenki minden helyről egyszer támad, és csak az utolsó körben lehet bárhová.">
-        <button type="button" data-long="1">Hosszú hadjárat</button>
+        <button type="button" data-long="1"><img src="img/rules/long.svg" alt=""><span>Hosszú hadjárat</span></button>
         <button type="button" class="info" aria-label="Mit jelent a hosszú hadjárat?" aria-controls="ruleTip" aria-expanded="false">i</button>
       </div>
     </div>
@@ -126,7 +223,44 @@
     <p class="note"></p>
   </nav>
   <div id="game"></div>
+  <button id="roomsToggle" type="button" aria-controls="rooms" aria-expanded="false">‹ Várók</button>
+  <aside id="rooms" aria-label="Várók">
+    <div class="head"><h2>Várók</h2><span id="online" title="Ennyien vannak most a honlapon"></span></div>
+    <div id="roomList"></div>
+  </aside>
+  <section id="chat" aria-label="Csevegés">
+    <div class="cbox">
+      <div class="chead">
+        <span id="chatTitle">Csevegés</span>
+        <button id="copy" type="button" title="A meghívó link másolása" hidden>Link</button>
+        <button id="chatClose" type="button" title="Kilépés a csevegésből" aria-label="Kilépés a csevegésből" hidden>
+          <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden="true"><path d="M2 2l8 8M10 2l-8 8" stroke="#FFE39A" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <div class="cbody">
+      <form id="chatForm" class="cin">
+        <input id="chatText" type="text" maxlength="200" autocomplete="off" enterkeyhint="send" placeholder="Csatlakozz egy váróhoz!" aria-label="Üzenet" disabled>
+        <button id="chatSend" type="submit" title="Üzenet küldése" disabled>
+          <svg viewBox="0 0 26 18" width="26" height="18" aria-hidden="true">
+            <defs>
+              <linearGradient id="envBody" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF8E4"/><stop offset=".55" stop-color="#F0DBA8"/><stop offset="1" stop-color="#CFA963"/></linearGradient>
+              <linearGradient id="envFlap" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFDF5"/><stop offset="1" stop-color="#E2C487"/></linearGradient>
+              <linearGradient id="envGloss" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+            </defs>
+            <rect x="1" y="1.5" width="24" height="15.5" rx="2.2" fill="url(#envBody)" stroke="#5A3518" stroke-width="1.2"/>
+            <path d="M2 16.2L10.4 9.6M24 16.2L15.6 9.6" stroke="#A9803F" stroke-width="1"/>
+            <path d="M1.7 2.3L13 10.9 24.3 2.3" fill="url(#envFlap)" stroke="#5A3518" stroke-width="1.2" stroke-linejoin="round"/>
+            <path d="M3 2.4H23L13 9.6Z" fill="url(#envGloss)" opacity=".75"/>
+            <line class="strike" x1="2" y1="17.5" x2="24" y2=".5" stroke="#D2342C" stroke-width="2.6" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </form>
+      <ul id="chatLog" aria-live="polite"></ul>
+      <div id="chatOff" hidden><p>Kiléptél a csevegésből.</p><button id="chatBack" type="button">Visszalépés</button></div>
+      </div>
+    </div>
+  </section>
   <p id="ruleTip" role="tooltip" hidden></p>
-  <p id="foot"><span class="nowrap">v1.1<span class="sep">|</span><a href="https://github.com/akijoe/honfoglalo" target="_blank" rel="noopener">Source code</a><span class="sep">|</span></span> Not affiliated with or endorsed by THX Games</p>
+  <p id="foot"><span class="nowrap">v1.2<span class="sep">|</span><a href="https://github.com/akijoe/honfoglalo" target="_blank" rel="noopener">Source code</a><span class="sep">|</span></span> Not affiliated with or endorsed by THX Games</p>
 </body>
 </html>

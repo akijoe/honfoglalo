@@ -260,6 +260,30 @@
         }
     };
 
+    // A háttérbe tett lapon a böngésző megállítja a lejátszót, és vele a játékot. Visszatéréskor
+    // (js/hf.js: hfResume), ha közben megjöttek a döntések vagy épp animáció fut, nem játsszuk végig a
+    // lemaradt animációkat: a felzárkózás rögtön oda visz, ahol a játék bevitelre vagy új döntésre
+    // vár. Különben a többiek másodpercekig várnának erre a gépre (pl. a következő területválasztásra).
+    M.resume = function () {
+        if (!M.started || M.catchingUp) {
+            return;
+        }
+        var decs = net.call('decs', M.cursor);
+        if (!gsqc.running && !(decs && decs.length > 0)) {
+            return;
+        }
+        M.catchingUp = true;
+        if (gsqc.running) {
+            gsqc.Clear();
+            pending = true;
+        }
+        M.tick();
+    };
+    flash.external.ExternalInterface.addCallback('hfResume', null, function () {
+        M.resume();
+        return true;
+    });
+
     // a felzárkózás vége: minden a játék mostani állapota szerint újrarajzolva
     M.finishCatchUp = function () {
         if (!M.catchingUp) {

@@ -14,7 +14,7 @@
     if (_level0.mp == '1') {
         hf.mode = 'mp';            // többjátékos játék egy szobában
     } else if (_level0.quickgame == '1') {
-        hf.mode = 'robots';        // "Gyors játék robotokkal"
+        hf.mode = 'robots';        // "Játék robotokkal"
     } else if (_level0.invitation == '1') {
         hf.mode = 'menu';          // főoldal: a menüvel kezdődik
     } else {

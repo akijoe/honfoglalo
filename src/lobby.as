@@ -136,6 +136,135 @@
         return b;
     };
 
+    // link: aláhúzott, kattintható felirat (új lapon nyitja meg az url-t)
+    ui.link = function (mc, x, y, label, url) {
+        var d = mc.getNextHighestDepth();
+        var l = mc.createEmptyMovieClip('l' + d, d);
+        l._x = x;
+        l._y = y;
+        var t = ui.text(l, 0, 0, 200, 22, label, 14, C.title);
+        var f = t.getTextFormat();
+        f.underline = true;
+        t.setTextFormat(f);
+        t._width = t.textWidth + 6;
+        l.onRelease = function () {
+            getURL(url, '_blank');
+        };
+        return l;
+    };
+
+    // kis ikonok a szoba-ablak soraiban: korona (a szoba főnöke) és robot (az üresen maradó hely)
+    function drawCrown(mc) {
+        mc.clear();
+        mc.lineStyle(1, 0x6B5A48, 100);
+        mc.beginFill(0xC2A27A, 100);
+        mc.moveTo(0, 12);
+        mc.lineTo(17, 12);
+        mc.lineTo(17, 10);
+        mc.lineTo(15, 2);
+        mc.lineTo(11.5, 7);
+        mc.lineTo(8.5, 0);
+        mc.lineTo(5.5, 7);
+        mc.lineTo(2, 2);
+        mc.lineTo(0, 10);
+        mc.lineTo(0, 12);
+        mc.endFill();
+    }
+
+    function drawRobot(mc) {
+        mc.clear();
+        mc.lineStyle(1.4, 0xC2A27A, 100);
+        mc.moveTo(7, 0.5);
+        mc.lineTo(7, 3);
+        mc.beginFill(0x6B5A48, 100);
+        roundPath(mc, 1, 3, 12, 10, 3);
+        mc.endFill();
+        mc.lineStyle();
+        mc.beginFill(0xFFE39A, 100);
+        roundPath(mc, 3.6, 6, 2.4, 2.4, 1);
+        roundPath(mc, 8, 6, 2.4, 2.4, 1);
+        mc.endFill();
+        mc.lineStyle(1, 0xC2A27A, 100);
+        mc.moveTo(4.5, 10.5);
+        mc.lineTo(9.5, 10.5);
+    }
+
+    // ikon (betöltött kép, legfeljebb 42×28 képpont) és mellette felirat: set(kép címe, felirat)
+    ui.iconLabel = function (mc, x, y, w) {
+        var d = mc.getNextHighestDepth();
+        var c = mc.createEmptyMovieClip('i' + d, d);
+        c._x = x;
+        c._y = y;
+        var label = ui.text(c, 48, 3, w - 48, 24, '', 15, C.text);
+        var url = '';
+        var o = {clip: c};
+        o.width = function () {
+            return 48 + Math.round(label.textWidth) + 4;
+        };
+        o.set = function (u, text) {
+            label.text = text;
+            if (u == url) {
+                return;
+            }
+            url = u;
+            var holder = c.createEmptyMovieClip('img', 1);
+            var mcl = new MovieClipLoader();
+            mcl.addListener({onLoadInit: function (t) {
+                t.forceSmoothing = true;
+                var k = Math.min(28 / t._height, 42 / t._width);
+                t._xscale = k * 100;
+                t._yscale = k * 100;
+                t._x = Math.round((42 - t._width) / 2);
+                t._y = Math.round((28 - t._height) / 2);
+            }});
+            mcl.loadClip(u, holder);
+        };
+        return o;
+    };
+
+    // jelölőnégyzet: kattintásra (a felirat is kattintható) vált, onChange(be van-e jelölve)
+    ui.checkbox = function (mc, x, y, w, label, on, onChange) {
+        var d = mc.getNextHighestDepth();
+        var c = mc.createEmptyMovieClip('c' + d, d);
+        c._x = x;
+        c._y = y;
+        c.on = on == true;
+        ui.text(c, 26, 0, w - 26, 24, label, 15, C.text);
+        var draw = function (hi) {
+            c.clear();
+            rect(c, 0, 0, w, 24, 0, 0x000000, 0);           // a felirat is kattintható
+            rect(c, 0, 3, 18, 18, 4, hi ? C.btnHi : C.btn, 100, C.border);
+            if (c.on) {
+                c.lineStyle(3, C.title, 100);
+                c.moveTo(4, 12);
+                c.lineTo(8, 17);
+                c.lineTo(15, 7);
+            }
+        };
+        draw(false);
+        c.onRollOver = function () {
+            draw(true);
+        };
+        c.onRollOut = function () {
+            draw(false);
+        };
+        c.onDragOut = c.onRollOut;
+        c.onRelease = function () {
+            c.on = !c.on;
+            draw(true);
+            onChange(c.on);
+        };
+        return c;
+    };
+
+    // beviteli mező be- és kikapcsolása (kikapcsolva halványabb, nem írható)
+    ui.setInputOn = function (t, on) {
+        t.type = on ? 'input' : 'dynamic';
+        t.selectable = on;
+        t.backgroundColor = on ? C.input : 0xB9A98A;
+        t.textColor = on ? C.inputText : 0x6B5A48;
+    };
+
     // ------------------------------------------------------------------ ablak
 
     function menuWaiting() {
@@ -156,10 +285,30 @@
         box._x = Math.round((W - w) / 2);
         box._y = Math.round((H - h) / 2);
         rect(box, 0, 0, w, h, 12, C.panel, 97, C.border);
-        ui.text(box, 0, 12, w, 34, title, 22, C.title, true, 'center');
+        box.titleText = ui.text(box, 0, 12, w, 34, title, 22, C.title, true, 'center');
         gmov.GAMESELECTWIN._visible = false;
+        hidePhase();
         return box;
     };
+
+    // A főoldalon a menü mögött az eredeti játék bázist sorsol (díszletként): amíg egy ablak nyitva
+    // van, a fázis felirata ("Bázis sorsolás") ne látsszon át rajta.
+    var phaseWasVisible = null;
+    function hidePhase() {
+        if (hf.mode != 'menu') {
+            return;
+        }
+        if (phaseWasVisible == null) {
+            phaseWasVisible = gmap.GAMEPHASE._visible;
+        }
+        gmap.GAMEPHASE._visible = false;
+    }
+    function restorePhase() {
+        if (phaseWasVisible != null) {
+            gmap.GAMEPHASE._visible = phaseWasVisible;
+            phaseWasVisible = null;
+        }
+    }
 
     ui.close = function () {
         if (panel) {
@@ -169,6 +318,7 @@
         }
         hf.net.handler = null;
         onEnter = null;
+        restorePhase();
         if (menuWaiting()) {
             gmov.GAMESELECTWIN._visible = true;
             gmov.GAMESELECTWIN._alpha = 100;
@@ -183,6 +333,9 @@
     ui.tick = function () {
         if (panel) {
             gmov.GAMESELECTWIN._visible = false;
+            if (phaseWasVisible != null) {
+                gmap.GAMEPHASE._visible = false;     // a sorsolás fázisváltása újra előhozná
+            }
         }
         touch.tick();
     };
@@ -724,19 +877,23 @@
         }
         ui.text(p2, X + 6, 56, RW - 12, 150, lines.join('\n\n'), 15, 0xEAD9B5, false, 'left', true);
 
-        yellowButton(b, X + 30, H2 - 64, RW - 60, 42, 'Új játék', 19, function () {
-            if (hf.mode == 'mp') {
-                hf.lobby.open();
-            } else if (hf.mode == 'robots') {
-                getURL('?gamemode=1', '_self');
-            } else {
-                getURL('?gamemode=0', '_self');
-            }
-        });
-        yellowButton(b, 12, H2 - 44, 112, 28, 'OK', 15, function () {
-            ui.close();
-            onOk();
-        });
+        if (hf.mode == 'mp') {
+            // többjátékos módban: vissza a szobába (a főnök új játékot indíthat), vagy kilépés a főoldalra
+            yellowButton(b, X + 30, H2 - 64, RW - 60, 42, 'Vissza a váróba', 19, function () {
+                hf.net.call('again');
+            });
+            yellowButton(b, 12, H2 - 44, 112, 28, 'Kilépés', 15, function () {
+                hf.net.call('exit');
+            });
+        } else {
+            yellowButton(b, X + 30, H2 - 64, RW - 60, 42, 'Új játék', 19, function () {
+                getURL(hf.mode == 'robots' ? '?gamemode=1' : '?gamemode=0', '_self');
+            });
+            yellowButton(b, 12, H2 - 44, 112, 28, 'OK', 15, function () {
+                ui.close();
+                onOk();
+            });
+        }
         showPage(0);
     };
 
@@ -751,21 +908,47 @@
             lobby.room();
             return;
         }
-        var b = ui.open(400, 312, 'Játék ismerősökkel');
+        var b = ui.open(400, 374, 'Játék ismerősökkel');
         ui.text(b, 30, 58, 120, 24, 'Neved:', 16, C.text);
         var name = ui.input(b, 140, 56, 230, 26, h ? h.name : '', 16);
-        var create = ui.button(b, 30, 96, 340, 34, 'Új szoba létrehozása', function () {
+        // publikus váró: a Várók listájában bárki megtalálja, és kód nélkül beléphet (a neve kell)
+        var titleEdited = false;
+        var defaultTitle = function () {
+            var n = name.text.split('  ').join(' ');
+            return n.split(' ').join('') == '' ? '' : n + ' lobbyja';
+        };
+        var pub = ui.checkbox(b, 30, 92, 340, 'Publikus váró (a Várók listájában látszik)', false, function (on) {
+            ui.setInputOn(title, on);
+            if (on) {
+                title.text = defaultTitle();
+            } else {
+                title.text = '';            // kivételkor a név törlődik (újra bejelölve az alapértelmezett jön)
+            }
+            titleEdited = false;
+        });
+        ui.text(b, 30, 124, 120, 24, 'Váró neve:', 16, C.text);
+        var title = ui.input(b, 140, 122, 230, 26, '', 28);
+        ui.setInputOn(title, false);
+        name.onChanged = function () {
+            if (pub.on && !titleEdited) {
+                title.text = defaultTitle();
+            }
+        };
+        title.onChanged = function () {
+            titleEdited = true;
+        };
+        var create = ui.button(b, 30, 160, 340, 34, 'Új szoba létrehozása', function () {
             go('create');
         });
-        ui.text(b, 30, 146, 340, 22, 'vagy csatlakozz egy barátod szobájához:', 15, C.dim, false, 'center');
-        ui.text(b, 30, 180, 120, 24, 'Szobakód:', 16, C.text);
-        var code = ui.input(b, 140, 178, 110, 26, h ? h.join : '', 8);
+        ui.text(b, 30, 208, 340, 22, 'vagy csatlakozz egy barátod szobájához:', 15, C.dim, false, 'center');
+        ui.text(b, 30, 242, 120, 24, 'Szobakód:', 16, C.text);
+        var code = ui.input(b, 140, 240, 110, 26, h ? h.join : '', 8);
         code.restrict = 'A-Za-z0-9';
-        var join = ui.button(b, 262, 176, 108, 30, 'Belépés', function () {
+        var join = ui.button(b, 262, 238, 108, 30, 'Belépés', function () {
             go('join');
         });
-        var st = ui.text(b, 20, 222, 360, 40, '', 14, C.dim, false, 'center', true);
-        ui.button(b, 30, 264, 120, 32, 'Vissza', function () {
+        var st = ui.text(b, 20, 282, 360, 40, '', 14, C.dim, false, 'center', true);
+        ui.button(b, 30, 326, 120, 32, 'Vissza', function () {
             ui.close();
         });
         status(st, msg, C.err);
@@ -791,7 +974,10 @@
                 hf.net.call('join', c, n);
                 status(st, 'Csatlakozás...');
             } else {
-                hf.net.call('create', n);
+                if (pub.on && title.text.split(' ').join('') == '') {
+                    title.text = defaultTitle();
+                }
+                hf.net.call('create', n, pub.on ? title.text : '');
                 status(st, 'Szoba létrehozása...');
             }
             busy = true;
@@ -814,30 +1000,109 @@
         Selection.setFocus(name.text == '' ? name : code);
     };
 
+    // Belépés egy publikus szobába a Várók listájából (js/hf.js: hfJoin, {code, title}): csak a nevet
+    // kérdezi; a szoba kódja nem látszik (a csevegés fejlécében megvan).
+    lobby.joinPublic = function (code, title) {
+        var h = hf.net.call('hello');
+        var b = ui.open(380, 214, title);
+        ui.text(b, 24, 50, 332, 22, 'Belépés a publikus váróba', 15, C.dim, false, 'center');
+        ui.text(b, 30, 92, 100, 24, 'Neved:', 16, C.text);
+        var name = ui.input(b, 120, 90, 230, 26, h ? h.name : '', 16);
+        var st = ui.text(b, 20, 124, 340, 40, '', 14, C.dim, false, 'center', true);
+        ui.button(b, 30, 166, 120, 32, 'Mégse', function () {
+            ui.close();
+        });
+        var join = ui.button(b, 210, 166, 140, 32, 'Belépés', function () {
+            go();
+        });
+        var busy = false;
+        function go() {
+            if (busy) {
+                return;
+            }
+            if (name.text.split(' ').join('') == '') {
+                status(st, 'Előbb add meg a neved!', C.err);
+                Selection.setFocus(name);
+                return;
+            }
+            busy = true;
+            join.setOn(false);
+            status(st, 'Belépés...');
+            hf.net.call('join', code, name.text);
+        }
+        onEnter = go;
+        hf.net.handler = function (ev) {
+            if (ev.type == 'joined') {
+                lobby.room();
+            } else if (ev.type == 'error') {
+                busy = false;
+                join.setOn(true);
+                status(st, ev.msg, C.err);
+            }
+        };
+        Selection.setFocus(name);
+        Selection.setSelection(name.text.length, name.text.length);
+    };
+
+    EI.addCallback('hfJoin', null, function (r) {
+        if (hf.mode != 'menu' || r == undefined) {
+            return false;
+        }
+        lobby.joinPublic(String(r.code), String(r.title));
+        return true;
+    });
+
     // ------------------------------------------------------------------ szoba: várakozás
 
     lobby.room = function () {
         var h = hf.net.call('hello');
         var b = ui.open(420, 384, 'Szoba: ' + h.code);
-        ui.text(b, 24, 52, 372, 22, 'Küldd el ezt a linket a barátaidnak:', 15, C.text);
+        var invite = ui.text(b, 24, 52, 372, 22, 'Küldd el ezt a linket a barátaidnak:', 15, C.text);
         var link = ui.text(b, 24, 76, 266, 26, h.link, 14, C.inputText);
         link.background = true;
         link.backgroundColor = C.input;
         link.border = true;
         link.borderColor = C.border;
         link.selectable = true;
-        ui.button(b, 298, 74, 98, 30, 'Másolás', function () {
+        var copy = ui.button(b, 298, 74, 98, 30, 'Másolás', function () {
             hf.net.call('copy');
         });
-        ui.text(b, 24, 112, 372, 22, 'Játékosok (legfeljebb 3):', 15, C.text);
+        ui.text(b, 24, 112, 372, 22, 'Játékosok:', 15, C.text);
         var rows = [];
         for (var s = 1; s <= 3; s++) {
+            var y = 112 + s * 30;
             var dot = b.createEmptyMovieClip('dot' + s, b.getNextHighestDepth());
             dot._x = 40;
-            dot._y = 112 + s * 30 + 12;
-            rows[s] = {dot: dot, name: ui.text(b, 56, 112 + s * 30, 340, 26, '', 16, C.text)};
+            dot._y = y + 12;
+            var icon = b.createEmptyMovieClip('icon' + s, b.getNextHighestDepth());
+            icon._y = y + 6;
+            rows[s] = {dot: dot, icon: icon, name: ui.text(b, 56, y, 200, 26, '', 16, C.text),
+                tag: ui.text(b, 56, y, 200, 26, '', 14, C.dim)};
         }
-        var mapLine = ui.text(b, 24, 234, 372, 22, '', 15, C.text);
+        // a sor: név, mögötte a korona vagy a robot ikonja, aztán a címke (te, nem elérhető)
+        function setRow(row, name, color, iconKind, tag) {
+            row.name.textColor = color;
+            row.name.text = name;
+            row.tag.textColor = color;
+            var tight = tag == ')';                     // "szabad hely (Jani [robot])"
+            var x = 56 + Math.round(row.name.textWidth) + (tight ? 7 : 10);
+            row.icon.clear();
+            if (iconKind == 'crown') {
+                drawCrown(row.icon);
+            } else if (iconKind == 'robot') {
+                drawRobot(row.icon);
+            }
+            row.icon._x = x;
+            if (iconKind != '') {
+                x += tight ? 15 : 24;
+            }
+            row.tag._x = x;
+            row.tag._y = row.name._y + 2;
+            row.tag.text = tag;
+        }
+        // a szoba szabálya és térképe: ugyanazok az ikonok, mint az oldal bal sávjában (img/rules, img/maps)
+        var ruleIcon = ui.iconLabel(b, 24, 230, 190);
+        var mapIcon = ui.iconLabel(b, 214, 230, 190);
         var st = ui.text(b, 20, 262, 380, 44, '', 14, C.dim, false, 'center', true);
         ui.button(b, 24, 332, 120, 34, 'Kilépés', function () {
             hf.net.call('leave');
@@ -864,9 +1129,8 @@
             for (var s = 1; s <= 3; s++) {
                 var row = rows[s];
                 row.dot.clear();
-                row.name.textColor = C.dim;
-                row.name.text = 'szabad hely (ha üres marad: ' + hf.robotName(s) + ', robot)';
                 circle(row.dot, 0, 0, 7, 0x6B5A48);
+                setRow(row, 'szabad hely (' + hf.robotName(s), C.dim, 'robot', ')');    // ha üres marad, robot játszik rajta
             }
             for (var i = 0; i < state.players.length; i++) {
                 var p = state.players[i];
@@ -875,28 +1139,38 @@
                 r.dot.clear();
                 circle(r.dot, 0, 0, 7, SEATCOLOR[p.seat]);
                 var tags = [];
-                if (p.seat == state.boss) {
-                    tags.push('főnök');
-                }
                 if (p.seat == me) {
                     tags.push('te');
                 }
                 if (!p.online) {
                     tags.push('nem elérhető');
                 }
-                r.name.textColor = C.text;
-                r.name.text = p.name + (tags.length > 0 ? '  (' + tags.join(', ') + ')' : '');
+                setRow(r, p.name, C.text, p.seat == state.boss ? 'crown' : '', tags.length > 0 ? '(' + tags.join(', ') + ')' : '');
+                r.tag.textColor = C.dim;
             }
             var boss = state.boss == me;
-            // a térképet és a szabályt a főnök az oldal bal oldali sávjában választja (js/hf.js)
-            mapLine.text = 'Térkép: ' + state.mapName + ', ' + (state.long ? 'hosszú hadjárat' : 'villámháború') + (boss && !state.started ? '  (módosítható)' : '');
+            // publikus váró: a neve a címben; a kódja és a linkje nem látszik (a csevegés fejlécében megvan)
+            if (state.public) {
+                b.titleText.text = state.title;
+                invite.text = 'Publikus váró: bárki beléphet a Várók listájából.';
+                link._visible = false;
+                copy._visible = false;
+            }
+            ruleIcon.set('img/rules/' + (state.long ? 'long' : 'blitz') + '.png', state.long ? 'Hosszú hadjárat' : 'Villámháború');
+            mapIcon.set('img/maps/' + state.map + '.png', state.mapName);
+            var w1 = ruleIcon.width();
+            var x0 = Math.round((420 - w1 - 28 - mapIcon.width()) / 2);       // a kettő együtt középen
+            ruleIcon.clip._x = x0;
+            mapIcon.clip._x = x0 + w1 + 28;
             start._visible = boss && !state.started;
             start.setOn(count >= 2);
             rejoin._visible = state.started;
             if (state.started) {
                 status(st, 'A játék már folyik. Visszaléphetsz (ahonnan most tart a játék), vagy kiléphetsz: ekkor helyetted robot játszik tovább.');
             } else if (boss) {
-                status(st, count >= 2 ? 'Ha mindenki megvan, indítsd el a játékot!' : 'Várjuk, hogy a barátaid belépjenek a linkkel...');
+                // a térképet és a szabályt a főnök az oldal bal oldali sávjában választja (js/hf.js)
+                status(st, (count >= 2 ? 'Ha mindenki megvan, indítsd el a játékot!' : state.public ? 'Várjuk, hogy belépjenek a játékosok...' : 'Várjuk, hogy a barátaid belépjenek a linkkel...') +
+                    ' A térképet és a szabályt a bal oldali sávban választhatod.');
             } else {
                 status(st, 'Várjuk, hogy a szoba főnöke elindítsa a játékot...');
             }
@@ -922,16 +1196,20 @@
 
     feedback.open = function () {
         var h = hf.net.call('hello');
-        var b = ui.open(440, 360, 'Visszajelzés');
+        var b = ui.open(440, 422, 'Visszajelzés');
         ui.text(b, 24, 50, 392, 44, 'Írd meg, mi tetszik, mi nem, vagy ha hibát találtál. Köszönjük!', 15, C.text, false, 'left', true);
         ui.text(b, 24, 100, 140, 24, 'Neved (nem kötelező):', 14, C.dim);
         var name = ui.input(b, 180, 98, 236, 26, h ? h.name : '', 16);
         var text = ui.input(b, 24, 134, 392, 130, '', 2000, true);
-        var st = ui.text(b, 20, 268, 400, 40, '', 14, C.dim, false, 'center', true);
-        ui.button(b, 24, 312, 120, 34, 'Mégse', function () {
+        ui.text(b, 24, 270, 392, 22, 'Nagyon köszi az eddigi visszajelzéseket!', 14, C.text);
+        ui.text(b, 24, 290, 392, 22, 'Szinte minden bugot javítottunk, de az új feature-ök miatt', 14, C.text);
+        var more = ui.text(b, 24, 310, 392, 22, 'lehetnek újak, több infó:', 14, C.text);
+        ui.link(b, 24 + Math.round(more.textWidth) + 8, 310, 'patch notes', 'https://github.com/akijoe/honfoglalo/releases');
+        var st = ui.text(b, 20, 334, 400, 36, '', 14, C.dim, false, 'center', true);
+        ui.button(b, 24, 374, 120, 34, 'Mégse', function () {
             ui.close();
         });
-        var send = ui.button(b, 276, 312, 140, 34, 'Küldés', function () {
+        var send = ui.button(b, 276, 374, 140, 34, 'Küldés', function () {
             if (text.text.split(' ').join('').split('\r').join('').split('\n').join('') == '') {
                 status(st, 'Előbb írj pár szót!', C.err);
                 Selection.setFocus(text);
