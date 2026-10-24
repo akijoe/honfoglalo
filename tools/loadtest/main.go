@@ -41,9 +41,6 @@ var (
 	serverPID = flag.Int("pid", 0, "a szerver folyamata (CPU, memória)")
 )
 
-// a kliens változata (server/main.go: minClient)
-const protocol = 2
-
 // ---------------------------------------------------------------- mérés
 
 type stats struct {
@@ -214,13 +211,13 @@ func (p *player) enter(ctx context.Context) bool {
 		}
 		if len(free) > 0 && rand.Intn(10) < 8 {
 			r := free[rand.Intn(len(free))]
-			code, _ := p.do("POST", "join", "/api/join", map[string]any{"code": r.Code, "name": p.name, "ver": protocol}, &out)
+			code, _ := p.do("POST", "join", "/api/join", map[string]string{"code": r.Code, "name": p.name}, &out)
 			if code == 200 {
 				p.setRoom(out.Code, out.Token, out.Seat)
 				return true
 			}
 		} else {
-			code, _ := p.do("POST", "create", "/api/create", map[string]any{"name": p.name, "public": true, "client": p.client, "ver": protocol}, &out)
+			code, _ := p.do("POST", "create", "/api/create", map[string]any{"name": p.name, "public": true, "client": p.client}, &out)
 			if code == 200 {
 				p.setRoom(out.Code, out.Token, out.Seat)
 				return true

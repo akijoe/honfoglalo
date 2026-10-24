@@ -187,18 +187,6 @@ type joinReply struct {
 	Token string `json:"token"`
 }
 
-// A kliens (js/hf.js: PROTOCOL) legalább ilyen változata hozhat létre szobát vagy léphet be: egy
-// frissítés előtt megnyitott lap mást küld és mást vár (pl. a látott kérdések döntéskulcsait), egy
-// szobában az újakkal összeakadna. (Változó, hogy a teszt kikapcsolhassa.)
-var minClient = 2
-
-func checkClient(ver int) error {
-	if ver < minClient {
-		return apiError{http.StatusConflict, "Frissült a játék: töltsd újra az oldalt!"}
-	}
-	return nil
-}
-
 func (s *server) handleCreate(w http.ResponseWriter, r *http.Request) {
 	if !s.allow(r) {
 		writeErr(w, errTooFast)
@@ -211,13 +199,8 @@ func (s *server) handleCreate(w http.ResponseWriter, r *http.Request) {
 		Public bool   `json:"public"`
 		Title  string `json:"title"`  // a publikus szoba neve (üres: "<név> lobbyja")
 		Client string `json:"client"` // a böngésző azonosítója (js/hf.js: clientId)
-		Ver    int    `json:"ver"`    // a kliens változata (checkClient)
 	}
 	if err := readJSON(w, r, &req); err != nil {
-		writeErr(w, err)
-		return
-	}
-	if err := checkClient(req.Ver); err != nil {
 		writeErr(w, err)
 		return
 	}
@@ -315,13 +298,8 @@ func (s *server) handleJoin(w http.ResponseWriter, r *http.Request) {
 	var req struct {
 		Code string `json:"code"`
 		Name string `json:"name"`
-		Ver  int    `json:"ver"`
 	}
 	if err := readJSON(w, r, &req); err != nil {
-		writeErr(w, err)
-		return
-	}
-	if err := checkClient(req.Ver); err != nil {
 		writeErr(w, err)
 		return
 	}
