@@ -15,6 +15,34 @@ import (
 	"time"
 )
 
+// A többi teszt a régi formájú (változat nélküli) kéréseket küldi; a kliens változatát (minClient)
+// TestOldClient nézi.
+func TestMain(m *testing.M) {
+	minClient = 0
+	os.Exit(m.Run())
+}
+
+func TestOldClient(t *testing.T) {
+	minClient = 2
+	defer func() { minClient = 0 }()
+	dir := t.TempDir()
+	ts := httptest.NewServer(newServer(dir, filepath.Join(dir, "fb.jsonl")).routes())
+	defer ts.Close()
+	if st, out := post(t, ts.URL, "/api/create", map[string]any{"name": "Anna"}); st != http.StatusConflict || !strings.Contains(out["error"].(string), "töltsd újra") {
+		t.Fatalf("old create: %d %v", st, out)
+	}
+	st, a := post(t, ts.URL, "/api/create", map[string]any{"name": "Anna", "ver": 2})
+	if st != 200 {
+		t.Fatalf("create: %d %v", st, a)
+	}
+	if st, _ := post(t, ts.URL, "/api/join", map[string]any{"code": a["code"], "name": "Béla"}); st != http.StatusConflict {
+		t.Fatalf("old join: %d", st)
+	}
+	if st, _ := post(t, ts.URL, "/api/join", map[string]any{"code": a["code"], "name": "Béla", "ver": 2}); st != 200 {
+		t.Fatalf("join: %d", st)
+	}
+}
+
 func post(t *testing.T, base, path string, body any) (int, map[string]any) {
 	t.Helper()
 	b, _ := json.Marshal(body)

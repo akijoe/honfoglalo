@@ -292,6 +292,10 @@
 
   // ---------------------------------------------------------------------------- hálózat
 
+  // A szobák formájának változata (server/main.go: minClient): egy régebbi, még nyitva hagyott lap nem
+  // hozhat létre szobát és nem léphet be, mert az új lapokkal egy szobában összeakadna.
+  const PROTOCOL = 2;
+
   const net = {
     session: null,        // {code, seat, token} (boot)
     es: null,
@@ -521,14 +525,14 @@
         }
         case 'create':        // b: a publikus váró neve (üres: privát szoba)
           save('localStorage', 'hfName', String(a));
-          call(api('create', { name: String(a), map: myMap(), long: myLong(), public: !!b, title: b ? String(b) : '', client: clientId })
+          call(api('create', { name: String(a), map: myMap(), long: myLong(), public: !!b, title: b ? String(b) : '', client: clientId, ver: PROTOCOL })
             .then(setSession));
           return true;
         case 'join':
           save('localStorage', 'hfName', String(b));
           // ha a játék már megy (visszalépés a névvel), rögtön a játékba
           net.rejoining = true;
-          call(api('join', { code: String(a), name: String(b) }).then(setSession, e => {
+          call(api('join', { code: String(a), name: String(b), ver: PROTOCOL }).then(setSession, e => {
             net.rejoining = false;
             throw e;
           }));
