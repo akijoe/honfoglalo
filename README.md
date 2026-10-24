@@ -64,7 +64,9 @@ egy eredményablak mutatja a helyezéseket és a saját statisztikádat.
   vissza nem tér, és ezt a többiek a játékban és a csevegésben is látják. Aki nem lép időben (rossz kapcsolat, háttérbe tett lap), arra
   a játék az órája lejárta után pár másodpercig vár, utána nélküle megy tovább (lejárt időnek számít).
   Frissítéskor a játék visszaviszi a helyére, és pár másodperc alatt felzárkózik. Másik gépről a
-  szobakóddal és ugyanazzal a névvel lehet visszalépni.
+  szobakóddal és ugyanazzal a névvel lehet visszalépni. Ha viszont 2 percig csak robotok vannak a
+  játékban (minden ember kilépett, vagy elment a kapcsolata), a szoba megszűnik, és vissza sem lehet
+  lépni bele (`server/lobby.go`: `robotsOnlyTTL`).
 
 A szerver (`server/`) a szobákat a memóriában tartja, adatbázis nincs; a játékosok Server-Sent
 Events folyamon kapják az eseményeket. IP-nkénti korlátok védik (`server/limits.go`).

@@ -40,6 +40,11 @@ const (
 // (Változó, hogy a teszt rövidebbre vehesse.)
 var offlineGrace = 10 * time.Second
 
+// Ha egy játékban ennyi ideje csak robotok vannak (minden ember kilépett, vagy elment a kapcsolata),
+// a szoba megszűnik, és vissza sem lehet lépni bele: ne maradjon örökre a Várók listájában.
+// (Változó, hogy a teszt rövidebbre vehesse.)
+var robotsOnlyTTL = 2 * time.Minute
+
 // A szobakódban nincsenek összetéveszthető karakterek (0/O, 1/I).
 const codeAlphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"
 const codeLen = 5
@@ -122,6 +127,7 @@ type lobby struct {
 	comings   flood                // belépések és kilépések a csevegésben (comingsFlood)
 	announced map[string]time.Time // név + rendszerüzenet -> mikor került a csevegésbe (sysRepeat)
 	idleSince time.Time
+	botsSince time.Time // mióta nincs ember a játékban (noteHumans, robotsOnlyTTL)
 	closed    bool
 }
 
@@ -315,6 +321,22 @@ func (l *lobby) count() int {
 		}
 	}
 	return n
+}
+
+// noteHumans: ha a játékban nincs jelen ember (mind kilépett, vagy elment a kapcsolata), feljegyzi,
+// mióta (botsSince; cleanup). A hívó tartja a zárat.
+func (l *lobby) noteHumans(now time.Time) {
+	here := !l.started
+	for s := 1; s <= maxPlayers && !here; s++ {
+		p := l.seats[s]
+		here = p != nil && !p.robot && p.online && !p.left
+	}
+	switch {
+	case here:
+		l.botsSince = time.Time{}
+	case l.botsSince.IsZero():
+		l.botsSince = now
+	}
 }
 
 func (l *lobby) humans() int {

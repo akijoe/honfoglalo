@@ -618,6 +618,7 @@ func (s *server) handleLeave(w http.ResponseWriter, r *http.Request) {
 					l.dropSub(sub)
 				}
 			}
+			l.noteHumans(time.Now())
 		} else {
 			l.removeSeat(seat)
 		}
@@ -784,6 +785,7 @@ func (s *server) handleEvents(w http.ResponseWriter, r *http.Request) {
 	p.gen++
 	wasOnline := p.online
 	p.online = true
+	l.noteHumans(time.Now())
 	if !wasOnline {
 		l.broadcastState() // a többieknek; az új kliens a pillanatképet kapja
 	}
@@ -912,21 +914,28 @@ func (s *server) goneAfterGrace(l *lobby, p *player) {
 				l.addChat(seat, "", "lost", time.Now())
 			}
 		}
+		l.noteHumans(time.Now())
 		if changed {
 			l.broadcastState()
 		}
 	})
 }
 
-// cleanup: megszünteti az elhagyott és a nagyon régi szobákat.
+// cleanup: megszünteti az elhagyott és a nagyon régi szobákat, és azokat, ahol robotsOnlyTTL óta csak
+// robotok játszanak.
 func (s *server) cleanup(now time.Time) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	for code, l := range s.lobbies {
 		l.mu.Lock()
-		dead := l.closed || l.humans() == 0 ||
+		l.noteHumans(now)
+		botsOnly := !l.botsSince.IsZero() && now.Sub(l.botsSince) >= robotsOnlyTTL
+		dead := l.closed || l.humans() == 0 || botsOnly ||
 			(l.totalConns() == 0 && now.Sub(l.idleSince) > idleLobbyTTL) ||
 			now.Sub(l.created) > maxLobbyAge
+		if botsOnly && !l.closed {
+			log.Printf("szoba %s: csak robotok maradtak a játékban, bezárva", code)
+		}
 		if dead {
 			l.closed = true
 			for sub := range l.subs {
@@ -1133,7 +1142,7 @@ func main() {
 		go s.gz.warm(filepath.Join(*root, "vendor", "ruffle"))
 	}
 	go func() {
-		for now := range time.Tick(time.Minute) {
+		for now := range time.Tick(15 * time.Second) {
 			s.cleanup(now)
 		}
 	}()

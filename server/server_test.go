@@ -753,6 +753,50 @@ func TestRobots(t *testing.T) {
 }
 
 // játék közben elment kapcsolat: a türelmi idő után a többiek látják, és azt is, ha visszajön
+// Ha a játékban csak robotok maradnak (Anna kilépett, Béla kapcsolata megszakadt), robotsOnlyTTL után
+// a szoba megszűnik, és vissza sem lehet lépni; amíg egy ember is ott van, marad.
+func TestRobotsOnlyCloses(t *testing.T) {
+	oldGrace, oldTTL := offlineGrace, robotsOnlyTTL
+	offlineGrace, robotsOnlyTTL = 100*time.Millisecond, time.Minute
+	defer func() { offlineGrace, robotsOnlyTTL = oldGrace, oldTTL }()
+	dir := t.TempDir()
+	os.WriteFile(filepath.Join(dir, "index.html"), []byte("<!doctype html>"), 0o644)
+	s := newServer(dir, filepath.Join(dir, "fb.jsonl"))
+	ts := httptest.NewServer(s.routes())
+	defer func() { ts.CloseClientConnections(); ts.Close() }()
+
+	_, a := post(t, ts.URL, "/api/create", map[string]any{"name": "Anna"})
+	code, tokA := a["code"].(string), a["token"].(string)
+	_, b := post(t, ts.URL, "/api/join", map[string]string{"code": code, "name": "Béla"})
+	tokB := b["token"].(string)
+	evA := events(t, ts.URL, code, tokA)
+	resp, err := http.Get(ts.URL + "/api/events?code=" + code + "&token=" + tokB)
+	if err != nil {
+		t.Fatal(err)
+	}
+	next(t, evA, "state")
+	post(t, ts.URL, "/api/start", map[string]string{"code": code, "token": tokA})
+	post(t, ts.URL, "/api/leave", map[string]string{"code": code, "token": tokA})
+	// Béla még ott van: a szoba marad
+	s.cleanup(time.Now().Add(10 * time.Minute))
+	if s.lobbyCount() != 1 {
+		t.Fatal("closed while a human plays")
+	}
+	resp.Body.Close() // Béla kapcsolata is megszakad
+	time.Sleep(offlineGrace + 200*time.Millisecond)
+	s.cleanup(time.Now().Add(robotsOnlyTTL / 2))
+	if s.lobbyCount() != 1 {
+		t.Fatal("closed too early")
+	}
+	s.cleanup(time.Now().Add(robotsOnlyTTL + time.Second))
+	if s.lobbyCount() != 0 {
+		t.Fatal("robots-only game not closed")
+	}
+	if st, _ := post(t, ts.URL, "/api/join", map[string]string{"code": code, "name": "Béla"}); st != http.StatusNotFound {
+		t.Fatalf("rejoin after close: %d", st)
+	}
+}
+
 func TestPresenceLost(t *testing.T) {
 	old := offlineGrace
 	offlineGrace = 150 * time.Millisecond
