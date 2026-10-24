@@ -945,6 +945,8 @@
     return id;
   })();
   const hub = { data: null, down: false, timer: 0 };   // data: {online, v, lobbies}
+  // a jelölőnégyzet (index.html: #roomsFilter): csak azok a szobák, ahová most be lehet lépni
+  let joinableOnly = load('localStorage', 'hfJoinable') === true;
   // a figura a "Játék robotokkal" gombjáról (az eredeti SWF 760-as alakja): teli a foglalt hely, üres a szabad
   const FIGURE = 'M13.75 -29.8Q19.8 -36 28.35 -36.35Q37 -36.7 42.75 -30.75Q48.45 -24.8 47.65 -16.25Q46.85 -7.9 40.3 -2.35' +
     'L36.95 0.05L51.2 1.55Q51.9 14.2 48.55 25.8Q45.2 37.45 38.3 46.1Q35.35 -16.35 35.3 46.1Q38.65 53.35 38 60.55L37.7 62.8' +
@@ -1004,15 +1006,24 @@
       list.replaceChildren(p);
     };
     if (!d) { note(hub.down ? 'A szerver most nem érhető el.' : 'Betöltés...'); return; }
+    const open = 'Nyiss egyet: „Játék ismerősökkel”, és jelöld be a „Publikus váró” négyzetet.';
     if (!d.lobbies.length) {
-      note('Most nincs nyitott publikus váró. Nyiss egyet: „Játék ismerősökkel”, és jelöld be a „Publikus váró” négyzetet.');
+      note('Most nincs nyitott publikus váró. ' + open);
       return;
     }
     const mine = net.session ? net.session.code : '';
+    const isBusy = r => r.status === 'full' || r.status === 'playing';
+    // a saját szobád akkor is látszik, ha megtelt vagy játékban van
+    const shown = joinableOnly ? d.lobbies.filter(r => !isBusy(r) || r.code === mine) : d.lobbies;
+    if (!shown.length) {
+      note('Most egyik publikus váróban sincs szabad hely (' + d.lobbies.length + ' megtelt vagy játékban van, ' +
+        'a „Csak ahová be lehet lépni” elrejti). ' + open);
+      return;
+    }
     // a szerver elöl adja azokat, ahová be lehet lépni; a megteltek és a játékban lévők halványan, a végén
-    list.replaceChildren(...d.lobbies.map(r => {
+    list.replaceChildren(...shown.map(r => {
       const el = document.createElement('div');
-      const busy = r.status === 'full' || r.status === 'playing';
+      const busy = isBusy(r);
       el.className = 'room' + (r.code === mine ? ' here' : '') + (busy ? ' busy' : '');
       const line = (cls, text) => {
         const div = document.createElement('div');
@@ -1110,6 +1121,15 @@
     const toggle = document.getElementById('roomsToggle');
     const chatBox = document.getElementById('chat');
     toggle.addEventListener('click', () => showRooms(!document.body.classList.contains('rooms-open')));
+    const filter = document.querySelector('#roomsFilter input');
+    if (filter) {
+      filter.checked = joinableOnly;
+      filter.addEventListener('change', () => {
+        joinableOnly = filter.checked;
+        save('localStorage', 'hfJoinable', joinableOnly || null);
+        renderRooms();
+      });
+    }
     document.addEventListener('pointerdown', e => {
       if (!box.contains(e.target) && !chatBox.contains(e.target) && e.target !== toggle) showRooms(false);
     }, true);

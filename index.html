@@ -84,6 +84,10 @@
     /* pulzáló zöld fény (img/online.gif, tools/make_gifs.py; a behúzható sávban az -m változat) */
     #online:not(:empty)::before { content: ''; display: inline-block; width: 14px; height: 14px; margin: 0 4px -2px 0;
                                   background: url(img/online.gif) no-repeat; }
+    /* csak a beléphető szobák (js/hf.js: joinableOnly) */
+    #roomsFilter { display: flex; align-items: center; gap: 5px; margin: -2px 2px 8px; font-size: 12px; color: #C2A27A;
+                   cursor: pointer; user-select: none; }
+    #roomsFilter input { margin: 0; accent-color: #C89B4A; cursor: pointer; }
     #roomList { flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 6px;
                 scrollbar-width: thin; scrollbar-color: #6B4A24 transparent; }
     #roomList .room { padding: 6px 8px; border: 1px solid #6B4A24; border-radius: 8px; background: rgba(90, 53, 24, .35);
@@ -244,6 +248,7 @@
   <button id="roomsToggle" type="button" aria-controls="rooms" aria-expanded="false">‹ Várók</button>
   <aside id="rooms" aria-label="Várók">
     <div class="head"><h2>Várók</h2><span id="online" title="Ennyien vannak most a honlapon"></span></div>
+    <label id="roomsFilter"><input type="checkbox"> Csak ahová be lehet lépni</label>
     <div id="roomList"></div>
   </aside>
   <section id="chat" aria-label="Csevegés">

@@ -30,7 +30,7 @@ const (
 	chatRepeat  = time.Minute
 	maxRunes    = 4
 	// Ugyanannak a névnek a belépése (és a kilépése) ennyi időn belül csak egyszer kerül a csevegésbe.
-	sysRepeat = 30 * time.Second
+	sysRepeat = 10 * time.Second
 	// Üres (senki sem csatlakozik) szoba élettartama, és bármely szoba legnagyobb kora.
 	idleLobbyTTL = 15 * time.Minute
 	maxLobbyAge  = 8 * time.Hour

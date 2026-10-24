@@ -49,15 +49,15 @@ egy eredményablak mutatja a helyezéseket és a saját statisztikádat.
 - **Publikus váró:** létrehozáskor bejelölhető, ekkor neve is van (alapból „Név lobbyja”). A jobb oldali
   **Várók** listájában (telefonon a „Várók” fül alatt) bárki látja a létrehozás idejével, és kód
   nélkül beléphet. A megtelt szobák és a futó játékok (hogy hol tartanak) halványan, a lista végén
-  látszanak; a játék után a váróba visszatérve ugyanaz a szoba marad. A lista fejléce mutatja, hányan
-  vannak most a honlapon.
+  látszanak, a „Csak ahová be lehet lépni” négyzettel el is rejthetők; a játék után a váróba
+  visszatérve ugyanaz a szoba marad. A lista fejléce mutatja, hányan vannak most a honlapon.
 - **Csevegés:** a szobában (a játék előtt és alatt is), a Várók alatt (telefonon a játék alatt). A
   trágár szavakat a szerver kicsillagozza (magyar és angol szólista, `server/profanity.go`), linket
   (rövidet sem) nem enged. Ugyanazt az üzenetet nem lehet rögtön újra elküldeni, és aki túl sűrűn ír,
   vagy túl sűrűn rakosgatja ki-be a robotot, egy ideig nem teheti (`server/lobby.go`: `chatFlood`,
-  `robotFlood`). Az X-szel ki lehet lépni belőle; a belépést a szobába és a csevegésből
-  való ki- és visszalépést, a robotok be- és kivételét mindenki látja, minden sor az idejével. A hang
-  ereje a játékéval együtt állítható.
+  `robotFlood`). Az X-szel ki lehet lépni belőle; a belépést a szobába (ugyanazt a nevet 10 mp-en
+  belül csak egyszer) és a csevegésből való ki- és visszalépést, a robotok be- és kivételét mindenki
+  látja, minden sor az idejével. A hang ereje a játékéval együtt állítható.
 - Minden gépen ugyanaz az eredeti játék fut. A véletleneket és a döntéseket egy gép dönti el, és a
   szerver mindenkinek ugyanabban a sorrendben küldi el.
 - Aki kilép vagy elmegy a kapcsolata, helyette robot játszik: a neve mögött „(robot)” áll, amíg
