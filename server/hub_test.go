@@ -120,16 +120,78 @@ func TestPublicLobbiesAndOnline(t *testing.T) {
 		t.Fatalf("titled: %+v", h.Lobbies)
 	}
 
-	// teli és elindult szoba lekerül a listáról
-	post(t, ts.URL, "/api/join", map[string]string{"code": code, "name": "Dani"})
-	post(t, ts.URL, "/api/start", map[string]string{"code": code, "token": tokA})
+	// a teli szoba és a futó játék is látszik, de a lista végén; a játék állását a házigazda jelenti
+	_, d := post(t, ts.URL, "/api/join", map[string]string{"code": code, "name": "Dani"})
+	_, e := post(t, ts.URL, "/api/join", map[string]string{"code": code, "name": "Ede"})
 	fresh()
-	if h := getHub(t, ts.URL, "browserAAAA"); len(h.Lobbies) != 1 || h.Lobbies[0].Code == code {
-		t.Fatalf("started still listed: %+v", h.Lobbies)
+	if h := getHub(t, ts.URL, "browserAAAA"); len(h.Lobbies) != 2 || h.Lobbies[1].Code != code || h.Lobbies[1].Status != "full" {
+		t.Fatalf("full room: %+v", h.Lobbies)
+	}
+	created := getHub(t, ts.URL, "browserAAAA").Lobbies[1].Created
+	evD := events(t, ts.URL, code, d["token"].(string)) // Dani kapcsolódva marad, Ede kilép
+	next(t, evD, "state")
+	post(t, ts.URL, "/api/start", map[string]string{"code": code, "token": tokA})
+	post(t, ts.URL, "/api/progress", map[string]any{"code": code, "token": tokA, "state": 4, "round": 2})
+	post(t, ts.URL, "/api/leave", map[string]string{"code": code, "token": e["token"].(string)})
+	fresh()
+	h = getHub(t, ts.URL, "browserAAAA")
+	if r := h.Lobbies[1]; r.Code != code || r.Status != "playing" || r.Progress == nil || r.Progress.State != 4 || r.Progress.Round != 2 ||
+		r.Players[2].Name != "Ede" || !r.Players[2].Away || r.Players[1].Away {
+		t.Fatalf("playing room: %+v", h.Lobbies)
+	}
+	// a játék után vissza a váróba: ugyanaz a szoba, ugyanazzal a létrehozási idővel
+	post(t, ts.URL, "/api/again", map[string]string{"code": code, "token": d["token"].(string)})
+	fresh()
+	h = getHub(t, ts.URL, "browserAAAA")
+	if len(h.Lobbies) != 2 || h.Lobbies[1].Code != code || h.Lobbies[1].Status != "open" || h.Lobbies[1].Created != created || h.Lobbies[1].Progress != nil {
+		t.Fatalf("after again: %+v", h.Lobbies)
+	}
+}
+
+// rövid korlátok a teszt idejére
+func quickFloods(t *testing.T) {
+	saved := []floodRule{chatFlood, presenceFlood, robotFlood, comingsFlood}
+	chatFlood = floodRule{burst: 3, window: time.Second, gap: 60 * time.Millisecond, mute: 400 * time.Millisecond}
+	presenceFlood = floodRule{burst: 3, window: time.Second, gap: 60 * time.Millisecond}
+	robotFlood = floodRule{burst: 2, window: time.Second, gap: 60 * time.Millisecond, mute: 400 * time.Millisecond}
+	t.Cleanup(func() { chatFlood, presenceFlood, robotFlood, comingsFlood = saved[0], saved[1], saved[2], saved[3] })
+}
+
+// korlátok nélkül (a többi teszt sűrűn hív)
+func noFloods(t *testing.T) {
+	quickFloods(t)
+	free := floodRule{burst: 1000, window: time.Second}
+	chatFlood, presenceFlood, robotFlood, comingsFlood = free, free, free, free
+}
+
+func TestFlood(t *testing.T) {
+	r := floodRule{burst: 3, window: 10 * time.Second, gap: time.Second, mute: 30 * time.Second}
+	var f flood
+	t0 := time.Now()
+	if ok, _ := f.allow(r, t0); !ok {
+		t.Fatal("first")
+	}
+	if ok, wait := f.allow(r, t0.Add(500*time.Millisecond)); ok || wait != 500*time.Millisecond {
+		t.Fatalf("gap: %v %v", ok, wait)
+	}
+	f.allow(r, t0.Add(2*time.Second))
+	f.allow(r, t0.Add(4*time.Second))
+	if ok, wait := f.allow(r, t0.Add(6*time.Second)); ok || wait != 30*time.Second {
+		t.Fatalf("burst -> mute: %v %v", ok, wait)
+	}
+	if ok, _ := f.allow(r, t0.Add(30*time.Second)); ok {
+		t.Fatal("still muted")
+	}
+	if ok, _ := f.allow(r, t0.Add(37*time.Second)); !ok {
+		t.Fatal("after mute")
+	}
+	if got := capRepeats("szia!!!!!!!! jóóóóóó 1000000 Ft"); got != "szia!!!! jóóóó 1000000 Ft" {
+		t.Fatalf("capRepeats: %q", got)
 	}
 }
 
 func TestChat(t *testing.T) {
+	quickFloods(t)
 	dir := t.TempDir()
 	os.WriteFile(filepath.Join(dir, "index.html"), []byte("<!doctype html>"), 0o644)
 	s := newServer(dir, filepath.Join(dir, "fb.jsonl"))
@@ -174,7 +236,7 @@ func TestChat(t *testing.T) {
 		t.Fatalf("history 2: %v", m)
 	}
 	// linket nem lehet küldeni, rövidet sem
-	time.Sleep(chatGap)
+	time.Sleep(chatFlood.gap)
 	for _, l := range []string{"nézd: facebook.com", "https://x.hu/a", "www.pelda", "bit.ly/abc", "írj: anna@gmail.com"} {
 		if st, _ := post(t, ts.URL, "/api/chat", map[string]string{"code": code, "token": tokB, "text": l}); st != 400 {
 			t.Fatalf("link %q: %d", l, st)
@@ -185,12 +247,113 @@ func TestChat(t *testing.T) {
 	if m := next(t, evA, "chat"); m["sys"] != "left" || m["name"] != "Béla" {
 		t.Fatalf("left: %v", m)
 	}
-	time.Sleep(chatGap)
+	time.Sleep(presenceFlood.gap)
 	post(t, ts.URL, "/api/chat", map[string]string{"code": code, "token": tokB, "presence": "left"})
-	time.Sleep(chatGap)
+	time.Sleep(presenceFlood.gap)
 	post(t, ts.URL, "/api/chat", map[string]string{"code": code, "token": tokB, "presence": "back"})
 	if m := next(t, evA, "chat"); m["sys"] != "back" {
 		t.Fatalf("back: %v", m)
+	}
+	// ki-be kapcsolgatva: a korláton túl csendben vált (nem kerül a csevegésbe), de a hívás sikeres
+	time.Sleep(presenceFlood.gap)
+	for i, p := range []string{"left", "back", "left"} {
+		if st, _ := post(t, ts.URL, "/api/chat", map[string]string{"code": code, "token": tokB, "presence": p}); st != 200 {
+			t.Fatalf("toggle %d: %d", i, st)
+		}
+	}
+	if m := next(t, evA, "chat"); m["sys"] != "left" {
+		t.Fatalf("toggle: %v", m)
+	}
+	select {
+	case m := <-evA:
+		if m["type"] == "chat" {
+			t.Fatalf("toggle spam reached the chat: %v", m)
+		}
+	case <-time.After(200 * time.Millisecond):
+	}
+
+	// ugyanaz az üzenet nem mehet újra; a betűismétlés rövidül; a sorozat után egy ideig semmi
+	time.Sleep(chatFlood.window)
+	say := func(text string) (int, map[string]any) {
+		return post(t, ts.URL, "/api/chat", map[string]string{"code": code, "token": tokA, "text": text})
+	}
+	say("Haliiiiiiii!!!!!!!")
+	m := next(t, evB, "chat")
+	for m["sys"] != nil { // Béla saját ki-be lépései
+		m = next(t, evB, "chat")
+	}
+	if m["text"] != "Haliiii!!!!" {
+		t.Fatalf("repeats: %v", m)
+	}
+	time.Sleep(chatFlood.gap)
+	if st, m := say("haliiii!!!!"); st != 409 {
+		t.Fatalf("same message: %d %v", st, m)
+	}
+	say("egy")
+	time.Sleep(chatFlood.gap)
+	say("kettő")
+	time.Sleep(chatFlood.gap)
+	if st, m := say("három"); st != 429 || !strings.Contains(m["error"].(string), "lassabban") && !strings.Contains(m["error"].(string), "várj") {
+		t.Fatalf("burst: %d %v", st, m)
+	}
+	time.Sleep(chatFlood.gap)
+	if st, _ := say("négy"); st != 429 {
+		t.Fatalf("muted: %d", st)
+	}
+	time.Sleep(chatFlood.mute)
+	if st, _ := say("öt"); st != 200 {
+		t.Fatalf("after mute: %d", st)
+	}
+}
+
+// a robot ki-be rakosgatása és a ki-be lépkedés sem árasztja el a csevegést
+func TestNoSpam(t *testing.T) {
+	quickFloods(t)
+	dir := t.TempDir()
+	os.WriteFile(filepath.Join(dir, "index.html"), []byte("<!doctype html>"), 0o644)
+	s := newServer(dir, filepath.Join(dir, "fb.jsonl"))
+	ts := httptest.NewServer(s.routes())
+	defer func() { ts.CloseClientConnections(); ts.Close() }()
+
+	_, a := post(t, ts.URL, "/api/create", map[string]any{"name": "Anna"})
+	code, tokA := a["code"].(string), a["token"].(string)
+	robot := func(add bool) int {
+		st, _ := post(t, ts.URL, "/api/robot", map[string]any{"code": code, "token": tokA, "seat": 2, "add": add})
+		return st
+	}
+	if robot(true) != 200 || robot(false) != 429 {
+		t.Fatal("robot gap")
+	}
+	time.Sleep(robotFlood.gap)
+	robot(false)
+	time.Sleep(robotFlood.gap)
+	if st := robot(true); st != 429 {
+		t.Fatalf("robot burst: %d", st)
+	}
+	time.Sleep(robotFlood.mute)
+	if st := robot(true); st != 200 {
+		t.Fatalf("robot after mute: %d", st)
+	}
+	// ugyanaz a név be- és kilépése sysRepeat-en belül csak egyszer kerül a csevegésbe
+	for i := 0; i < 3; i++ {
+		_, b := post(t, ts.URL, "/api/join", map[string]string{"code": code, "name": "Béla"})
+		post(t, ts.URL, "/api/leave", map[string]string{"code": code, "token": b["token"].(string)})
+	}
+	evA := events(t, ts.URL, code, tokA)
+	var sys []string
+	for {
+		select {
+		case m := <-evA:
+			if m["type"] == "chat" {
+				sys = append(sys, m["sys"].(string))
+			}
+			continue
+		case <-time.After(200 * time.Millisecond):
+		}
+		break
+	}
+	if strings.Join(sys, ",") != "robot,unrobot,robot,joined,gone" {
+		t.Fatalf("chat lines: %v", sys)
 	}
 }
 

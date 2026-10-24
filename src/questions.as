@@ -10,7 +10,9 @@
 //   - a válaszok sorrendje is véletlen
 //
 // A többjátékos játékban a házigazda választ (src/mp.as), a kiválasztott kérdést mindenki ugyanúgy
-// alkalmazza (Q.apply), így a "már volt" lista minden gépen azonos marad.
+// alkalmazza (Q.apply), így a "már volt" lista minden gépen azonos marad. A játék elején minden gép
+// elküldi, mely kérdéseket látta már (Q.mySeen, kérdésenként egy bit), és a választás azokat
+// részesíti előnyben, amelyeket a legkevesebb játékos látott: nem csak a házigazda emlékezete számít.
 
 (function () {
     var hf = _global.hf;
@@ -40,6 +42,48 @@
         return h.toString(36);
     };
 
+    // A kulcsok kérdésenként egyszer számolódnak: mind az 1000 kérdés szövegén végigmenni a Ruffle-ben
+    // kb. 0,2 mp, és a választás minden kérdésnél ezt tenné (a többjátékos házigazdánál ez akasztotta
+    // meg a játékot). Betöltés után kis adagokban, 100 ms-onként előre kiszámoljuk őket.
+    var keys = {mc: [], tip: []};          // fajta -> index -> kulcs
+    function keyAt(kind, i) {
+        var k = keys[kind][i];
+        if (k == undefined) {
+            k = Q.key(listOf(kind == 'tip')[i]);
+            keys[kind][i] = k;
+        }
+        return k;
+    }
+    var warmed = {mc: 0, tip: 0};
+    var ready = false;                 // minden kulcs megvan (Q.mySeen ezután olcsó)
+    Q.ready = function () {
+        return ready;
+    };
+    function warm() {
+        var budget = 40;
+        var kinds = ['tip', 'mc'];
+        var left = false;
+        for (var j = 0; j < kinds.length; j++) {
+            var kind = kinds[j];
+            var list = listOf(kind == 'tip');
+            var n = list == undefined ? 0 : list.length;
+            while (budget > 0 && warmed[kind] < n) {
+                keyAt(kind, warmed[kind]);
+                warmed[kind]++;
+                budget--;
+            }
+            if (n == 0 || warmed[kind] < n) {
+                left = true;                   // még nem töltődtek be, vagy van még hátra
+            }
+        }
+        if (left) {
+            hf.later(100, warm);
+        } else {
+            ready = true;
+        }
+    }
+    hf.later(500, warm);
+
     function seenOf(kind) {
         if (seen[kind] == undefined) {
             seen[kind] = {};
@@ -57,7 +101,60 @@
         return tag.CAT == undefined ? '-' : String(tag.CAT);
     }
 
-    // egy még fel nem tett kérdés indexe: előbb kategória, aztán kérdés; a nem látottak előnyben
+    // ------------------------------------------------------------------ a többiek emlékezete
+
+    // A látott kérdések kérdésenként egy bitje, hexában (1000 kérdés: 250 karakter), és a lista
+    // hossza: ha egy másik gépen más a questions.xml, a sorszámok nem egyeznek, és nem használjuk.
+    var HEX = '0123456789abcdef';
+    function seenBits(kind) {
+        var list = listOf(kind == 'tip');
+        var s = seenOf(kind);
+        var out = '';
+        for (var i = 0; i < list.length; i += 4) {
+            var v = 0;
+            for (var b = 0; b < 4; b++) {
+                v = v * 2 + (i + b < list.length && s[keyAt(kind, i + b)] ? 1 : 0);
+            }
+            out += HEX.charAt(v);
+        }
+        return out;
+    }
+    Q.mySeen = function () {
+        return {n: [gqs.questions.length, gqs.tipquestions.length], mc: seenBits('mc'), tip: seenBits('tip')};
+    };
+
+    var others = {};                   // hely -> {mc: [index -> true], tip: [...]}: a többiek látták
+    function unbits(hex, n) {
+        var out = [];
+        var str = String(hex);
+        for (var i = 0; i < n; i++) {
+            var v = HEX.indexOf(str.charAt(Math.floor(i / 4)));
+            if (v >= 0 && (v >> (3 - i % 4)) % 2 == 1) {
+                out[i] = true;
+            }
+        }
+        return out;
+    }
+    Q.setOthers = function (seat, d) {
+        if (d == undefined || d.n == undefined || Number(d.n[0]) != gqs.questions.length || Number(d.n[1]) != gqs.tipquestions.length) {
+            return;
+        }
+        others[seat] = {mc: unbits(d.mc, gqs.questions.length), tip: unbits(d.tip, gqs.tipquestions.length)};
+    };
+
+    // hányan látták már az i. kérdést (ez a gép és a többiek)
+    function seenCount(kind, s, i) {
+        var n = s[keyAt(kind, i)] ? 1 : 0;
+        for (var seat in others) {
+            if (others[seat][kind][i]) {
+                n++;
+            }
+        }
+        return n;
+    }
+
+    // egy még fel nem tett kérdés indexe: előbb kategória, aztán kérdés; azok előnyben, amelyeket a
+    // legkevesebben láttak (egyjátékos módban: a nem látottak)
     Q.pick = function (atip) {
         var kind = kindOf(atip);
         var list = listOf(atip);
@@ -65,24 +162,34 @@
         var s = seenOf(kind);
         var byCat = {};
         var cats = [];
+        var counts = [];
+        var least = 1000;
         for (var i = 0; i < list.length; i++) {
             if (!u[i]) {
-                var c = catOf(list[i]);
+                counts[i] = seenCount(kind, s, i);
+                if (counts[i] < least) {
+                    least = counts[i];
+                }
+            }
+        }
+        for (var q = 0; q < list.length; q++) {
+            if (!u[q]) {
+                var c = catOf(list[q]);
                 if (byCat[c] == undefined) {
                     byCat[c] = {free: [], fresh: []};
                     cats.push(c);
                 }
-                byCat[c].free.push(i);
-                if (!s[Q.key(list[i])]) {
-                    byCat[c].fresh.push(i);
+                byCat[c].free.push(q);
+                if (counts[q] == least) {
+                    byCat[c].fresh.push(q);
                 }
             }
         }
         if (cats.length == 0) {
             return 0;
         }
-        // azok a kategóriák, ahol van még nem látott kérdés; az előző kérdés kategóriája csak akkor,
-        // ha nincs más
+        // azok a kategóriák, ahol van a legkevesebbek látta kérdés; az előző kérdés kategóriája csak
+        // akkor, ha nincs más
         var pool = [];
         for (var j = 0; j < cats.length; j++) {
             if (byCat[cats[j]].fresh.length > 0) {
@@ -133,7 +240,7 @@
                 usedCount[kind] = 0;
             }
         }
-        var k = Q.key(tag);
+        var k = keyAt(kind, idx);
         seenOf(kind)[k] = true;
         EI.call('hfSeen', 'add', kind, k, Math.floor(list.length * 0.6));
         tag.selectcount++;

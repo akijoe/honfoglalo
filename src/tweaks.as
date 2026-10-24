@@ -12,6 +12,8 @@
     var hf = _global.hf;
     hf.restoreIndexOf();      // src/core.as: csak a játék indulókódjának idejére volt átállítva
     var full = hf.mode == 'robots' || hf.mode == 'mp';
+    // a játékból kimaradó helyek (csak a többjátékos játékban, ha ketten indítják: src/mp.as)
+    hf.absent = [false, false, false, false];
 
     // teszteléshez: ?debugclock=N -> N másodperces óra mindenhol
     if (Number(_level0.debugclock) > 0) {
@@ -81,6 +83,9 @@
             }
             if (ph == 1) {
                 game.hfBaseIdx++;
+                while (game.hfBaseIdx <= 3 && hf.absent[game.baseorder[game.hfBaseIdx - 1]]) {
+                    game.hfBaseIdx++;                // a kimaradó játékos nem választ bázist
+                }
                 if (game.hfBaseIdx > 3) {
                     game.JumpPhase(2);              // -> a terjeszkedés (3. állapot)
                     return true;
@@ -310,6 +315,7 @@
         }
         return found;
     }
+    hf.fitName = fitName;
     hf.fitBoxNames = function () {
         for (var p = 1; p <= 3; p++) {
             fitName(boxNameField(gmap.playerbox[p]));
@@ -370,6 +376,9 @@
         if (n == 'map_territoryfill' && game.state == 1) {
             n = 'castle_appear';
         }
+        if (n == 'question_second' && !hf.secondGetsArea()) {
+            n = 'question_lose';        // második lettél, de nem kapsz területet (lent)
+        }
         if (n == 'map_territoryfill' || n == 'castle_appear') {
             fillTime = getTimer();
         }
@@ -384,6 +393,13 @@
     game.SqSetupRoundEnd = function () {
         lastRoundEnd = game.state == 4 && (game.gameround >= hf.warRounds || hf.soleOwner() > 0);
         game.hfOrigSqSetupRoundEnd();
+    };
+
+    // A felosztás tippkérdésén a második akkor kap területet, ha volt mögötte harmadik (kettesben a
+    // második az utolsó), és a győztes két területe után még marad szabad terület. Csak ekkor szól a
+    // második hely hangja (és számít második helynek az eredménytáblán); különben a vesztesé.
+    hf.secondGetsArea = function () {
+        return game.state == 3 && game.tipcount >= 3 && game.FreeAreaCount() >= 3;
     };
 
     // döntetlen miatti tippkérdés jön-e (game.CalculateEqualPoints, mellékhatások nélkül)
@@ -724,7 +740,7 @@
             st.tipAll++;
             if (game.tipwinorder[0] == game.IAM) {
                 st.tipWon++;
-            } else if (game.tipwinorder[1] == game.IAM && game.state == 3) {
+            } else if (game.tipwinorder[1] == game.IAM && hf.secondGetsArea()) {
                 st.tipSecond++;
             }
             var mine = Number(game.player_tips[game.IAM].value);
@@ -831,12 +847,15 @@
         gmov.GAMESELECTWIN.BTN2.tooltiptext = 'Játék robotokkal';
         gmov.GAMESELECTWIN.BTN3.tooltiptext = 'Játék ismerősökkel';
         gmov.GAMESELECTWIN.BTN4.tooltiptext = 'Visszajelzés';
-        // meghívó linkkel (?join=KÓD) vagy egy szobából frissítve rögtön a szoba-ablak jön
+        // egy szobából frissítve rögtön a szoba-ablak jön; meghívó linkkel (?join=KÓD) csak a nevet
+        // kérdezi, mint a publikus váróba belépéskor
         if (!hf.autoLobbyDone) {
             hf.autoLobbyDone = true;
             var h = hf.net.call('hello');
-            if (h && (h.join || h.inLobby)) {
+            if (h && h.inLobby) {
                 hf.lobby.open();
+            } else if (h && h.join) {
+                hf.lobby.joinPublic(h.join, 'Szoba: ' + h.join, 'Meghívtak ebbe a szobába');
             }
         }
     };
@@ -895,7 +914,7 @@
                     known = true;
                 }
             }
-            if (!known && game.points[p] <= 0) {
+            if (!known && game.points[p] <= 0 && !hf.absent[p]) {
                 hf.outOrder.push(p);
             }
         }

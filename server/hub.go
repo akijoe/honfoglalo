@@ -12,8 +12,8 @@ import (
 	"time"
 )
 
-// A "Várók" panel adatai (js/hf.js): a publikus szobák, ahová most be lehet lépni, és hányan vannak
-// most a honlapon. A lap pár másodpercenként lekérdezi (GET /api/hub?id=...): nem tart nyitva
+// A "Várók" panel adatai (js/hf.js): a publikus szobák (elöl, ahová most be lehet lépni; utánuk a
+// megteltek és a futó játékok), és hányan vannak most a honlapon. A lap pár másodpercenként lekérdezi (GET /api/hub?id=...): nem tart nyitva
 // kapcsolatot, mert HTTP/1.1-en a böngésző egy szerverhez legfeljebb 6-ot enged, és a szobák
 // eseményfolyamának kell a hely. Az id a böngésző azonosítója (localStorage): ugyanannak a
 // böngészőnek több lapja egy játékosnak számít; aki hubPresence-nél régebben kérdezett, az elment.
@@ -36,13 +36,25 @@ type hub struct {
 	ver     int    // a lista változata: ha a kliensnél ugyanez van, a listát nem küldjük újra
 }
 
-// hubRoom: egy publikus szoba a listában.
+// hubRoom: egy publikus szoba a listában. Status: "open" (be lehet lépni), "full" (három ember várja
+// az indulást) vagy "playing" (a játék megy; Progress: hol tart).
 type hubRoom struct {
-	Code    string   `json:"code"`
-	Title   string   `json:"title"`
-	Players []string `json:"players"`
-	Map     string   `json:"map"`
-	Long    bool     `json:"long"`
+	Code     string    `json:"code"`
+	Title    string    `json:"title"`
+	Players  []hubSeat `json:"players"`
+	Map      string    `json:"map"`
+	Long     bool      `json:"long"`
+	Created  int64     `json:"created"` // Unix ms; a játékok után sem változik (ugyanaz a szoba)
+	Status   string    `json:"status"`
+	Progress *progress `json:"progress,omitempty"`
+}
+
+// hubSeat: egy foglalt hely. Robot: a főnök betette robot; Away: játék közben kilépett vagy elment a
+// kapcsolata (helyette robot játszik).
+type hubSeat struct {
+	Name  string `json:"name"`
+	Robot bool   `json:"robot,omitempty"`
+	Away  bool   `json:"away,omitempty"`
 }
 
 // Same: a kliens a v-vel jelezte, hogy a lista ezen változata már megvan neki, ezért nem küldjük újra
@@ -55,7 +67,8 @@ type hubReply struct {
 	Lobbies []hubRoom `json:"lobbies,omitempty"`
 }
 
-// publicRooms: a publikus, még el nem indult, nem üres és nem teli szobák, a legújabb elöl.
+// publicRooms: a publikus szobák, ahol van ember: elöl azok, ahová be lehet lépni (szabad hely, vagy egy
+// robot helyére), utánuk a megteltek és a játékban lévők; mindkét csoportban a legújabb elöl.
 func (s *server) publicRooms() []hubRoom {
 	s.mu.Lock()
 	ls := make([]*lobby, 0, len(s.public))
@@ -64,23 +77,36 @@ func (s *server) publicRooms() []hubRoom {
 	}
 	s.mu.Unlock()
 	sort.Slice(ls, func(i, j int) bool { return ls[i].created.After(ls[j].created) })
-	out := []hubRoom{}
+	open, busy := []hubRoom{}, []hubRoom{}
 	for _, l := range ls {
 		l.mu.Lock()
-		n := l.count()
-		if !l.closed && !l.started && n > 0 && n < maxPlayers {
-			r := hubRoom{Code: l.code, Title: l.title, Players: []string{}, Map: l.mapID, Long: l.long}
+		n := l.humans()
+		if !l.closed && n > 0 {
+			r := hubRoom{Code: l.code, Title: l.title, Players: []hubSeat{}, Map: l.mapID, Long: l.long, Created: l.created.UnixMilli(), Status: "open"}
 			for seat := 1; seat <= maxPlayers; seat++ {
 				if p := l.seats[seat]; p != nil {
-					r.Players = append(r.Players, p.name)
+					r.Players = append(r.Players, hubSeat{Name: p.name, Robot: p.robot, Away: l.started && !p.robot && (p.left || !p.online)})
 				}
 			}
-			out = append(out, r)
+			switch {
+			case l.started:
+				r.Status = "playing"
+				pr := l.progress
+				r.Progress = &pr
+			case n >= maxPlayers:
+				r.Status = "full"
+			}
+			if r.Status == "open" {
+				open = append(open, r)
+			} else {
+				busy = append(busy, r)
+			}
 		}
 		l.mu.Unlock()
-		if len(out) >= maxHubRooms {
-			break
-		}
+	}
+	out := append(open, busy...)
+	if len(out) > maxHubRooms {
+		out = out[:maxHubRooms]
 	}
 	return out
 }

@@ -12,12 +12,13 @@
  "playerbox_scorechange": "playerbox_scorechange.mp3",
  "question_goodappear": "question_goodappear.mp3",
  "question_lose": "question_lose.mp3",
+ "question_neutral": "correct_answer_others.mp3",
  "question_resultsappear": "question_resultsappear.mp3",
- "question_second": "question_lose.mp3",
+ "question_second": "2ndplacesound.mp3",
  "question_win": "question_win.mp3",
  "tiktak_1": "tiktak_1.mp3",
  "tiktak_2": "tiktak_3.mp3",
- "tiktak_3": "tiktak_3.mp3",
+ "tiktak_3": "tiktak_4.mp3",
  "tip_appear": "question_resultsappear.mp3",
  "turnwindow_roundchange": "turnwindow_roundchange.mp3"
 }

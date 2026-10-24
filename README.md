@@ -39,23 +39,32 @@ egy eredményablak mutatja a helyezéseket és a saját statisztikádat.
 ## Többjátékos játék
 
 - Szoba létrehozásához csak név kell; a szobakódot vagy a meghívó linket (`?join=KÓD`) kell elküldeni.
-  Legfeljebb 3 játékos, a főnök indít; az üres hely robotja Jani vagy Éva. Ha a létrehozó az első
-  játék előtt kilép (vagy bezárja a lapot), a szoba megszűnik; egy böngészőből egyszerre legfeljebb 2
-  szoba lehet nyitva.
+  Legfeljebb 3 játékos, a főnök indít. Az üres helyre a főnök robotot tehet (Jani, Éva), és ki is
+  veheti; ha nincs üres hely, a belépő a robot helyére ül. Már ketten is indíthatnak (két ember, vagy
+  egy ember és egy robot): a harmadik hely ekkor kimarad a játékból (nincs bázisa, nem tippel, nem
+  támad, nem is támadható). Ha a létrehozó az első játék előtt kilép (vagy bezárja a lapot), a szoba
+  megszűnik; egy böngészőből egyszerre legfeljebb 2 szoba lehet nyitva.
 - A játék végén a **Vissza a váróba** gombbal a szoba újra várakozik, a főnök új játékot indíthat; a
   **Kilépés** a főoldalra visz.
 - **Publikus váró:** létrehozáskor bejelölhető, ekkor neve is van (alapból „Név lobbyja”). A jobb oldali
-  **Várók** listájában (telefonon a „Várók” fül alatt) bárki látja, és kód nélkül beléphet. A lista
-  fejléce mutatja, hányan vannak most a honlapon.
+  **Várók** listájában (telefonon a „Várók” fül alatt) bárki látja a létrehozás idejével, és kód
+  nélkül beléphet. A megtelt szobák és a futó játékok (hogy hol tartanak) halványan, a lista végén
+  látszanak; a játék után a váróba visszatérve ugyanaz a szoba marad. A lista fejléce mutatja, hányan
+  vannak most a honlapon.
 - **Csevegés:** a szobában (a játék előtt és alatt is), a Várók alatt (telefonon a játék alatt). A
   trágár szavakat a szerver kicsillagozza (magyar és angol szólista, `server/profanity.go`), linket
-  (rövidet sem) nem enged. Az X-szel ki lehet lépni belőle; a belépést a szobába és a csevegésből
-  való ki- és visszalépést mindenki látja. A hang ereje a játékéval együtt állítható.
+  (rövidet sem) nem enged. Ugyanazt az üzenetet nem lehet rögtön újra elküldeni, és aki túl sűrűn ír,
+  vagy túl sűrűn rakosgatja ki-be a robotot, egy ideig nem teheti (`server/lobby.go`: `chatFlood`,
+  `robotFlood`). Az X-szel ki lehet lépni belőle; a belépést a szobába és a csevegésből
+  való ki- és visszalépést, a robotok be- és kivételét mindenki látja, minden sor az idejével. A hang
+  ereje a játékéval együtt állítható.
 - Minden gépen ugyanaz az eredeti játék fut. A véletleneket és a döntéseket egy gép dönti el, és a
   szerver mindenkinek ugyanabban a sorrendben küldi el.
-- Aki kilép vagy elmegy a kapcsolata, helyette robot játszik. Frissítéskor a játék visszaviszi a
-  helyére, és pár másodperc alatt felzárkózik. Másik gépről a szobakóddal és ugyanazzal a névvel
-  lehet visszalépni.
+- Aki kilép vagy elmegy a kapcsolata, helyette robot játszik: a neve mögött „(robot)” áll, amíg
+  vissza nem tér, és ezt a többiek a játékban és a csevegésben is látják. Aki nem lép időben (rossz kapcsolat, háttérbe tett lap), arra
+  a játék az órája lejárta után pár másodpercig vár, utána nélküle megy tovább (lejárt időnek számít).
+  Frissítéskor a játék visszaviszi a helyére, és pár másodperc alatt felzárkózik. Másik gépről a
+  szobakóddal és ugyanazzal a névvel lehet visszalépni.
 
 A szerver (`server/`) a szobákat a memóriában tartja, adatbázis nincs; a játékosok Server-Sent
 Events folyamon kapják az eseményeket. IP-nkénti korlátok védik (`server/limits.go`).
@@ -65,7 +74,9 @@ Events folyamon kapják az eseményeket. IP-nkénti korlátok védik (`server/li
 A `questions.xml`-ben 1000 feleletválasztós és 1000 tippkérdés van, nyolc kategóriában (földrajz,
 sport, irodalom, művészet, természettudományok, matematika–fizika, életmód, szórakozás), mindegyikben
 125–125, és nehézségenként (könnyű, közepes, nehéz) nagyjából egyharmad. A játék előbb kategóriát
-sorsol, aztán kérdést; egy játékon belül nincs ismétlés.
+sorsol, aztán kérdést; egy játékon belül nincs ismétlés. A böngésző megjegyzi a látott kérdéseket, és
+előbb a még nem látottak jönnek; többjátékosban a szoba minden játékosáé számít (azok jönnek előbb,
+amelyeket a legkevesebben láttak).
 
 | Forrás                           | Feleletválasztós | Tipp | Összesen     |
 | -------------------------------- | ---------------: | ---: | -----------: |
@@ -96,7 +107,7 @@ CSV-sorok: `# kategória: Sport`, `# nehézség: közepes`, `kérdés;helyes;ros
 
 Az eredeti hangfájl elveszett; a `sounds/` mappában a játék hangneveire átnevezett pótlások vannak.
 Egy hanghoz elég a fájlt `<hangnév>.mp3` néven a mappába tenni; ha egy hang más nevű fájlt kap, azt
-a `sounds/manifest.json` adja meg. Hiányzik: `host_tiktak_3`, `question_neutral`.
+a `sounds/manifest.json` adja meg. Hiányzik: `host_tiktak_3`.
 
 ## Mi változott az SWF-ben
 

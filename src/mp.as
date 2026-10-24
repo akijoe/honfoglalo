@@ -8,6 +8,9 @@
 //   területválasztás, feleletválasztós válasz, tipp       -> az a játékos, akié a lépés
 //   robot vagy kilépett játékos lépése                   -> a házigazda (a robotok szabályai szerint)
 //
+// Ketten is játszhatnak: a szoba üresen hagyott helye (se ember, se robot) kimarad a játékból (M.absent):
+// nincs bázisa, nem tippel, nem támad, és nem is támadható; a doboza sem látszik.
+//
 // A házigazda a legkisebb sorszámú, elérhető ember. A döntések kulcsa csoport * 4 + hely
 // (hely 0 = házigazda): a csoportszámláló minden gépen ugyanúgy lép, a szerver kulcsonként az első
 // beérkezett döntést tartja meg. Ha valaki sokáig nem lép (pl. háttérbe tette a lapot), a házigazda
@@ -34,6 +37,7 @@
     M.humans = [false, false, false, false];
     M.online = [false, false, false, false];
     M.names = ['', '', '', ''];
+    M.absent = hf.absent;   // src/tweaks.as; a játék indulásakor üres helyek (lent)
     M.started = false;
     M.maxG = -1;           // a legnagyobb ismert döntéscsoport
     M.catchingUp = false;  // felzárkózás: animációk és hangok nélkül
@@ -51,19 +55,82 @@
         }
         for (var i = 0; i < st.players.length; i++) {
             var p = st.players[i];
-            M.humans[p.seat] = true;
+            M.humans[p.seat] = !p.robot;      // a főnök betette robotért a házigazda lép
             M.names[p.seat] = p.name;
-            M.online[p.seat] = p.online && !p.left;
+            M.online[p.seat] = p.online && !p.left && !p.robot;
         }
         M.online[M.seat] = true;
+        M.refreshNames();
+    };
+
+    // A játékos neve: aki kilépett vagy elment a kapcsolata (helyette robot játszik), annak a neve
+    // mögött "(robot)" áll, amíg vissza nem tér - a dobozán, a várán, a tippkártyákon, a harc
+    // fejlécében, a várakozó dobozban és az eredménytáblán is (mind a game.player_name-ből).
+    M.nameOf = function (s) {
+        if (M.absent[s]) {
+            return '';
+        }
+        var n = M.names[s] != '' ? M.names[s] : hf.robotName(s);
+        return M.humans[s] && !M.online[s] && s != M.seat ? n + ' (robot)' : n;
+    };
+    M.refreshNames = function () {
+        if (!M.started) {
+            return;
+        }
+        var changed = false;
+        for (var s = 1; s <= 3; s++) {
+            var n = M.nameOf(s);
+            if (game.player_name[s] != n) {
+                game.player_name[s] = n;
+                changed = true;
+                if (gmap.playerbox[s] != undefined) {
+                    gmap.playerbox[s].NAME = n;
+                }
+                var area = game.bases[s].area;
+                var castle = gmap.MAP['CASTLE' + area];
+                if (area > 0 && castle.OWNERNAME.text != '') {
+                    castle.OWNERNAME.text = n;
+                    hf.fitName(castle.OWNERNAME);
+                }
+            }
+        }
+        if (changed) {
+            hf.later(100, hf.fitBoxNames);      // a változóhoz kötött név a következő képkockán frissül
+        }
     };
     M.applyState(info ? info.state : null);
+
+    // a játék résztvevői a szoba induláskori állapotából (játék közben a helyek nem változnak)
+    if (info && info.state) {
+        var inGame = [false, false, false, false];
+        for (var ip = 0; ip < info.state.players.length; ip++) {
+            inGame[info.state.players[ip].seat] = true;
+        }
+        for (var sa = 1; sa <= 3; sa++) {
+            M.absent[sa] = !inGame[sa] && sa != M.seat;
+        }
+    }
 
     net.handler = function (ev) {
         if (ev.type == 'state') {
             M.applyState(ev.state);
         } else if (ev.type == 'closed') {
             hf.ui.notice(ev.msg);
+        } else if (ev.type == 'presence') {
+            hf.ui.notice(ev.msg, 7000);     // kilépett, elment a kapcsolata, visszatért (js/hf.js)
+        }
+    };
+
+    // hol tart a játék (a publikus Várók listájához, server: handleProgress); a házigazda jelenti
+    var progress = '';
+    M.reportProgress = function () {
+        if (!M.started || M.catchingUp || M.host() != M.seat) {
+            return;
+        }
+        var now = game.state + ':' + game.gameround;
+        if (now != progress) {
+            progress = now;
+            net.call('progress', game.state, game.gameround);
         }
     };
 
@@ -97,6 +164,14 @@
         net.call('send', k, d);
     };
 
+    // a döntést csak akkor számolja ki (make), ha még nem küldtük el: a várakozás minden ütemben
+    // ellenőriz, amíg a döntés a szerverről vissza nem ér, és pl. a kérdésválasztás nem olcsó
+    M.sendOnce = function (seat, make) {
+        if (!M.sent[M.g * 4 + seat]) {
+            M.send(seat, make());
+        }
+    };
+
     M.have = function (seat) {
         return M.log[M.g * 4 + seat] != undefined;
     };
@@ -107,6 +182,10 @@
     // done(értékek). A várakozó dobozt (hf.wait) 0,6 mp várakozás után mutatja, a szokásos
     // szöveggel ("Béla válaszát várjuk..."); opts.msg: más szöveg, opts.now: rögtön látszik.
     // delay: a robot (vagy a helyettesített játékos) döntését a házigazda ennyi ms után küldi el.
+    // opts.limit, opts.from: a játékosok órája (ms) és a kezdete (getTimer), lásd M.check.
+    var LATE = 6000;           // ennyit várunk az óra lejárta után egy lassú kapcsolatú játékosra
+    var TAKEOVER = 8000;       // ha a házigazda sem lép helyette, ennyivel később bármelyik ember
+    var HOSTWAIT = 15000;      // a házigazda döntése (kérdés, bázis) ennyi ms után bárkitől jöhet
     M.gate = function (entries, done, opts) {
         var keys = [];
         for (var i = 0; i < entries.length; i++) {
@@ -138,30 +217,33 @@
             w.done(vals);
             return;
         }
-        var waited = getTimer() - w.since;
+        var now = getTimer();
+        var waited = now - w.since;
+        // a játékos ideje: az órája (opts.limit, ms) attól, hogy a kérdés vagy a lépése elkezdődött
+        // (opts.from), plusz LATE a lassú kapcsolatnak; ismeretlen lépésnél 40 mp
+        var late = (w.opts.limit != undefined ? w.opts.limit + LATE : 40000) - (now - (w.opts.from != undefined ? w.opts.from : w.since));
         var others = [];
         for (var m = 0; m < missing.length; m++) {
             var e = missing[m];
             var who = M.producer(e.seat);
             if (who == M.seat) {
                 if (e.seat != M.seat && e.make && !(e.delay > waited) && !M.robotThinking(e.seat)) {
-                    M.send(e.seat, e.make());     // robot, kilépett játékos vagy a házigazda döntése
+                    M.sendOnce(e.seat, e.make);   // robot, kilépett játékos vagy a házigazda döntése
                 }
                 if (e.seat > 0 && e.seat != M.seat) {
                     others.push(e.seat);          // a robot még gondolkodik
                 }
             } else {
                 others.push(e.seat);
-                // aki túl sokáig nem lép, helyette a házigazda lép (mintha lejárt volna az ideje). Ha
-                // maga a házigazda nem válaszol (pl. elaludt a telefonja, de a kapcsolata még élőnek
-                // látszik), 10 mp-cel később bármelyik másik ember lép helyette, a házigazda dolgait
-                // (kérdés, bázis) is elvégezve. A szerveren az első döntés számít, így ez nem ütközik.
-                if (waited > 40000 && (M.host() == M.seat || waited > 50000)) {
-                    if (e.seat > 0 && e.dflt) {
-                        M.send(e.seat, e.dflt());
-                    } else if (e.seat == 0 && e.make) {
-                        M.send(0, e.make());
-                    }
+                // Aki az ideje lejárta után sem lép (rossz kapcsolat, háttérbe tett lap), helyette a
+                // házigazda lép, mintha lejárt volna az órája: a játék nem vár rá tovább. Ha maga a
+                // házigazda nem lép (pl. elaludt a telefonja, de a kapcsolata még élőnek látszik),
+                // TAKEOVER ms-mal később bármelyik másik ember lép helyette, a házigazda dolgait (kérdés,
+                // bázis) is elvégezve. A szerveren az első döntés számít, így ez nem ütközik.
+                if (e.seat > 0 && e.dflt && late < 0 && (M.host() == M.seat || late < -TAKEOVER)) {
+                    M.sendOnce(e.seat, e.dflt);
+                } else if (e.seat == 0 && e.make && waited > HOSTWAIT) {
+                    M.sendOnce(0, e.make);
                 }
             }
         }
@@ -193,12 +275,31 @@
         hf.wait.hide();
     };
 
+    // A játék elején minden gép elküldi, mely kérdéseket látta már (src/questions.as: Q.mySeen), hogy
+    // a kérdésválasztás azokat részesítse előnyben, amelyeket a legkevesebben láttak. Ezek a döntések
+    // nem a játék menetéhez tartoznak: a kulcsuk SEENKEY + hely, a csoportszámláló nem számol velük.
+    var SEENKEY = 1000000;
+    M.seenSent = false;
+    M.shareSeen = function () {
+        if (!M.seenSent && M.started && hf.questions.ready()) {
+            M.seenSent = true;
+            M.sendKey(SEENKEY + M.seat, hf.questions.mySeen());
+        }
+    };
+
     M.tick = function () {
+        M.shareSeen();
         var decs = net.call('decs', M.cursor);
         if (decs) {
             for (var i = 0; i < decs.length; i++) {
                 M.cursor++;
                 var d = decs[i];
+                if (d.k >= SEENKEY) {
+                    if (d.k - SEENKEY != M.seat) {
+                        hf.questions.setOthers(d.k - SEENKEY, d.d);
+                    }
+                    continue;
+                }
                 if (M.log[d.k] == undefined && d.d) {
                     M.log[d.k] = d.d;
                     if (Math.floor(d.k / 4) > M.maxG) {
@@ -211,6 +312,8 @@
         if (M.started && !M.catchingUp && M.behind()) {
             M.catchingUp = true;
         }
+        M.hideAbsent();
+        M.reportProgress();
         M.robotAnswers();
         M.check();
         if (M.catchingUp && pending) {
@@ -299,10 +402,63 @@
             gmap.playerbox[p]._alpha = 100;
             gmap['SELECTION' + p]._visible = false;
         }
+        M.hideAbsent();
         game.UpdateAreas();
         game.UpdatePlayerScores();
         game.SaveLastState();
         game.SetupPhaseDisplay(false);
+    };
+
+    // ------------------------------------------------------------------ üres hely
+
+    // a kimaradó játékos doboza nem látszik (a beúsztatásból is kimarad; a biztonság kedvéért 100
+    // ms-onként is elrejtjük)
+    M.hideAbsent = function () {
+        for (var p = 1; p <= 3; p++) {
+            if (M.absent[p] && gmap.playerbox[p]._visible) {
+                gmap.playerbox[p]._visible = false;
+            }
+        }
+    };
+    var multiFadeIn = CSqControl.prototype.AddMultiFadeIn;
+    gsqc.AddMultiFadeIn = function (objs, ms, fadein) {
+        var keep = [];
+        for (var i = 0; i < objs.length; i++) {
+            var absent = false;
+            for (var p = 1; p <= 3; p++) {
+                if (M.absent[p] && objs[i] == gmap.playerbox[p]) {
+                    absent = true;
+                }
+            }
+            if (!absent) {
+                keep.push(objs[i]);
+            }
+        }
+        return multiFadeIn.call(gsqc, keep, ms, fadein);
+    };
+
+    // a tippkérdésen csak a résztvevők tippelnek (a terjeszkedésnél az eredeti mindenkit hív: 7)
+    var prepareTips = game.PrepareTips;
+    game.PrepareTips = function () {
+        prepareTips();
+        for (var p = 1; p <= 3; p++) {
+            if (M.absent[p]) {
+                game.tipplayers = game.tipplayers & ~(1 << (p - 1));
+            }
+        }
+    };
+
+    // a harci sorrend kijelzőjén a kimaradó játékos körei nem látszanak (a játék átugorja őket)
+    var updateAttackOrder = game.UpdateAttackOrder;
+    game.UpdateAttackOrder = function () {
+        updateAttackOrder();
+        var rounds = hf.warRounds;
+        for (var r = 1; r <= rounds; r++) {
+            for (var i = 1; i <= 3; i++) {
+                var pc = gmap.GAMEPHASE['AO' + r]['PCOLOR' + i];
+                pc._visible = !M.absent[game.warorder[(r - 1) * 3 + i - 1]];
+            }
+        }
     };
 
     // ------------------------------------------------------------------ válaszhangok
@@ -483,11 +639,13 @@
             if (s != me) {
                 opp.push(s);
             }
-            game.player_name[s] = M.humans[s] ? M.names[s] : hf.robotName(s);
         }
         game.MYOPP1 = opp[0];
         game.MYOPP2 = opp[1];
         M.started = true;
+        for (var n = 1; n <= 3; n++) {
+            game.player_name[n] = M.nameOf(n);
+        }
         M.catchingUp = M.behind();
     };
 
@@ -608,7 +766,10 @@
         var s = game.state;
         var ph = game.phase;
 
-        // bázisok (1. állapot), villámháború: a házigazda sorsolja
+        // bázisok (1. állapot), villámháború: a házigazda sorsolja; a kimaradó játékos nem kap bázist
+        while (s == 1 && ph == 1 && game.nextplayer < 3 && !hf.long && M.absent[game.nextplayer + 1]) {
+            game.nextplayer++;
+        }
         if (s == 1 && ph == 1 && game.nextplayer < 3 && !hf.long) {
             var bp = game.nextplayer + 1;
             M.gate([{seat: 0, make: function () {
@@ -680,7 +841,7 @@
                 M.closeAnswers();
                 M.tips = {seats: seats, vals: v};
                 orig();
-            });
+            }, {limit: gcfg.TIMEOUT_TIP * 1000, from: M.ans.start});
             return;
         }
 
@@ -702,7 +863,7 @@
             M.gate([{seat: np, make: make, dflt: randomSelect(np), delay: hf.robotThinkTime()}], function (v) {
                 game.player_selections[np] = Number(v[0].v);
                 orig();
-            }, {msg: hf.wait.selectMsg(np), now: true});
+            }, {msg: hf.wait.selectMsg(np), now: true, limit: gcfg.TIMEOUT_SELECT * 1000});
             return;
         }
 
@@ -728,7 +889,7 @@
                 game.answers[off] = Number(v[0].v);
                 game.answers[def] = Number(v[1].v);
                 orig();
-            });
+            }, {limit: gcfg.TIMEOUT_ANSWER * 1000, from: M.ans.start});
             return;
         }
 

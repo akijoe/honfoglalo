@@ -514,6 +514,7 @@
             seat: net.session ? net.session.seat : 0,
           };
         case 'poll': {
+          swfAlive();
           const out = net.events;
           net.events = [];
           return out;
@@ -534,6 +535,12 @@
           return true;
         case 'start':
           if (net.session) call(api('start', { code: net.session.code, token: net.session.token }));
+          return true;
+        case 'progress':      // a házigazda: hol tart a játék (a: game.state, b: kör), a Várók listájához
+          if (net.session) api('progress', { code: net.session.code, token: net.session.token, state: Number(a) || 0, round: Number(b) || 0 }).catch(() => {});
+          return true;
+        case 'robot':         // a főnök robotot tesz az a. helyre (b: true), vagy kiveszi (b: false)
+          if (net.session) call(api('robot', { code: net.session.code, token: net.session.token, seat: Number(a) || 0, add: !!b }));
           return true;
         case 'leave':
           if (net.session) {
@@ -601,14 +608,71 @@
 
   let player = null;
   let swfLoaded = false;
+
+  // Betöltésfigyelő. A SWF az első képkockájától 100 ms-onként jelentkezik (hfNet('poll'),
+  // src/core.as). Ha a Ruffle wasm-fájlja már letöltődött, és a lap azóta LOAD_WAIT ideig látszott,
+  // de a SWF nem jelentkezett, a lejátszót újra létrehozzuk - ugyanaz, mint egy frissítés, amit a
+  // játékosok ilyenkor kézzel csináltak. Közben a játék helyén "Betöltés..." látszik; ha két új
+  // próba (vagy egy elakadt letöltés) után sem indul el, a frissítést kéri.
+  const watch = { flashvars: null, alive: false, tries: 0, shown: 0, ready: 0, last: 0, timer: 0 };
+  const LOAD_WAIT = 20000;      // ennyi látható idő a wasm megérkezése után
+  const LOAD_WAIT_MAX = 90000;  // ha a wasm ennyi látható idő alatt sem jön meg: frissítés kell
+
+  function swfAlive() {
+    if (watch.alive) return;
+    watch.alive = true;
+    clearInterval(watch.timer);
+    const g = document.getElementById('game');
+    g.classList.remove('loading', 'failed');
+  }
+
+  function wasmReady() {
+    try {
+      return performance.getEntriesByType('resource').some(e => /\.wasm(\?|$)/.test(e.name) && e.responseEnd > 0);
+    } catch (e) { return true; }
+  }
+
+  function watchLoad() {
+    const now = performance.now();
+    const dt = document.hidden ? 0 : now - watch.last;      // háttérben a Ruffle amúgy sem fut
+    watch.last = now;
+    if (watch.alive) return;
+    watch.shown += dt;
+    if (wasmReady()) watch.ready += dt;
+    const stuck = watch.ready === 0 && watch.shown > LOAD_WAIT_MAX;
+    if (!(watch.ready > LOAD_WAIT) && !stuck) return;
+    if (stuck || watch.tries >= 2) {
+      clearInterval(watch.timer);
+      document.getElementById('game').classList.add('failed');
+      return;
+    }
+    watch.tries++;
+    createPlayer(watch.flashvars);
+  }
+
   function loadSwf(flashvars) {
     swfLoaded = true;
+    watch.flashvars = flashvars;
+    watch.tries = 0;
+    createPlayer(flashvars);
+  }
+
+  function createPlayer(flashvars) {
+    watch.alive = false;
+    watch.shown = 0;
+    watch.ready = 0;
+    watch.last = performance.now();
+    clearInterval(watch.timer);
+    watch.timer = setInterval(watchLoad, 1000);
+    const g = document.getElementById('game');
+    g.classList.add('loading');
+    g.classList.remove('failed');
     // Minden betöltéshez új lejátszó: ha a régibe töltenénk (a szobából indul a játék), annak a
     // fókusza megmaradna, de az új SWF nem kapná meg, így a billentyűzet nem jutna el hozzá.
     closeText();
     if (player) player.remove();
     player = window.RufflePlayer.newest().createPlayer();
-    document.getElementById('game').appendChild(player);
+    g.appendChild(player);
     if (touchText) {
       // érintőképernyőn a beviteli mezőket az oldal adja (lent): a Ruffle rejtett mezője ne vegye el
       // a fókuszt (az hozná elő a betűs billentyűzetet)
@@ -887,18 +951,19 @@
     'L6.2 61.3L6.2 60.55Q6.2 52.4 9.5 45.1Q11.75 -13.25 6.05 45Q3.45 40.6 1.95 35.7Q-2 22.6 1.95 6.1L2.2 5.05Q9.75 2.55 17.4 1.3' +
     'Q14.6 -0.05 12.4 -2.35Q7.2 -7.75 7.5 -15.65Q7.75 -23.75 13.75 -29.8Z';
 
-  function seatIcons(taken) {
+  // taken: ember, robots: robot (egy belépő a helyére ülhet), a többi szabad
+  function seatIcons(taken, robots) {
     const ns = 'http://www.w3.org/2000/svg';
     const box = document.createElement('span');
     box.className = 'seats';
-    box.title = taken + ' játékos van bent (legfeljebb 3)';
+    box.title = taken + ' játékos van bent' + (robots ? ' és ' + robots + ' robot' : '') + ' (legfeljebb 3)';
     for (let i = 0; i < 3; i++) {
       const svg = document.createElementNS(ns, 'svg');
       svg.setAttribute('viewBox', '-2 -40 56 106');
       svg.setAttribute('aria-hidden', 'true');
       const p = document.createElementNS(ns, 'path');
       p.setAttribute('d', FIGURE);
-      p.setAttribute('class', i < taken ? 'in' : 'free');
+      p.setAttribute('class', i < taken ? 'in' : i < taken + robots ? 'bot' : 'free');
       svg.append(p);
       box.append(svg);
     }
@@ -944,9 +1009,11 @@
       return;
     }
     const mine = net.session ? net.session.code : '';
+    // a szerver elöl adja azokat, ahová be lehet lépni; a megteltek és a játékban lévők halványan, a végén
     list.replaceChildren(...d.lobbies.map(r => {
       const el = document.createElement('div');
-      el.className = 'room' + (r.code === mine ? ' here' : '');
+      const busy = r.status === 'full' || r.status === 'playing';
+      el.className = 'room' + (r.code === mine ? ' here' : '') + (busy ? ' busy' : '');
       const line = (cls, text) => {
         const div = document.createElement('div');
         div.className = cls;
@@ -958,17 +1025,58 @@
       if (r.code === mine) {
         b.textContent = 'Itt vagy';
         b.disabled = true;
+      } else if (busy) {
+        b.textContent = r.status === 'full' ? 'Megtelt' : 'Játékban';
+        b.disabled = true;
       } else {
         b.textContent = 'Belépés';
         b.disabled = net.inGame;
         if (net.inGame) b.title = 'Játék közben nem lehet másik szobába lépni.';
         b.addEventListener('click', () => joinPublic(r));
       }
-      const who = line('rm', r.players.join(', '));
-      who.prepend(seatIcons(r.players.length));
-      el.append(line('rt', r.title), who, line('rm', mapName(r.map) + ', ' + ruleName(r.long)), b);
+      // robot: a főnök betette, vagy a játékos kilépett / elment a kapcsolata (helyette robot játszik).
+      // (Egy régebbi szerver csak a neveket küldte: a frissítés idejére azt is elfogadjuk.)
+      const players = (r.players || []).map(p => (typeof p === 'string' ? { name: p } : p));
+      const bot = p => p.robot || p.away;
+      const who = line('rm', players.map(p => p.name + (bot(p) ? ' (robot)' : '')).join(', '));
+      who.prepend(seatIcons(players.filter(p => !bot(p)).length, players.filter(bot).length));
+      // a létrehozás ideje a jobb felső sarokban (ha a név miatt nem fér el, felirat nélkül: lent)
+      const title = line('rt', r.title);
+      if (r.created) {
+        const t = document.createElement('span');
+        t.className = 'rc';
+        t.title = 'Létrehozás ideje: ' + clock(r.created);
+        const label = document.createElement('span');
+        label.className = 'rcl';
+        label.textContent = 'Létrehozás ideje: ';
+        t.append(label, clock(r.created));
+        title.prepend(t);
+      }
+      el.append(title, who, line('rm', mapName(r.map) + ', ' + ruleName(r.long)));
+      if (r.status === 'playing') el.append(line('rm st', 'Játékban: ' + progressText(r)));
+      else if (r.status === 'full') el.append(line('rm st', 'Megtelt, indulásra vár'));
+      el.append(b);
       return el;
     }));
+    // ahol a név a teljes felirat mellett két sorba törne, ott csak az óra látszik (a felirat a buborékban)
+    for (const rt of list.querySelectorAll('.rt')) {
+      const one = (parseFloat(getComputedStyle(rt).lineHeight) || 19) * 1.5;
+      if (rt.getBoundingClientRect().height > one) rt.classList.add('short');
+    }
+  }
+
+  // hol tart egy futó játék (server: progress; a körnevek a játékéi, dat/lang.json: gameround_*)
+  function progressText(r) {
+    const p = r.progress || {};
+    const rounds = r.long ? 6 : 4;
+    switch (p.state) {
+      case 1: return r.long ? 'bázis választás' : 'bázis sorsolás';
+      case 3: return 'felosztás' + (p.round > 0 ? ', ' + p.round + '. kör' : '');
+      case 4: return 'harc, ' + Math.min(Math.max(p.round, 1), rounds) + '/' + rounds + '. kör';
+      case 5: return 'végső tipp';
+      case 15: case 16: return 'játék vége';
+      default: return 'most indul';
+    }
   }
 
   // belépés egy publikus szobába a listából: a Flash ablaka csak a nevedet kérdezi (src/lobby.as)
@@ -1022,7 +1130,26 @@
   const chat = { last: 0, items: [] };        // items: a szoba üzenetei (a kilépés alatt is gyűlnek)
   const inRoom = () => !!(net.session && net.state);
   const chatOff = () => inRoom() && load('sessionStorage', chatOffKey) === net.session.code;
-  const SYS = { joined: ' belépett a váróba.', left: ' elhagyta a chatet.', back: ' visszatért a chatbe.' };
+  // rendszerüzenetek (server/lobby.go: chatMsg.Sys); robot, unrobot: a robot neve a text-ben
+  const SYS = {
+    joined: n => n + ' belépett a váróba.',
+    gone: n => n + ' kilépett a váróból.',
+    left: n => n + ' elhagyta a chatet.',
+    back: n => n + ' visszatért a chatbe.',
+    quit: n => n + ' kilépett a játékból, helyette robot játszik.',
+    lost: n => n + ' kapcsolata megszakadt, helyette robot játszik.',
+    rejoin: n => n + ' visszatért a játékba.',
+    robot: (n, r) => n + ' betett egy robotot: ' + r + '.',
+    unrobot: (n, r) => n + ' kivette a robotot: ' + r + '.',
+  };
+  // játék közben ezek a játékban is látszanak (src/mp.as: presence)
+  const PRESENCE = { quit: true, lost: true, rejoin: true };
+
+  // óra:perc (a gép helyi ideje)
+  function clock(ms) {
+    const d = new Date(Number(ms));
+    return d.getHours() + ':' + String(d.getMinutes()).padStart(2, '0');
+  }
 
   function renderChat() {
     const input = document.getElementById('chatText');
@@ -1072,12 +1199,18 @@
     return svg;
   }
 
-  // egy sor a csevegésben: {name, seat, text} üzenet, vagy {note} (rendszerüzenet, hiba)
+  // egy sor a csevegésben: {name, seat, text, t} üzenet, vagy {note, t} (rendszerüzenet, hiba); t: az ideje
   function chatRow(item) {
     const li = document.createElement('li');
+    const time = document.createElement('time');
+    time.className = 'ts';
+    time.textContent = clock(item.t);
+    time.dateTime = new Date(item.t).toISOString();
     if (item.note) {
       li.className = 'sys';
-      li.textContent = item.note;
+      const body = document.createElement('span');
+      body.textContent = item.note;
+      li.append(time, body);
       return li;
     }
     const who = document.createElement('span');
@@ -1085,7 +1218,7 @@
     who.textContent = item.name + ': ';
     const body = document.createElement('span');
     body.append(who, String(item.text));
-    li.append(bubble(SEATCOLORS[item.seat] || SEATCOLORS[0]), body);
+    li.append(time, bubble(SEATCOLORS[item.seat] || SEATCOLORS[0]), body);
     return li;
   }
 
@@ -1109,8 +1242,11 @@
     log.scrollTop = log.scrollHeight;
   }
 
+  // a saját hibaüzenet (pl. "Egy kicsit lassabban!") egymás után csak egyszer
   function chatNote(text) {
-    chatAdd({ note: text }, true);
+    const last = chat.items[chat.items.length - 1];
+    if (last && last.note === text && last.local && Date.now() - last.t < 10000) return;
+    chatAdd({ note: text, t: Date.now(), local: true }, true);
   }
 
   function chatSound() {
@@ -1123,11 +1259,15 @@
     if (!(ev.id > chat.last)) return;
     chat.last = ev.id;
     const mine = !!(net.session && ev.seat === net.session.seat);
+    const t = ev.t || Date.now();
     if (ev.sys) {
-      if (SYS[ev.sys]) chatAdd({ note: ev.name + SYS[ev.sys] }, false);
+      if (!SYS[ev.sys]) return;
+      const note = SYS[ev.sys](ev.name, ev.text);
+      chatAdd({ note: note, t: t }, false);
+      if (PRESENCE[ev.sys] && !ev.old && !mine && net.inGame) emit({ type: 'presence', msg: note });
       return;
     }
-    chatAdd({ name: ev.name, seat: ev.seat, text: ev.text }, mine);
+    chatAdd({ name: ev.name, seat: ev.seat, text: ev.text, t: t }, mine);
     if (!ev.old && !mine) chatSound();
   }
 

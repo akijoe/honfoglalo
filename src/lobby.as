@@ -13,7 +13,7 @@
     };
     var SEATCOLOR = [0, 0xC0242B, 0xC9B320, 0x3E9A2E];   // az eredeti játékosszínek: piros, sárga, zöld
 
-    // az üresen maradt hely robotjának neve (indításhoz legalább 2 ember kell, így legfeljebb egy robot van)
+    // tartalék robotnév (a szobában a robotok nevét a szerver adja: server/lobby.go, robotName)
     hf.robotName = function (seat) {
         return getlang(seat == 3 ? 'tutorial_opponent_2' : 'tutorial_opponent_1');
     };
@@ -153,7 +153,7 @@
         return l;
     };
 
-    // kis ikonok a szoba-ablak soraiban: korona (a szoba főnöke) és robot (az üresen maradó hely)
+    // kis ikonok a szoba-ablak soraiban: korona (a szoba főnöke) és robot (a főnök betette robot)
     function drawCrown(mc) {
         mc.clear();
         mc.lineStyle(1, 0x6B5A48, 100);
@@ -340,21 +340,35 @@
         touch.tick();
     };
 
-    // játék közbeni jelzés a jobb felső sarokban (pl. hogy a szoba megszűnt)
-    ui.notice = function (msg) {
+    // játék közbeni jelzés a jobb felső sarokban (pl. hogy a szoba megszűnt, vagy valaki kilépett);
+    // ms: ennyi idő múlva eltűnik (különben ott marad). A hosszabb szöveg két sorba tördelődik.
+    ui.notice = function (msg, ms) {
         ui.hideNotice();
         var n = _root.createEmptyMovieClip('hfNotice', 19990);
         var t = ui.text(n, 10, 5, 250, 24, msg, 15, C.title, true, 'center');
         var w = Math.min(270, Math.round(t.textWidth) + 34);
+        var h = 32;
+        if (t.textWidth > 250) {
+            t.multiline = true;
+            t.wordWrap = true;
+            t._height = 44;
+            t.text = msg;
+            h = 52;
+        }
         t._x = Math.round((w - 250) / 2);
-        rect(n, 0, 0, w, 32, 9, C.panel, 92, C.border);
+        rect(n, 0, 0, w, h, 9, C.panel, 92, C.border);
         n._x = 592 - w;
         n._y = 10;
         n._alpha = 0;
+        var until = ms > 0 ? getTimer() + ms : 0;
         n.onEnterFrame = function () {
-            n._alpha = Math.min(100, n._alpha + 12);
-            if (n._alpha >= 100) {
-                n.onEnterFrame = undefined;
+            if (until > 0 && getTimer() > until) {
+                n._alpha -= 8;
+                if (n._alpha <= 0) {
+                    n.removeMovieClip();
+                }
+            } else if (n._alpha < 100) {
+                n._alpha = Math.min(100, n._alpha + 12);
             }
         };
     };
@@ -818,9 +832,14 @@
         tabs.push(makeTab(0, 'Végeredmény'));
         tabs.push(makeTab(1, 'Válaszaid'));
 
-        // 1. oldal: helyezések
+        // 1. oldal: helyezések (a kimaradó helyek nélkül)
         var p1 = pages[0];
-        var order = [1, 2, 3];
+        var order = [];
+        for (var o = 1; o <= 3; o++) {
+            if (!hf.absent[o]) {
+                order.push(o);
+            }
+        }
         // egyenlő pontnál (a kiesettek: 0) aki később esett ki, előrébb végez
         var outAt = function (p) {
             for (var k = 0; k < hf.outOrder.length; k++) {
@@ -841,7 +860,7 @@
         });
         var X = 136;
         var RW = W2 - X - 12;
-        for (var i = 0; i < 3; i++) {
+        for (var i = 0; i < order.length; i++) {
             var pn = order[i];
             var y = 50 + i * 42;
             var me = pn == game.IAM;
@@ -1000,12 +1019,13 @@
         Selection.setFocus(name.text == '' ? name : code);
     };
 
-    // Belépés egy publikus szobába a Várók listájából (js/hf.js: hfJoin, {code, title}): csak a nevet
-    // kérdezi; a szoba kódja nem látszik (a csevegés fejlécében megvan).
-    lobby.joinPublic = function (code, title) {
+    // Belépés egy szobába csak a név megadásával: a Várók listájából (js/hf.js: hfJoin, {code, title};
+    // a publikus szoba kódja nem látszik, a csevegés fejlécében megvan), vagy meghívó linkkel
+    // (?join=KÓD, sub: az alcím).
+    lobby.joinPublic = function (code, title, sub) {
         var h = hf.net.call('hello');
         var b = ui.open(380, 214, title);
-        ui.text(b, 24, 50, 332, 22, 'Belépés a publikus váróba', 15, C.dim, false, 'center');
+        ui.text(b, 24, 50, 332, 22, sub != undefined ? sub : 'Belépés a publikus váróba', 15, C.dim, false, 'center');
         ui.text(b, 30, 92, 100, 24, 'Neved:', 16, C.text);
         var name = ui.input(b, 120, 90, 230, 26, h ? h.name : '', 16);
         var st = ui.text(b, 20, 124, 340, 40, '', 14, C.dim, false, 'center', true);
@@ -1069,6 +1089,32 @@
         });
         ui.text(b, 24, 112, 372, 22, 'Játékosok:', 15, C.text);
         var rows = [];
+        // a főnök a játék előtt robotot tehet egy üres helyre, és kiveheti onnan (server: handleRobot).
+        // Egy kattintás után a gombok egy kicsit pihennek (a szerver is korlátozza: robotFlood).
+        var robotRest = false;
+        function robotButtons(on) {
+            for (var r = 1; r <= 3; r++) {
+                rows[r].add.setOn(on);
+                rows[r].del.setOn(on);
+            }
+        }
+        function robotButton(seat, add) {
+            var y = 112 + seat * 30;
+            var btn = ui.button(b, 300, y, 96, 26, add ? '+ Robot' : 'Kivesz', function () {
+                if (robotRest) {
+                    return;
+                }
+                robotRest = true;
+                robotButtons(false);
+                hf.net.call('robot', seat, add);
+                hf.later(1200, function () {
+                    robotRest = false;
+                    robotButtons(true);
+                });
+            });
+            btn._visible = false;
+            return btn;
+        }
         for (var s = 1; s <= 3; s++) {
             var y = 112 + s * 30;
             var dot = b.createEmptyMovieClip('dot' + s, b.getNextHighestDepth());
@@ -1077,15 +1123,14 @@
             var icon = b.createEmptyMovieClip('icon' + s, b.getNextHighestDepth());
             icon._y = y + 6;
             rows[s] = {dot: dot, icon: icon, name: ui.text(b, 56, y, 200, 26, '', 16, C.text),
-                tag: ui.text(b, 56, y, 200, 26, '', 14, C.dim)};
+                tag: ui.text(b, 56, y, 200, 26, '', 14, C.dim), add: robotButton(s, true), del: robotButton(s, false)};
         }
-        // a sor: név, mögötte a korona vagy a robot ikonja, aztán a címke (te, nem elérhető)
+        // a sor: név, mögötte a korona vagy a robot ikonja, aztán a címke (te, nem elérhető, robot)
         function setRow(row, name, color, iconKind, tag) {
             row.name.textColor = color;
             row.name.text = name;
             row.tag.textColor = color;
-            var tight = tag == ')';                     // "szabad hely (Jani [robot])"
-            var x = 56 + Math.round(row.name.textWidth) + (tight ? 7 : 10);
+            var x = 56 + Math.round(row.name.textWidth) + 10;
             row.icon.clear();
             if (iconKind == 'crown') {
                 drawCrown(row.icon);
@@ -1094,7 +1139,7 @@
             }
             row.icon._x = x;
             if (iconKind != '') {
-                x += tight ? 15 : 24;
+                x += 24;
             }
             row.tag._x = x;
             row.tag._y = row.name._y + 2;
@@ -1103,7 +1148,7 @@
         // a szoba szabálya és térképe: ugyanazok az ikonok, mint az oldal bal sávjában (img/rules, img/maps)
         var ruleIcon = ui.iconLabel(b, 24, 230, 190);
         var mapIcon = ui.iconLabel(b, 214, 230, 190);
-        var st = ui.text(b, 20, 262, 380, 44, '', 14, C.dim, false, 'center', true);
+        var st = ui.text(b, 20, 262, 380, 64, '', 14, C.dim, false, 'center', true);
         ui.button(b, 24, 332, 120, 34, 'Kilépés', function () {
             hf.net.call('leave');
             lobby.open();
@@ -1125,12 +1170,16 @@
                 return;
             }
             var me = h.seat;
+            var boss = state.boss == me;
+            var edit = boss && !state.started;      // robot be / ki
             var count = 0;
             for (var s = 1; s <= 3; s++) {
                 var row = rows[s];
                 row.dot.clear();
                 circle(row.dot, 0, 0, 7, 0x6B5A48);
-                setRow(row, 'szabad hely (' + hf.robotName(s), C.dim, 'robot', ')');    // ha üres marad, robot játszik rajta
+                setRow(row, 'szabad hely', C.dim, '', '');      // ha üres marad, kimarad a játékból
+                row.add._visible = edit;
+                row.del._visible = false;
             }
             for (var i = 0; i < state.players.length; i++) {
                 var p = state.players[i];
@@ -1138,17 +1187,22 @@
                 count++;
                 r.dot.clear();
                 circle(r.dot, 0, 0, 7, SEATCOLOR[p.seat]);
+                r.add._visible = false;
+                r.del._visible = edit && p.robot;
+                // játék közben aki kilépett vagy elment a kapcsolata, helyett robot játszik
+                var away = state.started && !p.robot && (p.left || !p.online);
                 var tags = [];
                 if (p.seat == me) {
                     tags.push('te');
                 }
-                if (!p.online) {
+                if (p.robot || away) {
+                    tags.push('robot');
+                } else if (!p.online) {
                     tags.push('nem elérhető');
                 }
-                setRow(r, p.name, C.text, p.seat == state.boss ? 'crown' : '', tags.length > 0 ? '(' + tags.join(', ') + ')' : '');
+                setRow(r, p.name, C.text, p.seat == state.boss ? 'crown' : (p.robot ? 'robot' : ''), tags.length > 0 ? '(' + tags.join(', ') + ')' : '');
                 r.tag.textColor = C.dim;
             }
-            var boss = state.boss == me;
             // publikus váró: a neve a címben; a kódja és a linkje nem látszik (a csevegés fejlécében megvan)
             if (state.public) {
                 b.titleText.text = state.title;
@@ -1169,7 +1223,8 @@
                 status(st, 'A játék már folyik. Visszaléphetsz (ahonnan most tart a játék), vagy kiléphetsz: ekkor helyetted robot játszik tovább.');
             } else if (boss) {
                 // a térképet és a szabályt a főnök az oldal bal oldali sávjában választja (js/hf.js)
-                status(st, (count >= 2 ? 'Ha mindenki megvan, indítsd el a játékot!' : state.public ? 'Várjuk, hogy belépjenek a játékosok...' : 'Várjuk, hogy a barátaid belépjenek a linkkel...') +
+                var wait = state.public ? 'Várjuk, hogy belépjenek a játékosok... ' : 'Várjuk, hogy a barátaid belépjenek a linkkel... ';
+                status(st, (count >= 3 ? 'Ha mindenki megvan, indítsd el a játékot!' : count == 2 ? 'Ketten is indíthatjátok: az üres hely kimarad a játékból.' : wait + 'Robotot is betehetsz.') +
                     ' A térképet és a szabályt a bal oldali sávban választhatod.');
             } else {
                 status(st, 'Várjuk, hogy a szoba főnöke elindítsa a játékot...');

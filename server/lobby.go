@@ -2,6 +2,8 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
+	"net/http"
 	"strings"
 	"sync"
 	"time"
@@ -17,22 +19,26 @@ const (
 	maxDecKey    = 1 << 20
 	maxDecSize   = 1024
 
-	// A lecsatlakozott játékos ennyi idő múlva számít távollévőnek (közben az EventSource újracsatlakozhat).
-	offlineGrace = 10 * time.Second
 	// Az eseményfolyam pingje (a kliens 35 mp csend után újracsatlakozik), és egy írás leghosszabb ideje.
 	ssePing         = 15 * time.Second
 	sseWriteTimeout = 30 * time.Second
 	// Csevegés: egy üzenet hossza, a szobában megőrzött üzenetek (az újracsatlakozó ezeket kapja meg),
-	// és egy játékos legfeljebb chatBurst üzenetet küldhet chatWindow alatt, chatGap szünetekkel.
+	// ugyanaz az üzenet ennyi ideig nem küldhető újra, és egy betű legfeljebb ennyiszer jöhet egymás
+	// után ("!!!!!!!!" -> "!!!!"). A gyakoriság: chatFlood és a többi (lent).
 	maxChatLen  = 200
 	chatHistory = 50
-	chatBurst   = 8
-	chatWindow  = 10 * time.Second
-	chatGap     = 700 * time.Millisecond
+	chatRepeat  = time.Minute
+	maxRunes    = 4
+	// Ugyanannak a névnek a belépése (és a kilépése) ennyi időn belül csak egyszer kerül a csevegésbe.
+	sysRepeat = 30 * time.Second
 	// Üres (senki sem csatlakozik) szoba élettartama, és bármely szoba legnagyobb kora.
 	idleLobbyTTL = 15 * time.Minute
 	maxLobbyAge  = 8 * time.Hour
 )
+
+// A lecsatlakozott játékos ennyi idő múlva számít távollévőnek (közben az EventSource újracsatlakozhat).
+// (Változó, hogy a teszt rövidebbre vehesse.)
+var offlineGrace = 10 * time.Second
 
 // A szobakódban nincsenek összetéveszthető karakterek (0/O, 1/I).
 const codeAlphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"
@@ -40,20 +46,27 @@ const codeLen = 5
 
 type player struct {
 	name    string
-	token   string
-	conns   int         // élő eseményfolyamok
-	online  bool        // így látják a többiek
-	left    bool        // kilépett a "Kilépés" gombbal (a játék után)
-	gen     int         // a lecsatlakozás-ellenőrzés sorszáma
-	chats   []time.Time // a legutóbbi üzenetei (csevegés, korlát)
-	chatOff bool        // kilépett a csevegésből (az X-szel)
-	played  int         // a szoba hányadik játékában játszott utoljára (lobby.game az indításkor)
+	token   string // robotnak nincs
+	robot   bool   // a főnök tette be a váróban: robot játszik a helyén (handleRobot)
+	dropped bool   // játék közben elment a kapcsolata (a visszatérését is jelezzük)
+	conns   int    // élő eseményfolyamok
+	online  bool   // így látják a többiek
+	left    bool   // kilépett a "Kilépés" gombbal (a játék után)
+	gen     int    // a lecsatlakozás-ellenőrzés sorszáma
+	chats   flood  // csevegőüzenetei (chatFlood)
+	toggles flood  // kilépés a csevegésből és vissza (presenceFlood)
+	said    string // az utolsó üzenete (kisbetűvel) és az ideje: ugyanazt nem küldheti újra
+	saidAt  time.Time
+	chatOff bool // kilépett a csevegésből (az X-szel)
+	played  int  // a szoba hányadik játékában játszott utoljára (lobby.game az indításkor)
 }
 
 // Egy csevegőüzenet. Az azonosító szobánként növekszik: a kliens ezzel szűri ki, amit az
 // újracsatlakozáskor (a régi üzenetekkel együtt) már egyszer megkapott.
-// Sys: rendszerüzenet szöveg nélkül: "joined" (belépett a váróba), "left" (elhagyta a csevegést),
-// "back" (visszatért a csevegésbe).
+// Sys: rendszerüzenet (a név a játékosé, akiről szól): "joined" (belépett a váróba), "gone" (kilépett a
+// váróból), "left" (elhagyta a csevegést), "back" (visszatért a csevegésbe), "quit" (kilépett a
+// játékból), "lost" (játék közben elment a kapcsolata), "rejoin" (visszatért a játékba), "robot" és
+// "unrobot" (a főnök betett / kivett egy robotot; Text: a robot neve).
 type chatMsg struct {
 	ID   int    `json:"id"`
 	Seat int    `json:"seat"`
@@ -61,6 +74,13 @@ type chatMsg struct {
 	Text string `json:"text,omitempty"`
 	Sys  string `json:"sys,omitempty"`
 	Time int64  `json:"t"` // Unix ms
+}
+
+// progress: a futó játék állása, ahogy a házigazda gépe jelenti (src/mp.as: reportProgress): a játék
+// állapota (game.state: 1 bázisok, 3 felosztás, 4 harc, 5 végső tipp, 15 vége) és a köre.
+type progress struct {
+	State int `json:"state"`
+	Round int `json:"round"`
 }
 
 // A játék egy döntése (terület, válasz, tipp, kérdés...). A k kulcsra az első beérkezett nyer.
@@ -92,11 +112,15 @@ type lobby struct {
 	client    string  // a létrehozó böngészőjének azonosítója (böngészőnként maxRoomsPerClient szoba)
 	game      int     // hányadik játék megy (vagy ment) a szobában: az indításkor nő, a döntések újrakezdődnek
 	started   bool
+	progress  progress // hol tart a futó játék (a Várók listájához; handleProgress)
 	decs      []decision
 	seen      map[int]bool
 	subs      map[*subscriber]struct{}
 	chat      []chatMsg // a legutóbbi chatHistory üzenet
 	chatSeq   int
+	robots    flood                // robot be- és kivétele (robotFlood)
+	comings   flood                // belépések és kilépések a csevegésben (comingsFlood)
+	announced map[string]time.Time // név + rendszerüzenet -> mikor került a csevegésbe (sysRepeat)
 	idleSince time.Time
 	closed    bool
 }
@@ -106,6 +130,7 @@ type playerView struct {
 	Name   string `json:"name"`
 	Online bool   `json:"online"`
 	Left   bool   `json:"left,omitempty"`
+	Robot  bool   `json:"robot,omitempty"`
 }
 
 type stateEvent struct {
@@ -184,23 +209,104 @@ func (l *lobby) addChat(seat int, text, sys string, now time.Time) chatMsg {
 	return m
 }
 
-// chatAllowed: küldhet-e most p (a hívó tartja a zárat); ha igen, feljegyzi az üzenetet.
-func (p *player) chatAllowed(now time.Time) bool {
-	recent := p.chats[:0]
-	for _, t := range p.chats {
-		if now.Sub(t) < chatWindow {
+// floodRule: egy műveletből legfeljebb burst jöhet window alatt, egymás után legalább gap szünettel;
+// aki ezt túllépi, mute ideig egyet sem küldhet (0: nincs tiltás, csak a korlát).
+type floodRule struct {
+	burst       int
+	window, gap time.Duration
+	mute        time.Duration
+}
+
+var (
+	chatFlood     = floodRule{burst: 5, window: 15 * time.Second, gap: time.Second, mute: 15 * time.Second}
+	presenceFlood = floodRule{burst: 4, window: time.Minute, gap: 3 * time.Second} // túllépve csendben vált
+	robotFlood    = floodRule{burst: 4, window: 20 * time.Second, gap: time.Second, mute: 15 * time.Second}
+	comingsFlood  = floodRule{burst: 8, window: time.Minute} // túllépve kimarad a csevegésből
+)
+
+// flood: egy játékos (vagy szoba) műveleteinek ideje egy floodRule-hoz. A hívó tartja a zárat.
+type flood struct {
+	times []time.Time
+	until time.Time // eddig tiltva (mute)
+}
+
+// allow: mehet-e most egy újabb művelet (ha igen, feljegyzi); ha nem, wait: mennyi idő múlva igen.
+func (f *flood) allow(r floodRule, now time.Time) (ok bool, wait time.Duration) {
+	if now.Before(f.until) {
+		return false, f.until.Sub(now)
+	}
+	recent := f.times[:0]
+	for _, t := range f.times {
+		if now.Sub(t) < r.window {
 			recent = append(recent, t)
 		}
 	}
-	p.chats = recent
-	if len(recent) >= chatBurst || (len(recent) > 0 && now.Sub(recent[len(recent)-1]) < chatGap) {
-		return false
+	f.times = recent
+	switch {
+	case len(recent) >= r.burst:
+		wait = r.window - now.Sub(recent[0])
+		if r.mute > 0 {
+			f.until, wait = now.Add(r.mute), r.mute
+			f.times = nil // a tiltás után tiszta lappal
+		}
+		return false, wait
+	case len(recent) > 0 && now.Sub(recent[len(recent)-1]) < r.gap:
+		return false, r.gap - now.Sub(recent[len(recent)-1])
 	}
-	p.chats = append(p.chats, now)
-	return true
+	f.times = append(f.times, now)
+	return true, 0
 }
 
-// A hívó tartja a zárat.
+// tooFast: a túl gyakori műveletre adott hiba (a várakozás másodpercben, ha hosszabb egy kicsinél).
+func tooFast(wait time.Duration) error {
+	if wait < 2*time.Second {
+		return apiError{http.StatusTooManyRequests, "Egy kicsit lassabban!"}
+	}
+	return apiError{http.StatusTooManyRequests, fmt.Sprintf("Túl gyorsan: várj %d másodpercet.", int(wait.Round(time.Second)/time.Second))}
+}
+
+// capRepeats: egy betű (vagy jel) legfeljebb maxRunes-szor egymás után. A számjegyek maradnak
+// ("1000000" nem lehet "10000").
+func capRepeats(s string) string {
+	var b strings.Builder
+	var last rune
+	n := 0
+	for _, r := range s {
+		if r == last {
+			n++
+		} else {
+			last, n = r, 1
+		}
+		if n <= maxRunes || unicode.IsDigit(r) {
+			b.WriteRune(r)
+		}
+	}
+	return b.String()
+}
+
+// announce: egy játékos belépése / kilépése (sys) a csevegésbe, ha nem túl sűrű: ugyanaz a név
+// sysRepeat-en belül egyszer, és a szobában comingsFlood szerint. A hívó tartja a zárat.
+func (l *lobby) announce(seat int, sys string, now time.Time) {
+	key := strings.ToLower(l.seats[seat].name) + "|" + sys
+	if l.announced == nil {
+		l.announced = map[string]time.Time{}
+	}
+	for k, t := range l.announced {
+		if now.Sub(t) >= sysRepeat {
+			delete(l.announced, k)
+		}
+	}
+	if _, seen := l.announced[key]; seen {
+		return
+	}
+	if ok, _ := l.comings.allow(comingsFlood, now); !ok {
+		return
+	}
+	l.announced[key] = now
+	l.addChat(seat, "", sys, now)
+}
+
+// count: a foglalt helyek (emberek és robotok) száma; humans: csak az embereké. A hívó tartja a zárat.
 func (l *lobby) count() int {
 	n := 0
 	for s := 1; s <= maxPlayers; s++ {
@@ -209,6 +315,39 @@ func (l *lobby) count() int {
 		}
 	}
 	return n
+}
+
+func (l *lobby) humans() int {
+	n := 0
+	for s := 1; s <= maxPlayers; s++ {
+		if p := l.seats[s]; p != nil && !p.robot {
+			n++
+		}
+	}
+	return n
+}
+
+// robotNames: a robotok nevei (a próbajáték két ellenfele, dat/lang.json: tutorial_opponent_1/2).
+var robotNames = []string{"Jani", "Éva", "Robi"}
+
+// robotName: az első név, amely még nem foglalt a szobában. A hívó tartja a zárat.
+func (l *lobby) robotName() string {
+	for _, n := range robotNames {
+		if l.nameSeat(n) == 0 {
+			return n
+		}
+	}
+	return "Robot"
+}
+
+// nameSeat: melyik helyen ül ilyen nevű játékos (kis- és nagybetűtől függetlenül); 0: sehol.
+func (l *lobby) nameSeat(name string) int {
+	for s := 1; s <= maxPlayers; s++ {
+		if p := l.seats[s]; p != nil && strings.EqualFold(p.name, name) {
+			return s
+		}
+	}
+	return 0
 }
 
 func (l *lobby) seatOf(token string) int {
@@ -228,7 +367,7 @@ func (l *lobby) stateEvent() stateEvent {
 		Game: l.game, Public: l.public, Title: l.title, Players: []playerView{}}
 	for s := 1; s <= maxPlayers; s++ {
 		if p := l.seats[s]; p != nil {
-			ev.Players = append(ev.Players, playerView{Seat: s, Name: p.name, Online: p.online, Left: p.left})
+			ev.Players = append(ev.Players, playerView{Seat: s, Name: p.name, Online: p.online || p.robot, Left: p.left, Robot: p.robot})
 		}
 	}
 	return ev
@@ -260,15 +399,20 @@ func (l *lobby) broadcastState() {
 	l.broadcast(l.state())
 }
 
-// removeSeat: indulás előtt a távozó helye felszabadul; ha a főnök ment el, a következő lesz a főnök.
-// Ha a szoba létrehozója megy el (kilép, vagy bezárja a lapot) még az első játék előtt, a szoba megszűnik.
+// removeSeat: indulás előtt a távozó helye felszabadul; ha a főnök ment el, a következő ember lesz a
+// főnök. Ha a szoba létrehozója megy el (kilép, vagy bezárja a lapot) még az első játék előtt, a szoba
+// megszűnik; egy embert a többiek a csevegésben látnak elmenni.
 func (l *lobby) removeSeat(seat int) {
 	gone := l.seats[seat]
-	l.seats[seat] = nil
 	if gone != nil && gone == l.creator && l.game == 0 && !l.started {
+		l.seats[seat] = nil
 		l.close("A szoba megszűnt: a létrehozója kilépett.")
 		return
 	}
+	if gone != nil && !gone.robot {
+		l.announce(seat, "gone", time.Now())
+	}
+	l.seats[seat] = nil
 	for sub := range l.subs {
 		if sub.seat == seat {
 			l.dropSub(sub)
@@ -277,7 +421,7 @@ func (l *lobby) removeSeat(seat int) {
 	if l.boss == seat {
 		l.boss = 0
 		for s := 1; s <= maxPlayers; s++ {
-			if l.seats[s] != nil {
+			if p := l.seats[s]; p != nil && !p.robot {
 				l.boss = s
 				break
 			}

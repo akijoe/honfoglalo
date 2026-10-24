@@ -329,7 +329,7 @@ func (s *server) handleJoin(w http.ResponseWriter, r *http.Request) {
 		// belépője érvényét veszti.
 		for seat := 1; seat <= maxPlayers; seat++ {
 			p := l.seats[seat]
-			if p == nil || !strings.EqualFold(p.name, name) {
+			if p == nil || p.robot || !strings.EqualFold(p.name, name) {
 				continue
 			}
 			// (p.online: a lecsatlakozás utáni türelmi idő alatt is a régi gazdájáé a hely)
@@ -338,7 +338,9 @@ func (s *server) handleJoin(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 			p.token = newToken()
-			p.left = false
+			if p.left {
+				p.left, p.dropped = false, true // a visszatérését az eseményfolyama jelzi (handleEvents)
+			}
 			log.Printf("szoba %s: %d. hely visszalépett névvel", l.code, seat)
 			l.broadcastState()
 			writeJSON(w, http.StatusOK, joinReply{Code: l.code, Seat: seat, Token: p.token})
@@ -347,18 +349,24 @@ func (s *server) handleJoin(w http.ResponseWriter, r *http.Request) {
 		writeErr(w, apiError{http.StatusConflict, "Ebben a szobában már elkezdődött a játék. Visszalépni azzal a névvel lehet, amellyel játszottál."})
 		return
 	}
+	// az első üres hely; ha nincs, az utolsó robot helyére ül (a robotok csak kitöltik a helyet)
 	free := 0
 	for seat := maxPlayers; seat >= 1; seat-- {
-		p := l.seats[seat]
-		if p == nil {
+		if l.seats[seat] == nil {
 			free = seat
-		} else if strings.EqualFold(p.name, name) {
-			writeErr(w, apiError{http.StatusConflict, "Ez a név már foglalt a szobában."})
-			return
+		}
+	}
+	for seat := maxPlayers; seat >= 1 && free == 0; seat-- {
+		if l.seats[seat].robot {
+			free = seat
 		}
 	}
 	if free == 0 {
 		writeErr(w, apiError{http.StatusConflict, "A szoba megtelt (legfeljebb 3 játékos)."})
+		return
+	}
+	if seat := l.nameSeat(name); seat != 0 && seat != free {
+		writeErr(w, apiError{http.StatusConflict, "Ez a név már foglalt a szobában."})
 		return
 	}
 	tok := newToken()
@@ -368,7 +376,7 @@ func (s *server) handleJoin(w http.ResponseWriter, r *http.Request) {
 	}
 	s.goneAfterGrace(l, l.seats[free])
 	l.broadcastState()
-	l.addChat(free, "", "joined", time.Now())
+	l.announce(free, "joined", time.Now())
 	writeJSON(w, http.StatusOK, joinReply{Code: l.code, Seat: free, Token: tok})
 }
 
@@ -415,19 +423,21 @@ func (s *server) handleStart(w http.ResponseWriter, r *http.Request) {
 		case seat != l.boss:
 			return apiError{http.StatusForbidden, "Csak a szoba főnöke indíthatja a játékot."}
 		case l.count() < 2:
-			return apiError{http.StatusConflict, "Legalább 2 játékos kell az induláshoz."}
+			return apiError{http.StatusConflict, "Legalább 2 játékos kell az induláshoz (az egyik lehet robot)."}
 		}
 		// új játék: a döntések elölről (a kulcsok újra 0-tól jönnek; js/hf.js a game alapján tudja)
 		l.started = true
 		l.game++
+		l.progress = progress{}
 		l.decs = nil
 		l.seen = map[int]bool{}
 		for st := 1; st <= maxPlayers; st++ {
 			if p := l.seats[st]; p != nil {
 				p.played = l.game
+				p.dropped = false
 			}
 		}
-		log.Printf("szoba %s: a(z) %d. játék elindult (%d játékos)", l.code, l.game, l.count())
+		log.Printf("szoba %s: a(z) %d. játék elindult (%d ember, %d robot)", l.code, l.game, l.humans(), l.count()-l.humans())
 		l.broadcastState()
 		return nil
 	})
@@ -447,6 +457,7 @@ func (s *server) handleAgain(w http.ResponseWriter, r *http.Request) {
 			return nil
 		}
 		l.started = false
+		l.progress = progress{}
 		for st := 1; st <= maxPlayers; st++ {
 			if p := l.seats[st]; p != nil && st != seat && (p.left || (p.conns == 0 && !p.online)) {
 				l.removeSeat(st)
@@ -511,6 +522,84 @@ func (s *server) handleLong(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+// handleProgress: hol tart a futó játék (a házigazda gépe küldi, ha változik; a publikus Várók
+// listája mutatja, server/hub.go).
+func (s *server) handleProgress(w http.ResponseWriter, r *http.Request) {
+	var req struct {
+		tokenReq
+		progress
+	}
+	if err := readJSON(w, r, &req); err != nil {
+		writeErr(w, err)
+		return
+	}
+	s.withSeat(w, r, &req.tokenReq, func(l *lobby, seat int) error {
+		switch {
+		case !l.started:
+			return nil // közben véget ért (vissza a váróba)
+		case req.State < 0 || req.State > 20 || req.Round < 0 || req.Round > 99:
+			return apiError{http.StatusBadRequest, "Hibás kérés."}
+		}
+		l.progress = req.progress
+		return nil
+	})
+}
+
+// handleRobot: a főnök a játék indulása előtt robotot tesz egy üres helyre (add), vagy kiveszi onnan.
+// Seat 0: az első üres hely. A robot csak kitölti a helyet: ha nincs üres hely, a belépő ember a
+// helyére ül (handleJoin). Robot nélkül ketten is indíthatnak: a harmadik hely üres marad.
+func (s *server) handleRobot(w http.ResponseWriter, r *http.Request) {
+	var req struct {
+		tokenReq
+		Seat int  `json:"seat"`
+		Add  bool `json:"add"`
+	}
+	if err := readJSON(w, r, &req); err != nil {
+		writeErr(w, err)
+		return
+	}
+	s.withSeat(w, r, &req.tokenReq, func(l *lobby, seat int) error {
+		switch {
+		case seat != l.boss:
+			return apiError{http.StatusForbidden, "Robotot a szoba főnöke tehet be."}
+		case l.started:
+			return apiError{http.StatusConflict, "A játék már elkezdődött."}
+		case req.Seat < 0 || req.Seat > maxPlayers:
+			return apiError{http.StatusBadRequest, "Hibás kérés."}
+		}
+		// a gyakoriság (robotFlood) csak a valódi változásokat számolja
+		now := time.Now()
+		if req.Add {
+			at := req.Seat
+			for st := 1; st <= maxPlayers && at == 0; st++ {
+				if l.seats[st] == nil {
+					at = st
+				}
+			}
+			if at == 0 || l.seats[at] != nil {
+				return apiError{http.StatusConflict, "Nincs szabad hely."}
+			}
+			if ok, wait := l.robots.allow(robotFlood, now); !ok {
+				return tooFast(wait)
+			}
+			l.seats[at] = &player{name: l.robotName(), robot: true, online: true}
+			l.addChat(seat, l.seats[at].name, "robot", now)
+		} else {
+			p := l.seats[req.Seat]
+			if req.Seat == 0 || p == nil || !p.robot {
+				return nil // már nincs ott robot
+			}
+			if ok, wait := l.robots.allow(robotFlood, now); !ok {
+				return tooFast(wait)
+			}
+			l.addChat(seat, p.name, "unrobot", now)
+			l.seats[req.Seat] = nil
+		}
+		l.broadcastState()
+		return nil
+	})
+}
+
 func (s *server) handleLeave(w http.ResponseWriter, r *http.Request) {
 	var req tokenReq
 	if err := readJSON(w, r, &req); err != nil {
@@ -520,6 +609,9 @@ func (s *server) handleLeave(w http.ResponseWriter, r *http.Request) {
 	s.withSeat(w, r, &req, func(l *lobby, seat int) error {
 		if l.started {
 			p := l.seats[seat]
+			if !p.left {
+				l.addChat(seat, "", "quit", time.Now())
+			}
 			p.left, p.online = true, false
 			for sub := range l.subs {
 				if sub.seat == seat {
@@ -564,8 +656,10 @@ func (s *server) handleCheck(w http.ResponseWriter, r *http.Request) {
 }
 
 // handleChat: csevegőüzenet a szobának (a játék előtt és alatt is). A szöveg egysoros, trágárság és
-// link nélkül (server/profanity.go); játékosonként korlátozott gyakorisággal. presence: "left" (a
-// játékos kilépett a csevegésből, az X-szel) vagy "back" (visszalépett) - ezt a többiek látják.
+// link nélkül (server/profanity.go), ugyanazt nem lehet rögtön újra elküldeni, és játékosonként
+// korlátozott a gyakorisága (chatFlood: túllépve egy ideig nem írhat). presence: "left" (a játékos
+// kilépett a csevegésből, az X-szel) vagy "back" (visszalépett) - ezt a többiek látják, de ha túl
+// sűrűn váltogat (presenceFlood), csak csendben vált.
 func (s *server) handleChat(w http.ResponseWriter, r *http.Request) {
 	var req struct {
 		tokenReq
@@ -589,7 +683,7 @@ func (s *server) handleChat(w http.ResponseWriter, r *http.Request) {
 			writeErr(w, apiError{http.StatusBadRequest, "Linket nem lehet küldeni."})
 			return
 		}
-		text = cleanProfanity(text)
+		text = cleanProfanity(capRepeats(text))
 	default:
 		writeErr(w, apiError{http.StatusBadRequest, "Hibás kérés."})
 		return
@@ -597,17 +691,24 @@ func (s *server) handleChat(w http.ResponseWriter, r *http.Request) {
 	s.withSeat(w, r, &req.tokenReq, func(l *lobby, seat int) error {
 		now := time.Now()
 		p := l.seats[seat]
-		if !p.chatAllowed(now) {
-			return apiError{http.StatusTooManyRequests, "Egy kicsit lassabban!"}
+		if req.Presence != "" {
+			if off := req.Presence == "left"; off != p.chatOff {
+				p.chatOff = off
+				if ok, _ := p.toggles.allow(presenceFlood, now); ok {
+					l.addChat(seat, "", req.Presence, now)
+				}
+			}
+			return nil
 		}
-		switch {
-		case req.Presence == "":
-			p.chatOff = false
-			l.addChat(seat, text, "", now)
-		case (req.Presence == "left") != p.chatOff:
-			p.chatOff = req.Presence == "left"
-			l.addChat(seat, "", req.Presence, now)
+		if low := strings.ToLower(text); low == p.said && now.Sub(p.saidAt) < chatRepeat {
+			return apiError{http.StatusConflict, "Ezt az üzenetet már elküldted."}
 		}
+		if ok, wait := p.chats.allow(chatFlood, now); !ok {
+			return tooFast(wait)
+		}
+		p.said, p.saidAt = strings.ToLower(text), now
+		p.chatOff = false
+		l.addChat(seat, text, "", now)
 		return nil
 	})
 }
@@ -685,6 +786,10 @@ func (s *server) handleEvents(w http.ResponseWriter, r *http.Request) {
 	p.online = true
 	if !wasOnline {
 		l.broadcastState() // a többieknek; az új kliens a pillanatképet kapja
+	}
+	if p.dropped && l.started {
+		p.dropped = false
+		l.addChat(seat, "", "rejoin", time.Now())
 	}
 	l.subs[sub] = struct{}{}
 	snapshot := [][]byte{l.state()}
@@ -796,12 +901,15 @@ func (s *server) goneAfterGrace(l *lobby, p *player) {
 		}
 		changed := p.online
 		p.online = false
-		if !l.started {
-			for seat := 1; seat <= maxPlayers; seat++ {
-				if l.seats[seat] == p {
-					l.removeSeat(seat)
-					changed = true
-				}
+		for seat := 1; seat <= maxPlayers; seat++ {
+			switch {
+			case l.seats[seat] != p:
+			case !l.started:
+				l.removeSeat(seat)
+				changed = true
+			case changed && !p.left:
+				p.dropped = true // a többiek látják; ha visszajön, azt is (handleEvents)
+				l.addChat(seat, "", "lost", time.Now())
 			}
 		}
 		if changed {
@@ -816,7 +924,7 @@ func (s *server) cleanup(now time.Time) {
 	defer s.mu.Unlock()
 	for code, l := range s.lobbies {
 		l.mu.Lock()
-		dead := l.closed || l.count() == 0 ||
+		dead := l.closed || l.humans() == 0 ||
 			(l.totalConns() == 0 && now.Sub(l.idleSince) > idleLobbyTTL) ||
 			now.Sub(l.created) > maxLobbyAge
 		if dead {
@@ -984,6 +1092,8 @@ func (s *server) routes() http.Handler {
 	mux.HandleFunc("POST /api/again", s.handleAgain)
 	mux.HandleFunc("POST /api/map", s.handleMap)
 	mux.HandleFunc("POST /api/long", s.handleLong)
+	mux.HandleFunc("POST /api/robot", s.handleRobot)
+	mux.HandleFunc("POST /api/progress", s.handleProgress)
 	mux.HandleFunc("POST /api/leave", s.handleLeave)
 	mux.HandleFunc("POST /api/check", s.handleCheck)
 	mux.HandleFunc("POST /api/send", s.handleSend)

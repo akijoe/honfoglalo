@@ -85,7 +85,16 @@
     net.call = function (cmd, a, b) {
         return EI.call('hfNet', cmd, a, b);
     };
+    // A Ruffle egy hosszú képkocka (vagy a háttérbe tett lap) után a lemaradt setInterval-ütemeket
+    // mind lefuttatja, egymás után. Ezek kimaradnak: különben egy lassú ütem után a következő
+    // képkockában még több jönne, és a játék megfagyna.
+    var lastTick = -1000;
     net.tick = function () {
+        var now = getTimer();
+        if (now - lastTick < 50) {
+            return;
+        }
+        lastTick = now;
         var evs = net.call('poll');
         if (evs) {
             for (var i = 0; i < evs.length; i++) {

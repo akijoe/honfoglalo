@@ -17,6 +17,8 @@ import (
 //     összesen maxStreams
 //   - visszajelzés: IP-nként 15 mp-enként egy, összesen percenként maxFeedbackPerMinute, és a fájl
 //     legfeljebb maxFeedbackBytes
+//   - csevegés, kilépés a csevegésből, robot be/ki, be- és kilépések a csevegésben: játékosonként és
+//     szobánként (server/lobby.go: chatFlood, presenceFlood, robotFlood, comingsFlood)
 //   - kérés: legfeljebb 8 KB törzs, 16 KB fejléc, 20 mp a beolvasására
 const (
 	maxJoinsPerMinute    = 30

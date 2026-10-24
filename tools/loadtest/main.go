@@ -110,9 +110,13 @@ type player struct {
 	gameKey string
 }
 
+// a Várók egy szobája (server/hub.go); a "full" és a "playing" szobába nem lehet belépni
 type hubRoom struct {
-	Code    string   `json:"code"`
-	Players []string `json:"players"`
+	Code    string `json:"code"`
+	Status  string `json:"status"`
+	Players []struct {
+		Name string `json:"name"`
+	} `json:"players"`
 }
 type hubReply struct {
 	Online  int       `json:"online"`
@@ -196,7 +200,7 @@ func (p *player) enter(ctx context.Context) bool {
 		p.mu.Unlock()
 		var free []hubRoom
 		for _, r := range rooms {
-			if len(r.Players) < 3 {
+			if r.Status == "open" {
 				free = append(free, r)
 			}
 		}

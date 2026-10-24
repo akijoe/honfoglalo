@@ -663,3 +663,128 @@ func TestAcceptsGzip(t *testing.T) {
 		}
 	}
 }
+
+// robotok a váróban: a főnök beteheti és kiveheti őket, egy belépő ember a robot helyére ül, és már
+// egy ember és egy robot (vagy két ember) is indíthat; a többiek a csevegésben látják, ki mit tett
+func TestRobots(t *testing.T) {
+	noFloods(t)
+	dir := t.TempDir()
+	os.WriteFile(filepath.Join(dir, "index.html"), []byte("<!doctype html>"), 0o644)
+	s := newServer(dir, filepath.Join(dir, "fb.jsonl"))
+	ts := httptest.NewServer(s.routes())
+	defer func() { ts.CloseClientConnections(); ts.Close() }()
+
+	_, a := post(t, ts.URL, "/api/create", map[string]any{"name": "Anna", "public": true})
+	code, tokA := a["code"].(string), a["token"].(string)
+	evA := events(t, ts.URL, code, tokA)
+	next(t, evA, "state")
+	robot := func(tok string, seat int, add bool) int {
+		st, _ := post(t, ts.URL, "/api/robot", map[string]any{"code": code, "token": tok, "seat": seat, "add": add})
+		return st
+	}
+	players := func(m map[string]any) string {
+		var out []string
+		for _, p := range m["players"].([]any) {
+			p := p.(map[string]any)
+			n := p["name"].(string)
+			if p["robot"] == true {
+				n += "*"
+			}
+			out = append(out, n)
+		}
+		return strings.Join(out, ",")
+	}
+	if st := robot(tokA, 0, true); st != 200 {
+		t.Fatalf("add robot: %d", st)
+	}
+	if m := next(t, evA, "chat"); m["sys"] != "robot" || m["name"] != "Anna" || m["text"] != "Jani" {
+		t.Fatalf("robot chat: %v", m)
+	}
+	if m := next(t, evA, "state"); players(m) != "Anna,Jani*" {
+		t.Fatalf("after robot: %v", players(m))
+	}
+	if st := robot(tokA, 2, true); st != 409 {
+		t.Fatalf("robot on a taken seat: %d", st)
+	}
+	robot(tokA, 3, true)
+	if m := next(t, evA, "state"); players(m) != "Anna,Jani*,Éva*" {
+		t.Fatalf("two robots: %v", players(m))
+	}
+	// a publikus listában a robotok jelölve; a szoba tele van robottal, de egy ember még beléphet
+	s.hub.mu.Lock()
+	s.hub.roomsAt = time.Time{}
+	s.hub.mu.Unlock()
+	if h := getHub(t, ts.URL, "browserAAAA"); len(h.Lobbies) != 1 || len(h.Lobbies[0].Players) != 3 || !h.Lobbies[0].Players[2].Robot ||
+		h.Lobbies[0].Status != "open" || h.Lobbies[0].Created <= 0 {
+		t.Fatalf("hub: %+v", h)
+	}
+	// a robot nevével nem lehet belépni, ha az a robot marad; a belépő az utolsó robot helyére ül
+	if st, _ := post(t, ts.URL, "/api/join", map[string]string{"code": code, "name": "jani"}); st != 409 {
+		t.Fatalf("robot's name: %d", st)
+	}
+	st, b := post(t, ts.URL, "/api/join", map[string]string{"code": code, "name": "Béla"})
+	if st != 200 || b["seat"].(float64) != 3 {
+		t.Fatalf("join over robot: %d %v", st, b)
+	}
+	tokB := b["token"].(string)
+	if m := next(t, evA, "state"); players(m) != "Anna,Jani*,Béla" {
+		t.Fatalf("after join: %v", players(m))
+	}
+	if st := robot(tokB, 0, true); st != 403 {
+		t.Fatalf("guest adds robot: %d", st)
+	}
+	robot(tokA, 2, false)
+	if m := next(t, evA, "state"); players(m) != "Anna,Béla" {
+		t.Fatalf("robot removed: %v", players(m))
+	}
+	// ketten indítanak, a harmadik hely üres marad
+	if st, _ := post(t, ts.URL, "/api/start", map[string]string{"code": code, "token": tokA}); st != 200 {
+		t.Fatalf("start with two: %d", st)
+	}
+	if st := robot(tokA, 0, true); st != 409 {
+		t.Fatalf("robot after start: %d", st)
+	}
+	// játék közbeni kilépés: a többiek a csevegésben látják
+	evB := events(t, ts.URL, code, tokB)
+	next(t, evB, "state")
+	post(t, ts.URL, "/api/leave", map[string]string{"code": code, "token": tokA})
+	for m := next(t, evB, "chat"); m["sys"] != "quit"; m = next(t, evB, "chat") {
+	}
+}
+
+// játék közben elment kapcsolat: a türelmi idő után a többiek látják, és azt is, ha visszajön
+func TestPresenceLost(t *testing.T) {
+	old := offlineGrace
+	offlineGrace = 150 * time.Millisecond
+	defer func() { offlineGrace = old }()
+	dir := t.TempDir()
+	os.WriteFile(filepath.Join(dir, "index.html"), []byte("<!doctype html>"), 0o644)
+	s := newServer(dir, filepath.Join(dir, "fb.jsonl"))
+	ts := httptest.NewServer(s.routes())
+	defer func() { ts.CloseClientConnections(); ts.Close() }()
+
+	_, a := post(t, ts.URL, "/api/create", map[string]any{"name": "Anna"})
+	code, tokA := a["code"].(string), a["token"].(string)
+	_, b := post(t, ts.URL, "/api/join", map[string]string{"code": code, "name": "Béla"})
+	tokB := b["token"].(string)
+	evA := events(t, ts.URL, code, tokA)
+	resp, err := http.Get(ts.URL + "/api/events?code=" + code + "&token=" + tokB)
+	if err != nil {
+		t.Fatal(err)
+	}
+	next(t, evA, "state")
+	post(t, ts.URL, "/api/start", map[string]string{"code": code, "token": tokA})
+	resp.Body.Close() // Béla kapcsolata megszakad
+	m := next(t, evA, "chat")
+	for m["sys"] != "lost" {
+		m = next(t, evA, "chat")
+	}
+	if m["name"] != "Béla" || m["t"].(float64) <= 0 {
+		t.Fatalf("lost: %v", m)
+	}
+	evB := events(t, ts.URL, code, tokB)
+	next(t, evB, "state")
+	if m := next(t, evA, "chat"); m["sys"] != "rejoin" || m["name"] != "Béla" {
+		t.Fatalf("rejoin: %v", m)
+	}
+}
