@@ -11,6 +11,7 @@ still works, only the "Játék ismerősökkel" rooms and the feedback form canno
 """
 import argparse
 import glob
+import hashlib
 import json
 import os
 import shutil
@@ -29,6 +30,17 @@ def copy(rel, out):
     if os.path.getsize(dst) > MAX_FILE:
         sys.exit('túl nagy fájl a Cloudflare Pages-hez: %s' % rel)
     return rel
+
+
+def bust(out, page, tag, rel):
+    """A page fájlban a tag (pontosan egyszer) a rel fájl címét tartalmazza: mögé kerül a rel tartalmának
+    hash-e (?v=...)."""
+    v = hashlib.sha256(open(os.path.join(out, rel), 'rb').read()).hexdigest()[:10]
+    path = os.path.join(out, page)
+    text = open(path, encoding='utf-8').read()
+    if text.count(tag) != 1:
+        sys.exit('%s: nem pontosan egyszer szerepel benne: %s' % (page, tag))
+    open(path, 'w', encoding='utf-8').write(text.replace(tag, tag.replace(rel, rel + '?v=' + v)))
 
 
 def sound_manifest():
@@ -81,6 +93,13 @@ def main():
     with open(os.path.join(out, 'js', 'config.js'), 'w', encoding='utf-8') as f:
         f.write('// tools/build_site.py állította elő: a többjátékos szerver címe\n')
         f.write('window.HF_CONFIG = %s;\n' % json.dumps({'api': api}))
+
+    # A Cloudflare zóna a .js és .swf fájlokat 4 óráig a böngészőben hagyja (Browser Cache TTL), akkor
+    # is, ha a Pages mást kér: egy frissítés után az újratöltött oldal is a régi hf.js-t és SWF-et
+    # futtatná. Ezért a címükbe a tartalmuk hash-e kerül (?v=), minden változat új címet kap.
+    bust(out, 'js/hf.js', "url: 'swf/testclient.swf'", 'swf/testclient.swf')
+    for rel in ('vendor/ruffle/ruffle.js', 'js/config.js', 'js/hf.js'):
+        bust(out, 'index.html', '<script src="%s">' % rel, rel)
 
     # Cloudflare Pages fejlécek: a tartalom-hash nevű Ruffle-fájlok egy évig tárolhatók, a többit
     # (index.html, SWF, kérdések, hangok) a böngésző minden betöltéskor ellenőrzi
