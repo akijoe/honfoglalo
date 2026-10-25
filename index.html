@@ -187,12 +187,15 @@
                               padding: 0 8px 8px; border-left: 1px solid #6B4A24; background: rgba(28, 15, 6, .97); }
     }
 
-    /* lábléc: a térképsáv alján (telefonon a lap alján, középen) */
+    /* lábléc: a térképsáv alján, a verzió és a forráskód, alatta az e-mail cím, alatta a megjegyzés
+       (telefonon a lap alján, középen: az első két rész egy sorban, a megjegyzés alatta) */
     #foot { position: fixed; left: 0; bottom: 0; width: calc(var(--drawer) - 1px); box-sizing: border-box; margin: 0;
             padding: 6px 10px; text-align: center; line-height: 1.35; background: #0B0603; border-top: 1px solid #6B4A24;
             color: #C2A27A; font: 12px 'Book Antiqua', Palatino, 'Palatino Linotype', Georgia, serif; }
-    #maps { padding-bottom: 72px; }
+    #maps { padding-bottom: 96px; }
     #foot .nowrap { white-space: nowrap; }
+    #foot .mail, #foot .na { display: block; }
+    #foot .msep { display: none; }
     #foot a { color: #FFE39A; text-decoration: none; }
     #foot a:hover { text-decoration: underline; }
     #foot .sep { margin: 0 .4em; opacity: .6; }
@@ -200,7 +203,7 @@
     /* telefonon: a játék felül (gépelés közben a billentyűzet fölött is látszik a nagy része), a
        szabály és a térképek bal oldalt, behúzható sávban (a "Menü" fül nyitja) */
     @media (max-width: 700px) {
-      :root { --side: 0px; --foot: 22px; }
+      :root { --side: 0px; --foot: 34px; }
       #game { align-items: flex-start; }
       #maps { z-index: 5; transform: translateX(-100%); visibility: hidden; background: rgba(28, 15, 6, .97);
               box-shadow: 4px 0 16px rgba(0, 0, 0, .6); transition: transform .2s ease, visibility 0s .2s; }
@@ -212,8 +215,9 @@
       body.maps-open #mapsToggle { left: var(--drawer); }
       body.typing #mapsToggle { display: none; }
       #maps { padding-bottom: 12px; }
-      #foot { right: 0; width: auto; height: var(--foot); padding: 0; line-height: var(--foot); white-space: nowrap;
+      #foot { right: 0; width: auto; height: var(--foot); padding: 1px 0 0; line-height: 16px; white-space: nowrap;
               font-size: 11px; background: none; border: 0; }
+      #foot .mail, #foot .msep { display: inline; }
       body.typing #foot { visibility: hidden; }
     }
     /* fekvő telefonon a játék mellett, a bal felső sarokban */
@@ -284,6 +288,6 @@
     </div>
   </section>
   <p id="ruleTip" role="tooltip" hidden></p>
-  <p id="foot"><span class="nowrap">v1.2.1<span class="sep">|</span><a href="https://github.com/akijoe/honfoglalo" target="_blank" rel="noopener">Source code</a><span class="sep">|</span></span> Not affiliated with or endorsed by THX Games</p>
+  <p id="foot"><span class="nowrap">v1.2.1<span class="sep">|</span><a href="https://github.com/akijoe/honfoglalo" target="_blank" rel="noopener">Source code</a></span><span class="sep msep">|</span><a class="mail" href="mailto:contact@honfoglalo.online">contact@honfoglalo.online</a><span class="na">Not affiliated with or endorsed by THX Games</span></p>
 </body>
 </html>
