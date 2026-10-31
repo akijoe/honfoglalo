@@ -37,6 +37,25 @@
         };
     }
 
+    // ------------------------------------------------------------------ témakörök
+
+    // A kérdések csak a kiválasztott témakörökből jönnek (questions.xml CAT; js/hf.js: cats=sport,termtud;
+    // üres vagy hiányzó: mind). Minden módban, a bemutatóban is. hf.cats: {kód: true}, vagy undefined (mind).
+    // A szűrés: src/questions.as (Q.pick, Q.apply).
+    hf.cats = undefined;
+    if (_level0.cats != undefined) {
+        var catList = String(_level0.cats).toLowerCase().split(',');
+        for (var ci = 0; ci < catList.length; ci++) {
+            var code = catList[ci].split(' ').join('');
+            if (code != '') {
+                if (hf.cats == undefined) {
+                    hf.cats = {};
+                }
+                hf.cats[code] = true;
+            }
+        }
+    }
+
     // ------------------------------------------------------------------ hosszú hadjárat
 
     // A próbajáték csak a villámháborút játszotta: a bázisokat a gép sorsolja, 4 harci kör, az

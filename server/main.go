@@ -196,6 +196,7 @@ func (s *server) handleCreate(w http.ResponseWriter, r *http.Request) {
 		Name   string `json:"name"`
 		Map    string `json:"map"`
 		Long   bool   `json:"long"`
+		Cats   string `json:"cats"` // a témakörök (cleanCats); érvénytelen lista: mind
 		Public bool   `json:"public"`
 		Title  string `json:"title"`  // a publikus szoba neve (üres: "<név> lobbyja")
 		Client string `json:"client"` // a böngésző azonosítója (js/hf.js: clientId)
@@ -276,6 +277,9 @@ func (s *server) handleCreate(w http.ResponseWriter, r *http.Request) {
 		l.mapID = m
 	}
 	l.long = req.Long
+	if c, ok := cleanCats(req.Cats); ok {
+		l.cats = c
+	}
 	l.public, l.title = req.Public, title
 	l.creator, l.client = l.seats[1], client
 	l.mu.Lock()
@@ -516,6 +520,34 @@ func (s *server) handleLong(w http.ResponseWriter, r *http.Request) {
 		}
 		if l.long != req.Long {
 			l.long = req.Long
+			l.broadcastState()
+		}
+		return nil
+	})
+}
+
+// handleCats: a főnök a játék indulása előtt átállítja a kérdések témaköreit ("": mind).
+func (s *server) handleCats(w http.ResponseWriter, r *http.Request) {
+	var req struct {
+		tokenReq
+		Cats string `json:"cats"`
+	}
+	if err := readJSON(w, r, &req); err != nil {
+		writeErr(w, err)
+		return
+	}
+	s.withSeat(w, r, &req.tokenReq, func(l *lobby, seat int) error {
+		c, ok := cleanCats(req.Cats)
+		switch {
+		case !ok:
+			return apiError{http.StatusBadRequest, "Ismeretlen témakör."}
+		case seat != l.boss:
+			return apiError{http.StatusForbidden, "A témaköröket a szoba főnöke választja."}
+		case l.started:
+			return apiError{http.StatusConflict, "A játék már elkezdődött."}
+		}
+		if l.cats != c {
+			l.cats = c
 			l.broadcastState()
 		}
 		return nil
@@ -1101,6 +1133,7 @@ func (s *server) routes() http.Handler {
 	mux.HandleFunc("POST /api/again", s.handleAgain)
 	mux.HandleFunc("POST /api/map", s.handleMap)
 	mux.HandleFunc("POST /api/long", s.handleLong)
+	mux.HandleFunc("POST /api/cats", s.handleCats)
 	mux.HandleFunc("POST /api/robot", s.handleRobot)
 	mux.HandleFunc("POST /api/progress", s.handleProgress)
 	mux.HandleFunc("POST /api/leave", s.handleLeave)

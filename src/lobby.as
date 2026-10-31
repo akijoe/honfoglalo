@@ -1076,7 +1076,7 @@
 
     lobby.room = function () {
         var h = hf.net.call('hello');
-        var b = ui.open(420, 384, 'Szoba: ' + h.code);
+        var b = ui.open(420, 416, 'Szoba: ' + h.code);
         var invite = ui.text(b, 24, 52, 372, 22, 'Küldd el ezt a linket a barátaidnak:', 15, C.text);
         var link = ui.text(b, 24, 76, 266, 26, h.link, 14, C.inputText);
         link.background = true;
@@ -1148,17 +1148,19 @@
         // a szoba szabálya és térképe: ugyanazok az ikonok, mint az oldal bal sávjában (img/rules, img/maps)
         var ruleIcon = ui.iconLabel(b, 24, 230, 190);
         var mapIcon = ui.iconLabel(b, 214, 230, 190);
-        var st = ui.text(b, 20, 262, 380, 64, '', 14, C.dim, false, 'center', true);
-        ui.button(b, 24, 332, 120, 34, 'Kilépés', function () {
+        // alatta a témakörök (js/hf.js: state.catsName, pl. "Sport, Természettudomány"), 7 név két sor
+        var catsLine = ui.text(b, 20, 258, 380, 36, '', 13, C.dim, false, 'center', true);
+        var st = ui.text(b, 20, 294, 380, 64, '', 14, C.dim, false, 'center', true);
+        ui.button(b, 24, 364, 120, 34, 'Kilépés', function () {
             hf.net.call('leave');
             lobby.open();
         });
-        var start = ui.button(b, 256, 332, 140, 34, 'Indítás', function () {
+        var start = ui.button(b, 256, 364, 140, 34, 'Indítás', function () {
             hf.net.call('start');
             status(st, 'Indítás...');
         });
         start._visible = false;
-        var rejoin = ui.button(b, 226, 332, 170, 34, 'Visszalépés', function () {
+        var rejoin = ui.button(b, 226, 364, 170, 34, 'Visszalépés', function () {
             hf.net.call('rejoin');
             status(st, 'Visszalépés a játékba...');
         });
@@ -1216,16 +1218,18 @@
             var x0 = Math.round((420 - w1 - 28 - mapIcon.width()) / 2);       // a kettő együtt középen
             ruleIcon.clip._x = x0;
             mapIcon.clip._x = x0 + w1 + 28;
+            // "Minden témakör" előtag nélkül
+            catsLine.text = !state.catsName ? '' : (state.cats ? 'Témakörök: ' : '') + state.catsName;
             start._visible = boss && !state.started;
             start.setOn(count >= 2);
             rejoin._visible = state.started;
             if (state.started) {
                 status(st, 'A játék már folyik. Visszaléphetsz (ahonnan most tart a játék), vagy kiléphetsz: ekkor helyetted robot játszik tovább.');
             } else if (boss) {
-                // a térképet és a szabályt a főnök az oldal bal oldali sávjában választja (js/hf.js)
+                // a térképet, a szabályt és a témaköröket a főnök az oldal bal oldali sávjában választja (js/hf.js)
                 var wait = state.public ? 'Várjuk, hogy belépjenek a játékosok... ' : 'Várjuk, hogy a barátaid belépjenek a linkkel... ';
                 status(st, (count >= 3 ? 'Ha mindenki megvan, indítsd el a játékot!' : count == 2 ? 'Ketten is indíthatjátok: az üres hely kimarad a játékból.' : wait + 'Robotot is betehetsz.') +
-                    ' A térképet és a szabályt a bal oldali sávban választhatod.');
+                    ' A térképet, a szabályt és a témaköröket a bal oldali sávban választhatod.');
             } else {
                 status(st, 'Várjuk, hogy a szoba főnöke elindítsa a játékot...');
             }

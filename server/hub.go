@@ -44,6 +44,7 @@ type hubRoom struct {
 	Players  []hubSeat `json:"players"`
 	Map      string    `json:"map"`
 	Long     bool      `json:"long"`
+	Cats     string    `json:"cats,omitempty"`
 	Created  int64     `json:"created"` // Unix ms; a játékok után sem változik (ugyanaz a szoba)
 	Status   string    `json:"status"`
 	Progress *progress `json:"progress,omitempty"`
@@ -82,7 +83,7 @@ func (s *server) publicRooms() []hubRoom {
 		l.mu.Lock()
 		n := l.humans()
 		if !l.closed && n > 0 {
-			r := hubRoom{Code: l.code, Title: l.title, Players: []hubSeat{}, Map: l.mapID, Long: l.long, Created: l.created.UnixMilli(), Status: "open"}
+			r := hubRoom{Code: l.code, Title: l.title, Players: []hubSeat{}, Map: l.mapID, Long: l.long, Cats: l.cats, Created: l.created.UnixMilli(), Status: "open"}
 			for seat := 1; seat <= maxPlayers; seat++ {
 				if p := l.seats[seat]; p != nil {
 					r.Players = append(r.Players, hubSeat{Name: p.name, Robot: p.robot, Away: l.started && !p.robot && (p.left || !p.online)})

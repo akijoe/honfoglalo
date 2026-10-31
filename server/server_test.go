@@ -478,6 +478,70 @@ func TestLobbyLong(t *testing.T) {
 	}
 }
 
+func TestLobbyCats(t *testing.T) {
+	dir := t.TempDir()
+	os.WriteFile(filepath.Join(dir, "index.html"), []byte("<!doctype html>"), 0o644)
+	s := newServer(dir, filepath.Join(dir, "fb.jsonl"))
+	ts := httptest.NewServer(s.routes())
+	defer func() { ts.CloseClientConnections(); ts.Close() }()
+
+	// a létrehozáskor megadott témakörök kanonikus sorrendben, utána a főnök állítja az indulásig
+	_, a := post(t, ts.URL, "/api/create", map[string]any{"name": "Anna", "cats": "termtud, Sport,termtud"})
+	code, tokA := a["code"].(string), a["token"].(string)
+	evA := events(t, ts.URL, code, tokA)
+	if m := next(t, evA, "state"); m["cats"] != "sport,termtud" {
+		t.Fatalf("cats at create: %v", m["cats"])
+	}
+	_, b := post(t, ts.URL, "/api/join", map[string]string{"code": code, "name": "Béla"})
+	tokB := b["token"].(string)
+	next(t, evA, "state")
+	if st, _ := post(t, ts.URL, "/api/cats", map[string]any{"code": code, "token": tokB, "cats": "matfiz"}); st != 403 {
+		t.Fatalf("cats by guest: %d", st)
+	}
+	if st, _ := post(t, ts.URL, "/api/cats", map[string]any{"code": code, "token": tokA, "cats": "matfiz"}); st != 200 {
+		t.Fatalf("cats: %d", st)
+	}
+	if m := next(t, evA, "state"); m["cats"] != "matfiz" {
+		t.Fatalf("cats after change: %v", m["cats"])
+	}
+	if st, _ := post(t, ts.URL, "/api/cats", map[string]any{"code": code, "token": tokA, "cats": "matfiz,foci"}); st != 400 {
+		t.Fatalf("unknown cat: %d", st)
+	}
+	// mind a nyolc: ugyanaz, mint az üres (nincs cats a state-ben)
+	all := strings.Join(validCats, ",")
+	if st, _ := post(t, ts.URL, "/api/cats", map[string]any{"code": code, "token": tokA, "cats": all}); st != 200 {
+		t.Fatalf("cats all: %d", st)
+	}
+	if m := next(t, evA, "state"); m["cats"] != nil {
+		t.Fatalf("cats after all: %v", m["cats"])
+	}
+	post(t, ts.URL, "/api/start", map[string]string{"code": code, "token": tokA})
+	next(t, evA, "state")
+	if st, _ := post(t, ts.URL, "/api/cats", map[string]any{"code": code, "token": tokA, "cats": "sport"}); st != 409 {
+		t.Fatalf("cats after start: %d", st)
+	}
+	// érvénytelen lista a létrehozáskor: mind
+	st, c := post(t, ts.URL, "/api/create", map[string]any{"name": "Cili", "cats": "sport,foci"})
+	if st != 200 {
+		t.Fatalf("bad cats at create: %d", st)
+	}
+	if m := next(t, events(t, ts.URL, c["code"].(string), c["token"].(string)), "state"); m["cats"] != nil {
+		t.Fatalf("bad cats at create: %v", m["cats"])
+	}
+}
+
+func TestCleanCats(t *testing.T) {
+	for in, want := range map[string]string{"": "", " , ": "", "szorakozas,foldrajz": "foldrajz,szorakozas",
+		"EletMod , eletmod": "eletmod", strings.Join(validCats, ","): ""} {
+		if got, ok := cleanCats(in); !ok || got != want {
+			t.Errorf("cleanCats(%q) = %q, %v", in, got, ok)
+		}
+	}
+	if _, ok := cleanCats("sport,xyz"); ok {
+		t.Error("unknown accepted")
+	}
+}
+
 // ha a létrehozó az első játék előtt elmegy, a szoba megszűnik (a bent lévők üzenetet kapnak)
 func TestCreatorLeavesClosesLobby(t *testing.T) {
 	dir := t.TempDir()
