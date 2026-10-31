@@ -69,6 +69,13 @@
       line-height: 1.2; white-space: nowrap; }
     #maps .rules img { width: 44px; }
     #maps img { width: 56px; height: 40px; object-fit: contain; flex: none; }
+    /* témakörök (js/hf.js: pickCat): kis kapcsolók, ahány egy sorba fér; a kiválasztott a térképéhez
+       hasonlóan arany (de nem félkövér, hogy váltáskor ne ugráljanak a sorok); a "Mind" mindet kiválasztja */
+    #maps .cats { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 12px; }
+    #maps .cats button { flex: 1 1 auto; width: auto; justify-content: center; padding: 3px 7px; border-color: rgba(200, 155, 74, .35);
+                         font-size: 13px; line-height: 1.2; text-align: center; }
+    #maps .cats button.on { border-color: #C89B4A; font-weight: normal; }
+    #maps.locked .cats button:not(.on) { opacity: .45; }
     #maps .note { margin: 10px 4px 0; font-size: 12px; line-height: 1.35; color: #C2A27A; text-align: center; }
     #maps .note:empty { display: none; }
 
@@ -244,6 +251,8 @@
         <button type="button" class="info" aria-label="Mit jelent a hosszú hadjárat?" aria-controls="ruleTip" aria-expanded="false">i</button>
       </div>
     </div>
+    <h2>Témakörök</h2>
+    <div class="cats" role="group" aria-label="Témakörök"></div>
     <h2>Térkép</h2>
     <div class="list"></div>
     <p class="note"></p>

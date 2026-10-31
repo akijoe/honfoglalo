@@ -111,6 +111,7 @@ type lobby struct {
 	boss      int
 	mapID     string  // a térkép (validMaps), a főnök választja az indulás előtt
 	long      bool    // hosszú hadjárat (6 harci kör), a főnök választja az indulás előtt
+	cats      string  // a kérdések témakörei (cleanCats; "": mind), a főnök választja az indulás előtt
 	public    bool    // a Várók listájában látszik, kód nélkül is be lehet lépni
 	title     string  // a publikus szoba neve
 	creator   *player // aki létrehozta: ha az első játék előtt elmegy, a szoba megszűnik
@@ -146,6 +147,7 @@ type stateEvent struct {
 	Boss    int          `json:"boss"`
 	Map     string       `json:"map"`
 	Long    bool         `json:"long"`
+	Cats    string       `json:"cats,omitempty"`
 	Game    int          `json:"game"`
 	Public  bool         `json:"public,omitempty"`
 	Title   string       `json:"title,omitempty"`
@@ -165,6 +167,41 @@ func cleanMap(s string) string {
 		}
 	}
 	return ""
+}
+
+// validCats: a kérdések témakörei, kanonikus sorrendben.
+var validCats = []string{"foldrajz", "sport", "irodalom", "muveszet", "termtud", "matfiz", "eletmod", "szorakozas"}
+var validCat = func() map[string]bool {
+	m := map[string]bool{}
+	for _, c := range validCats {
+		m[c] = true
+	}
+	return m
+}()
+
+// cleanCats: a vesszővel elválasztott témakörlista kanonikus sorrendben, ismétlés nélkül; "" ha üres
+// vagy mind a nyolc benne van. ok=false, ha ismeretlen kód is van benne.
+func cleanCats(s string) (string, bool) {
+	on := map[string]bool{}
+	for _, c := range strings.Split(s, ",") {
+		if c = strings.ToLower(strings.TrimSpace(c)); c == "" {
+			continue
+		}
+		if !validCat[c] {
+			return "", false
+		}
+		on[c] = true
+	}
+	if len(on) == len(validCats) {
+		return "", true
+	}
+	var out []string
+	for _, v := range validCats {
+		if on[v] {
+			out = append(out, v)
+		}
+	}
+	return strings.Join(out, ","), true
 }
 
 func newLobby(code string, now time.Time) *lobby {
@@ -385,7 +422,7 @@ func (l *lobby) seatOf(token string) int {
 }
 
 func (l *lobby) stateEvent() stateEvent {
-	ev := stateEvent{Type: "state", Code: l.code, Started: l.started, Boss: l.boss, Map: l.mapID, Long: l.long,
+	ev := stateEvent{Type: "state", Code: l.code, Started: l.started, Boss: l.boss, Map: l.mapID, Long: l.long, Cats: l.cats,
 		Game: l.game, Public: l.public, Title: l.title, Players: []playerView{}}
 	for s := 1; s <= maxPlayers; s++ {
 		if p := l.seats[s]; p != nil {

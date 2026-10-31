@@ -76,7 +76,7 @@ func TestPublicLobbiesAndOnline(t *testing.T) {
 
 	// privát szoba nem látszik; a publikus az alapértelmezett nevével igen
 	post(t, ts.URL, "/api/create", map[string]any{"name": "Titok"})
-	_, a := post(t, ts.URL, "/api/create", map[string]any{"name": "Anna", "public": true, "map": "fr", "long": true})
+	_, a := post(t, ts.URL, "/api/create", map[string]any{"name": "Anna", "public": true, "map": "fr", "long": true, "cats": "sport,irodalom"})
 	code, tokA := a["code"].(string), a["token"].(string)
 	evA := events(t, ts.URL, code, tokA)
 	if m := next(t, evA, "state"); m["public"] != true || m["title"] != "Anna lobbyja" {
@@ -96,7 +96,7 @@ func TestPublicLobbiesAndOnline(t *testing.T) {
 	if !same.Same || same.Lobbies != nil || same.V != h.V {
 		t.Fatalf("same version: %+v", same)
 	}
-	if r := h.Lobbies[0]; r.Code != code || r.Title != "Anna lobbyja" || r.Map != "FR" || !r.Long || len(r.Players) != 1 {
+	if r := h.Lobbies[0]; r.Code != code || r.Title != "Anna lobbyja" || r.Map != "FR" || !r.Long || r.Cats != "sport,irodalom" || len(r.Players) != 1 {
 		t.Fatalf("lobby: %+v", r)
 	}
 	// saját név; trágár szóval, linkkel vagy túl hosszan nem lehet
