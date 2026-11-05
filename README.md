@@ -33,7 +33,10 @@ játszható. Ugyanott a szabály is (az „i” jel elmagyarázza):
   kezdőterületüket (a bázisukat); 6 harci kör, fix sorrendben (mindenki minden helyről egyszer
   támad), és csak az utolsó körben lehet bárhová támadni.
 
-A szabály a robotos és a többjátékos játékra vonatkozik, a bemutató mindig villámháború. A játék végén
+A szabály a robotos és a többjátékos játékra vonatkozik, a bemutató mindig villámháború. A **Témakörök**
+alatt az is beállítható, miből kérdezzen a játék (pl. csak sport és természettudomány): a kiválasztott
+témakörök ki-be kapcsolhatók, legalább egynek maradnia kell, a „Mind” mindet visszakapcsolja. Ez minden
+módban számít, a bemutatóban is; a szobában a főnök választja, és a Várók listája is mutatja. A játék végén
 egy eredményablak mutatja a helyezéseket és a saját statisztikádat.
 
 ## Többjátékos játék
@@ -76,9 +79,10 @@ Events folyamon kapják az eseményeket. IP-nkénti korlátok védik (`server/li
 A `questions.xml`-ben 1000 feleletválasztós és 1000 tippkérdés van, nyolc kategóriában (földrajz,
 sport, irodalom, művészet, természettudományok, matematika–fizika, életmód, szórakozás), mindegyikben
 125–125, és nehézségenként (könnyű, közepes, nehéz) nagyjából egyharmad. A játék előbb kategóriát
-sorsol, aztán kérdést; egy játékon belül nincs ismétlés. A böngésző megjegyzi a látott kérdéseket, és
-előbb a még nem látottak jönnek; többjátékosban a szoba minden játékosáé számít (azok jönnek előbb,
-amelyeket a legkevesebben láttak).
+sorsol, aztán kérdést; egy játékon belül nincs ismétlés. Ha csak néhány témakör van kiválasztva (fent), a
+többi kategória kimarad, és ha a kiválasztottak egy játékon belül elfogynak, azok jönnek újra. A böngésző
+megjegyzi a látott kérdéseket, és előbb a még nem látottak jönnek; többjátékosban a szoba minden játékosáé
+számít (azok jönnek előbb, amelyeket a legkevesebben láttak).
 
 | Forrás                           | Feleletválasztós | Tipp | Összesen     |
 | -------------------------------- | ---------------: | ---: | -----------: |
@@ -123,7 +127,7 @@ nem változtak. A kiegészítések ActionScript-forrásként a `src/` mappában 
 - `src/mp.as` – a többjátékos szinkron
 
 Teszteléshez: `?debugclock=3` (rövid óra), `?slot=a` (külön munkamenet), `?debug`, `?map=FR`,
-`?long=1` (hosszú hadjárat), `?touchtext` (a telefonos beviteli mező asztali gépen is).
+`?long=1` (hosszú hadjárat), `?gamemode=1&cats=sport,termtud` (csak ezek a témakörök, csak erre a betöltésre), `?touchtext` (a telefonos beviteli mező asztali gépen is).
 
 ## Források
 

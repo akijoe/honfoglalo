@@ -284,8 +284,27 @@
   // módban a böngésző emlékszik rá, a szobában a főnök választja. ?long=1 / ?long=0: csak most.
   const myLong = () => (params.has('long') ? params.get('long') === '1' : load('localStorage', 'hfLong') === true);
   const longVar = on => (on ? '1' : '0');
-  // a szoba állapota a Flash-nek: a térkép magyar nevével (src/lobby.as: szoba-ablak)
-  const flashState = st => st && Object.assign({ mapName: mapName(st.map) }, st);
+  // A kérdések témakörei: a játék csak a kiválasztottakból kérdez. A térképhez hasonlóan egyjátékos
+  // módban a böngésző emlékszik rá, a szobában a főnök választja. A választás egy szöveg (a SWF
+  // "cats" paramétere, a szerver "cats" mezője): a kódok vesszővel, ebben a sorrendben; "" = mind.
+  const CATS = [
+    ['foldrajz', 'Földrajz'], ['sport', 'Sport'], ['irodalom', 'Irodalom'], ['muveszet', 'Művészet'],
+    ['termtud', 'Természettudomány'], ['matfiz', 'Matematika, fizika'], ['eletmod', 'Életmód'], ['szorakozas', 'Szórakozás'],
+  ];
+  // a választás tisztán: csak ismert kódok, egyszer, a CATS sorrendjében; mind a 8 (vagy egy sem) = ""
+  function cleanCats(s) {
+    const want = String(s || '').toLowerCase().split(',').map(c => c.trim());
+    const list = CATS.filter(c => want.includes(c[0])).map(c => c[0]);
+    return list.length === CATS.length ? '' : list.join(',');
+  }
+  function catsName(s) {
+    const list = cleanCats(s).split(',');
+    return list[0] ? CATS.filter(c => list.includes(c[0])).map(c => c[1]).join(', ') : 'Minden témakör';
+  }
+  // ?cats=sport,termtud: csak erre a betöltésre (kipróbáláshoz)
+  const myCats = () => cleanCats(params.has('cats') ? params.get('cats') : load('localStorage', 'hfCats'));
+  // a szoba állapota a Flash-nek: a térkép és a témakörök magyar nevével (src/lobby.as: szoba-ablak)
+  const flashState = st => st && Object.assign({ mapName: mapName(st.map), catsName: catsName(st.cats) }, st);
 
   // A főoldal ezt hívta a menüválasztáskor (konverziómérés) – itt nincs teendő.
   window.ConvRateSignal = function () {};
@@ -300,6 +319,8 @@
     seenKeys: new Set(),
     events: [],           // a Flash következő hfNet('poll')-jának
     sendChain: Promise.resolve(),
+    catsChain: Promise.resolve(),
+    catsWant: null,       // a főnök elküldött témakör-választása, amíg a szoba állapotában meg nem jelenik
     inGame: false,
     sawLobby: false,      // ebben a lapban láttuk a szobát indulás előtt (az indulás után rögtön játék)
     heard: 0,             // az eseményfolyam utolsó üzenetének ideje (a szerver 15 mp-enként pingel)
@@ -409,6 +430,7 @@
     if (net.session && last && last.token === net.session.token) save('localStorage', sessionKey, null);
     net.session = null;
     net.state = null;
+    net.catsWant = null;
     save('sessionStorage', tabKey, null);
     save('sessionStorage', playingKey, null);
     save('sessionStorage', chatOffKey, null);
@@ -433,6 +455,7 @@
       net.seenKeys = new Set();
     }
     net.state = ev;
+    if (net.catsWant !== null && (ev.started || cleanCats(ev.cats) === net.catsWant)) net.catsWant = null;
     emit({ type: 'state', state: flashState(ev) });
     renderMaps();
     if (!ev.started) net.sawLobby = true;
@@ -447,6 +470,7 @@
     remember(net.session);
     save('sessionStorage', playingKey, null);
     net.state = null;
+    net.catsWant = null;
     net.decs = [];
     net.seenKeys = new Set();
     chatReset();
@@ -521,7 +545,7 @@
         }
         case 'create':        // b: a publikus váró neve (üres: privát szoba)
           save('localStorage', 'hfName', String(a));
-          call(api('create', { name: String(a), map: myMap(), long: myLong(), public: !!b, title: b ? String(b) : '', client: clientId })
+          call(api('create', { name: String(a), map: myMap(), long: myLong(), cats: myCats(), public: !!b, title: b ? String(b) : '', client: clientId })
             .then(setSession));
           return true;
         case 'join':
@@ -699,7 +723,7 @@
     net.inGame = false;
     net.sawLobby = true;
     save('sessionStorage', playingKey, null);
-    loadSwf({ invitation: '1', map: myMap() });
+    loadSwf({ invitation: '1', map: myMap(), cats: myCats() });
     renderMaps();
   }
 
@@ -707,25 +731,32 @@
     net.inGame = true;
     net.playing = net.state ? net.state.game : 0;
     save('sessionStorage', playingKey, net.session.code);
-    loadSwf({ invitation: '0', mp: '1', map: cleanMap(net.state && net.state.map) || 'HU', long: longVar(net.state && net.state.long) });
+    loadSwf({ invitation: '0', mp: '1', map: cleanMap(net.state && net.state.map) || 'HU', long: longVar(net.state && net.state.long),
+      cats: cleanCats(net.state && net.state.cats) });
     renderMaps();
   }
 
   // ---------------------------------------------------------------------------- térképválasztó
 
   // A bal oldali sáv (index.html: #maps). Mikor mit lehet:
-  //   többjátékos játék közben: semmit (a szoba térképe látszik)
-  //   szobában, indulás előtt: csak a főnök választ, mindenki a szoba térképét látja
+  //   többjátékos játék közben: semmit (a szoba térképe, szabálya és témakörei látszanak)
+  //   szobában, indulás előtt: csak a főnök választ, mindenki a szoba választását látja
   //   különben (menü, bemutató, robotok): a saját választás; váltáskor a mostani mód újraindul
   function mapMode() {
     const st = net.state;
-    if (net.inGame) return { current: cleanMap(st && st.map), long: !!(st && st.long), locked: 'Játék közben nem lehet térképet és szabályt váltani.' };
-    if (net.session && st && !st.started) {
-      if (st.boss === net.session.seat) return { current: cleanMap(st.map), long: !!st.long, room: true };
-      const boss = st.players.find(p => p.seat === st.boss);
-      return { current: cleanMap(st.map), long: !!st.long, locked: 'A térképet és a szabályt a szoba főnöke' + (boss ? ' (' + boss.name + ')' : '') + ' választja.' };
+    if (net.inGame) {
+      return { current: cleanMap(st && st.map), long: !!(st && st.long), cats: cleanCats(st && st.cats),
+        locked: 'Játék közben nem lehet térképet, szabályt és témakört váltani.' };
     }
-    return { current: myMap(), long: myLong() };
+    if (net.session && st && !st.started) {
+      if (st.boss === net.session.seat) {
+        return { current: cleanMap(st.map), long: !!st.long, cats: net.catsWant !== null ? net.catsWant : cleanCats(st.cats), room: true };
+      }
+      const boss = st.players.find(p => p.seat === st.boss);
+      return { current: cleanMap(st.map), long: !!st.long, cats: cleanCats(st.cats),
+        locked: 'A térképet, a szabályt és a témaköröket a szoba főnöke' + (boss ? ' (' + boss.name + ')' : '') + ' választja.' };
+    }
+    return { current: myMap(), long: myLong(), cats: myCats() };
   }
 
   function renderMaps() {
@@ -743,6 +774,13 @@
       const on = (b.dataset.long === '1') === mode.long;
       b.classList.toggle('on', on);
       b.closest('.rule').classList.toggle('on', on);
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      b.disabled = !!mode.locked;
+    }
+    const cats = mode.cats.split(',');
+    for (const b of box.querySelectorAll('.cats button[data-cat]')) {
+      const on = !mode.cats || cats.includes(b.dataset.cat);      // "Mind" (*): ha mind ki van választva
+      b.classList.toggle('on', on);
       b.setAttribute('aria-pressed', on ? 'true' : 'false');
       b.disabled = !!mode.locked;
     }
@@ -776,9 +814,14 @@
       save('localStorage', 'hfMap', mode.current);
       return;
     }
-    // újratöltés: a mostani mód az új térképpel
+    restart('map');         // a mostani mód az új térképpel
+  }
+
+  // újratöltés: a mostani mód az új választással (a címből kimarad a csak egy betöltésre szóló
+  // ?map= / ?long= / ?cats=, hogy a mentett választás érvényesüljön)
+  function restart(drop) {
     const q = new URLSearchParams(location.search);
-    q.delete('map');
+    q.delete(drop);
     const url = location.pathname + (q.toString() ? '?' + q : '');
     if (url === location.pathname + location.search) location.reload();
     else location.href = url;
@@ -895,11 +938,53 @@
       save('localStorage', 'hfLong', mode.long);
       return;
     }
-    const q = new URLSearchParams(location.search);
-    q.delete('long');
-    const url = location.pathname + (q.toString() ? '?' + q : '');
-    if (url === location.pathname + location.search) location.reload();
-    else location.href = url;
+    restart('long');
+  }
+
+  // A témakörök (index.html: #maps .cats) ki-be kapcsolhatók; legalább egynek maradnia kell (az
+  // utolsó kivétele nem számít), a "Mind" mindet kiválasztja. Váltáskor a mostani mód újraindul (a
+  // menü is: a bemutatót a SWF menüje a már betöltött SWF-ben indítja, annak a paramétere számít).
+  function pickCat(code) {
+    const cur = mapMode().cats;
+    const list = cur ? cur.split(',') : CATS.map(c => c[0]);
+    const i = list.indexOf(code);
+    if (i < 0) list.push(code);
+    else if (list.length > 1) list.splice(i, 1);
+    else return;
+    pickCats(list);
+  }
+
+  function pickCats(list) {
+    const mode = mapMode();
+    const cats = cleanCats(Array.isArray(list) ? list.join(',') : list);
+    if (mode.locked || cats === mode.cats) return;
+    const prev = load('localStorage', 'hfCats');
+    save('localStorage', 'hfCats', cats || null);
+    if (mode.room) { sendCats(cats); return; }
+    if (gamemode !== null && !window.confirm('A játék újraindul a választott témakörökkel. Mehet?')) {
+      save('localStorage', 'hfCats', prev);
+      return;
+    }
+    restart('cats');
+  }
+
+  // A főnök gyors egymás utáni kattintásai: a szoba állapota csak a szerver válasza után frissül,
+  // addig a sáv a kért választást mutatja (net.catsWant), és a kérések sorban mennek el, hogy a
+  // szerverre is az utolsó érkezzen meg utoljára.
+  function sendCats(cats) {
+    const s = net.session;
+    net.catsWant = cats;
+    renderMaps();
+    net.catsChain = net.catsChain.then(() => {
+      if (net.session !== s) return null;
+      return api('cats', { code: s.code, token: s.token, cats: cats }).catch(e => {
+        if (net.catsWant === cats) {
+          net.catsWant = null;
+          renderMaps();
+        }
+        emit({ type: 'error', msg: e.message });
+      });
+    });
   }
 
   function buildMaps() {
@@ -926,6 +1011,20 @@
       b.append(img, label);
       b.addEventListener('click', () => { showMaps(false); pickMap(id); });
       list.appendChild(b);
+    }
+    // a témakörök: egyszerre többet is lehet váltani, ezért a sáv nyitva marad
+    const cats = box.querySelector('.cats');
+    for (const [code, name] of CATS.concat([['*', 'Mind']])) {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.dataset.cat = code;
+      b.textContent = name;
+      if (code === '*') {
+        b.className = 'all';
+        b.title = 'Minden témakör';
+      }
+      b.addEventListener('click', () => { if (code === '*') pickCats(''); else pickCat(code); });
+      cats.appendChild(b);
     }
     renderMaps();
   }
@@ -1063,7 +1162,8 @@
         t.append(label, clock(r.created));
         title.prepend(t);
       }
-      el.append(title, who, line('rm', mapName(r.map) + ', ' + ruleName(r.long)));
+      const cats = cleanCats(r.cats);     // a témakörök csak akkor, ha nem mind
+      el.append(title, who, line('rm', mapName(r.map) + ', ' + ruleName(r.long) + (cats ? ', ' + catsName(cats) : '')));
       if (r.status === 'playing') el.append(line('rm st', 'Játékban: ' + progressText(r)));
       else if (r.status === 'full') el.append(line('rm st', 'Megtelt, indulásra vár'));
       el.append(b);
@@ -1338,9 +1438,9 @@
     buildMaps();
     buildRooms();
     buildChat();
-    if (gamemode === '1') { loadSwf({ invitation: '0', quickgame: '1', map: myMap(), long: longVar(myLong()) }); return; }
-    if (gamemode === '0') { loadSwf({ invitation: '0', map: myMap() }); return; }
-    const menu = () => loadSwf({ invitation: '1', map: myMap() });
+    if (gamemode === '1') { loadSwf({ invitation: '0', quickgame: '1', map: myMap(), long: longVar(myLong()), cats: myCats() }); return; }
+    if (gamemode === '0') { loadSwf({ invitation: '0', map: myMap(), cats: myCats() }); return; }
+    const menu = () => loadSwf({ invitation: '1', map: myMap(), cats: myCats() });
     let own = load('sessionStorage', tabKey);
     if (own && joinCode && joinCode !== own.code) {
       net.session = own;

@@ -153,6 +153,34 @@
         return n;
     }
 
+    // ------------------------------------------------------------------ témakörök
+
+    // A kiválasztott témakörök (src/tweaks.as: hf.cats) kérdései a teljes lista előtt fogynak el, ezért
+    // a sorrend: megengedett és még nem volt -> megengedett, de már volt -> bármelyik. A középső lépés
+    // a "már volt" lista törlése, amint a megengedettek elfogytak (allowedUsed eléri allowedTotal-t);
+    // ezt a Q.apply teszi, nem a Q.pick: a Q.apply minden gépen ugyanúgy fut, így a lista a
+    // többjátékos játékban is mindenhol azonos marad (kérdést csak a házigazda választ). A Q.pick így
+    // csak akkor nem talál szabad megengedett kérdést, ha a témakörökben ilyen fajta (tipp /
+    // feleletválasztós) nincs: ekkor szűrés nélkül választ, hogy a játék ne akadjon el.
+    // A sorszámok (used, Q.mySeen, Q.setOthers) mindig a teljes listára vonatkoznak.
+    var allowedTotal = {};             // fajta -> hány megengedett kérdés van (egyszer számolva)
+    var allowedUsed = {mc: 0, tip: 0}; // fajta -> ebből hány volt már (a used-dal együtt nullázódik)
+    function allowed(tag) {
+        return hf.cats == undefined || hf.cats[catOf(tag)] == true;
+    }
+    function allowedCount(kind, list) {
+        if (allowedTotal[kind] == undefined) {
+            var n = 0;
+            for (var i = 0; i < list.length; i++) {
+                if (allowed(list[i])) {
+                    n++;
+                }
+            }
+            allowedTotal[kind] = n;
+        }
+        return allowedTotal[kind];
+    }
+
     // egy még fel nem tett kérdés indexe: előbb kategória, aztán kérdés; azok előnyben, amelyeket a
     // legkevesebben láttak (egyjátékos módban: a nem látottak)
     Q.pick = function (atip) {
@@ -164,8 +192,13 @@
         var cats = [];
         var counts = [];
         var least = 1000;
+        // ilyen fajta megengedett kérdés nincs: szűrés nélkül
+        var filter = hf.cats != undefined && allowedCount(kind, list) > 0;
+        if (filter && allowedUsed[kind] >= allowedCount(kind, list)) {
+            u = {};                    // megengedett, de már volt (rendesen a Q.apply nullázza)
+        }
         for (var i = 0; i < list.length; i++) {
-            if (!u[i]) {
+            if (!u[i] && (!filter || allowed(list[i]))) {
                 counts[i] = seenCount(kind, s, i);
                 if (counts[i] < least) {
                     least = counts[i];
@@ -173,8 +206,8 @@
             }
         }
         for (var q = 0; q < list.length; q++) {
-            if (!u[q]) {
-                var c = catOf(list[q]);
+            var c = catOf(list[q]);
+            if (!u[q] && (!filter || allowed(list[q]))) {
                 if (byCat[c] == undefined) {
                     byCat[c] = {free: [], fresh: []};
                     cats.push(c);
@@ -235,9 +268,14 @@
         if (!used[kind][idx]) {
             used[kind][idx] = true;
             usedCount[kind]++;
-            if (usedCount[kind] >= list.length) {      // elfogytak: újra mind
+            if (allowed(tag)) {
+                allowedUsed[kind]++;
+            }
+            var total = allowedCount(kind, list);
+            if (usedCount[kind] >= list.length || (total > 0 && allowedUsed[kind] >= total)) {   // elfogytak: újra mind
                 used[kind] = {};
                 usedCount[kind] = 0;
+                allowedUsed[kind] = 0;
             }
         }
         var k = keyAt(kind, idx);
