@@ -181,6 +181,28 @@
         return allowedTotal[kind];
     }
 
+    // A menüben a választás a betöltött SWF-be jön (js/hf.js: pickCats), így a menüből induló bemutató
+    // akár futás közben is ezzel kérdez: a "már volt" lista marad, a számlálók az új választást követik.
+    // Más módban false: a többjátékos játékban minden gépen azonos kell, a többi mód újraindul.
+    EI.addCallback('hfCats', null, function (s) {
+        if (hf.mode != 'menu') {
+            return false;
+        }
+        hf.setCats(s);
+        allowedTotal = {};
+        var kinds = ['mc', 'tip'];
+        for (var j = 0; j < kinds.length; j++) {
+            var kind = kinds[j];
+            allowedUsed[kind] = 0;
+            for (var i in used[kind]) {
+                if (allowed(listOf(kind == 'tip')[i])) {
+                    allowedUsed[kind]++;
+                }
+            }
+        }
+        return true;
+    });
+
     // egy még fel nem tett kérdés indexe: előbb kategória, aztán kérdés; azok előnyben, amelyeket a
     // legkevesebben láttak (egyjátékos módban: a nem látottak)
     Q.pick = function (atip) {

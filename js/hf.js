@@ -280,7 +280,7 @@
   const cleanMap = id => (MAPS.find(m => m[0] === String(id || '').toUpperCase()) || [''])[0];
   // ?map=XX: csak erre a betöltésre (kipróbáláshoz)
   const myMap = () => cleanMap(params.get('map')) || cleanMap(load('localStorage', 'hfMap')) || 'HU';
-  // Hosszú hadjárat: 6 harci kör a 4 helyett (src/tweaks.as). A térképhez hasonlóan egyjátékos
+  // Hosszú hadjárat: saját bázis, terjeszkedés, 6 harci kör a 4 helyett (src/tweaks.as). A térképhez hasonlóan egyjátékos
   // módban a böngésző emlékszik rá, a szobában a főnök választja. ?long=1 / ?long=0: csak most.
   const myLong = () => (params.has('long') ? params.get('long') === '1' : load('localStorage', 'hfLong') === true);
   const longVar = on => (on ? '1' : '0');
@@ -289,7 +289,7 @@
   // "cats" paramétere, a szerver "cats" mezője): a kódok vesszővel, ebben a sorrendben; "" = mind.
   const CATS = [
     ['foldrajz', 'Földrajz'], ['sport', 'Sport'], ['irodalom', 'Irodalom'], ['muveszet', 'Művészet'],
-    ['termtud', 'Természettudomány'], ['matfiz', 'Matematika, fizika'], ['eletmod', 'Életmód'], ['szorakozas', 'Szórakozás'],
+    ['termtud', 'Természettudomány'], ['matfiz', 'Matematika-fizika'], ['eletmod', 'Életmód'], ['szorakozas', 'Szórakozás'],
   ];
   // a választás tisztán: csak ismert kódok, egyszer, a CATS sorrendjében; mind a 8 (vagy egy sem) = ""
   function cleanCats(s) {
@@ -742,6 +742,7 @@
   //   többjátékos játék közben: semmit (a szoba térképe, szabálya és témakörei látszanak)
   //   szobában, indulás előtt: csak a főnök választ, mindenki a szoba választását látja
   //   különben (menü, bemutató, robotok): a saját választás; váltáskor a mostani mód újraindul
+  //   (a témakör a menüben újraindulás nélkül: pickCats)
   function mapMode() {
     const st = net.state;
     if (net.inGame) {
@@ -942,11 +943,12 @@
   }
 
   // A témakörök (index.html: #maps .cats) ki-be kapcsolhatók; legalább egynek maradnia kell (az
-  // utolsó kivétele nem számít), a "Mind" mindet kiválasztja. Váltáskor a mostani mód újraindul (a
-  // menü is: a bemutatót a SWF menüje a már betöltött SWF-ben indítja, annak a paramétere számít).
+  // utolsó kivétele nem számít), a "Mind" mindet kiválasztja. Ha mind ki van választva, az első
+  // kattintás csak azt az egyet hagyja meg (különben egy témakörhöz hét másikat kellene kivenni).
   function pickCat(code) {
     const cur = mapMode().cats;
-    const list = cur ? cur.split(',') : CATS.map(c => c[0]);
+    if (!cur) { pickCats([code]); return; }
+    const list = cur.split(',');
     const i = list.indexOf(code);
     if (i < 0) list.push(code);
     else if (list.length > 1) list.splice(i, 1);
@@ -954,13 +956,21 @@
     pickCats(list);
   }
 
+  // A menüben a betöltött SWF veszi át a választást, nincs újratöltés: a bemutatót a SWF menüje
+  // ugyanabban a SWF-ben indítja (src/questions.as: hfCats). Ha a SWF még tölt, vagy nem menü
+  // (robotjáték, bemutató), vagy a ?cats= csak erre a betöltésre szól, a mostani mód újraindul.
   function pickCats(list) {
     const mode = mapMode();
     const cats = cleanCats(Array.isArray(list) ? list.join(',') : list);
     if (mode.locked || cats === mode.cats) return;
     const prev = load('localStorage', 'hfCats');
     save('localStorage', 'hfCats', cats || null);
-    if (mode.room) { sendCats(cats); return; }
+    if (mode.room) {
+      flashCall('hfCats', cats);    // a szobából kilépve ez a SWF marad a menü
+      sendCats(cats);
+      return;
+    }
+    if (!params.has('cats') && flashCall('hfCats', cats) === true) { renderMaps(); return; }
     if (gamemode !== null && !window.confirm('A játék újraindul a választott témakörökkel. Mehet?')) {
       save('localStorage', 'hfCats', prev);
       return;
@@ -1162,8 +1172,9 @@
         t.append(label, clock(r.created));
         title.prepend(t);
       }
+      el.append(title, who, line('rm rmode', mapName(r.map) + ', ' + ruleName(r.long)));
       const cats = cleanCats(r.cats);     // a témakörök csak akkor, ha nem mind
-      el.append(title, who, line('rm', mapName(r.map) + ', ' + ruleName(r.long) + (cats ? ', ' + catsName(cats) : '')));
+      if (cats) el.append(line('rm rcats', 'Témakörök: ' + catsName(cats)));
       if (r.status === 'playing') el.append(line('rm st', 'Játékban: ' + progressText(r)));
       else if (r.status === 'full') el.append(line('rm st', 'Megtelt, indulásra vár'));
       el.append(b);
@@ -1182,6 +1193,7 @@
     const rounds = r.long ? 6 : 4;
     switch (p.state) {
       case 1: return r.long ? 'bázis választás' : 'bázis sorsolás';
+      case 2: return 'terjeszkedés, ' + Math.min(Math.max(p.round, 1), 6) + '/6. kör';
       case 3: return 'felosztás' + (p.round > 0 ? ', ' + p.round + '. kör' : '');
       case 4: return 'harc, ' + Math.min(Math.max(p.round, 1), rounds) + '/' + rounds + '. kör';
       case 5: return 'végső tipp';

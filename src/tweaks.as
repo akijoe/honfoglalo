@@ -41,10 +41,13 @@
 
     // A kérdések csak a kiválasztott témakörökből jönnek (questions.xml CAT; js/hf.js: cats=sport,termtud;
     // üres vagy hiányzó: mind). Minden módban, a bemutatóban is. hf.cats: {kód: true}, vagy undefined (mind).
-    // A szűrés: src/questions.as (Q.pick, Q.apply).
-    hf.cats = undefined;
-    if (_level0.cats != undefined) {
-        var catList = String(_level0.cats).toLowerCase().split(',');
+    // A szűrés: src/questions.as (Q.pick, Q.apply; a menüben a hfCats hívás innen is átállítja).
+    hf.setCats = function (s) {
+        hf.cats = undefined;
+        if (s == undefined) {
+            return;
+        }
+        var catList = String(s).toLowerCase().split(',');
         for (var ci = 0; ci < catList.length; ci++) {
             var code = catList[ci].split(' ').join('');
             if (code != '') {
@@ -54,7 +57,8 @@
                 hf.cats[code] = true;
             }
         }
-    }
+    };
+    hf.setCats(_level0.cats);
 
     // ------------------------------------------------------------------ hosszú hadjárat
 
@@ -63,14 +67,16 @@
     // hosszú hadjárata is benne maradt (gcfg.longrulesorder: 6 kör, mindenki minden helyről egyszer
     // támad; a GAMEPHASE "WARLONG" képkockája 6 körjelzővel és 6 támadási sorrenddel; a "Bázis
     // választás" körnév), csak a játékmenet nem használta. long=1 (js/hf.js): ez a szabály a robot- és
-    // a többjátékos játékban: a bázisát mindenki maga választja ki, véletlen sorrendben, és itt is
-    // csak az utolsó kör szabad támadás. A bemutató mindig villámháború (az oktató szövegei arra szólnak).
+    // a többjátékos játékban: a bázisát mindenki maga választja ki, véletlen sorrendben, utána jön a
+    // terjeszkedés (feleletválasztós kérdések), a maradék területeket tippek osztják fel, és itt is csak
+    // az utolsó kör szabad támadás. A bemutató mindig villámháború (az oktató szövegei arra szólnak).
     hf.long = full && _level0.long == '1';
     hf.warRounds = hf.long ? 6 : 4;
     if (hf.long) {
         game.hfOrigInitGameLong = game.InitGame;
         game.InitGame = function () {
             game.hfOrigInitGameLong();
+            game.game_rules = 0;                    // az eredeti 1 = villámháború: lent, game.SetupPhaseDisplay
             var order = String(gcfg.longrulesorder);
             game.warorder = [];
             for (var i = 0; i < order.length; i++) {
@@ -106,7 +112,7 @@
                     game.hfBaseIdx++;                // a kimaradó játékos nem választ bázist
                 }
                 if (game.hfBaseIdx > 3) {
-                    game.JumpPhase(2);              // -> a terjeszkedés (3. állapot)
+                    game.JumpPhase(2);              // -> 3: a terjeszkedés
                     return true;
                 }
                 game.nextplayer = game.baseorder[game.hfBaseIdx - 1];
@@ -137,13 +143,185 @@
                 gsqc.Start();
                 return true;
             }
+            if (ph == 3) {
+                game.SetNextState(2, 1, 0);         // az eredeti rögtön a felosztásra (3) ugrik
+                game.NextPhase();
+                return true;
+            }
             return false;
         };
 
-        // a körnév: "Bázis választás" (az eredeti a game_rules szerint választ, itt mindig 1 = sorsolás)
-        var turnName = glang.fn_turnname;
-        glang.fn_turnname = function (code) {
-            return code == 1 ? getlang('gameround_1') : turnName(code);
+        // Terjeszkedés (2. állapot): a régi játék II. fordulója, a próbajátékból csak a kódja maradt meg
+        // (game.GetAvailableArea, a körváltás, a robotok célzása). Legfeljebb 6 körben, a harc
+        // sorrendjében (game.warorder) mindenki megjelöl egy szabad, szomszédos területet; amit más már
+        // megjelölt, azt nem lehet. Aztán mindenki ugyanarra a feleletválasztós kérdésre válaszol, és aki
+        // eltalálja, megkapja a területét (200 pont). A maradékot a felosztás tippkérdései osztják fel;
+        // akkor is, ha már nem jutna mindenkinek terület, hogy mindenkinek egyforma esélye legyen.
+        // A fázisok számozása a harcé (src/mp.as is így kezeli őket): 0 körváltás, 1 ki következik,
+        // 2 a körjelző, 7-8 választ, 9 megjelölés, 10-11 kérdés, 12-13 válaszok, 14 foglalás, 40 térkép
+        // és pontok, 41 a következő kör.
+        var activeCount = function () {
+            var n = 0;
+            for (var p = 1; p <= 3; p++) {
+                if (!hf.absent[p]) {
+                    n++;
+                }
+            }
+            return n;
+        };
+        var expansion = function () {
+            var ph = game.phase;
+            var np = game.nextplayer;
+            if (ph == 0) {
+                game.lpnum = 0;
+                game.SqSetupTurnChange();
+                game.SetNextPhase(1);
+                gsqc.Start();
+            } else if (ph == 1) {
+                if (game.lpnum == 0) {
+                    game.ClearPlayerSelections();
+                    if (game.gameround > hf.warRounds || game.FreeAreaCount() < activeCount()) {
+                        game.SetNextState(game.FreeAreaCount() > 0 ? 3 : 4, 1, 0);
+                        game.NextPhase();
+                        return;
+                    }
+                }
+                while (true) {
+                    game.lpnum++;
+                    if (game.lpnum > 3) {
+                        game.JumpPhase(10);
+                        return;
+                    }
+                    game.nextplayer = game.warorder[(game.gameround - 1) * 3 + game.lpnum - 1];
+                    if (!hf.absent[game.nextplayer]) {
+                        game.JumpPhase(2);
+                        return;
+                    }
+                }
+            } else if (ph == 2) {
+                game.SqSetupRoundStart();
+                game.SetNextPhase(7);
+                gsqc.Start();
+            } else if (ph == 7) {
+                game.ShowSelectableAreas(game.GetAvailableArea(np));
+                game.JumpPhase(8);
+            } else if (ph == 8) {
+                if (np == game.IAM) {
+                    game.StartSelectArea();
+                    game.SetNextPhase(9);
+                } else {
+                    game.player_selections[np] = game.RobotSelectArea(np, game.GetAvailableArea(np));
+                    game.JumpPhase(9);
+                }
+            } else if (ph == 9) {
+                game.HideSelectableAreas();
+                if (!(hf.mp && hf.mp.catchingUp)) {
+                    gsqc.AddSequenceObj('-SELECTANIM').AddSequence(game.AddSelectAnim(np, game.player_selections[np]));
+                }
+                game.SetNextPhase(1);
+                gsqc.Start();
+            } else if (ph == 10) {
+                game.PrepareAnswers();
+                gqs.SelectQuestion(false);
+                game.DrawQuestionWin('WARQUESTION');
+                game.JumpPhase(11);
+            } else if (ph == 11) {
+                game.StartAnswer();
+                game.SetNextPhase(12);
+            } else if (ph == 12) {
+                game.CalculateRobotAnswers();
+                game.DrawAnswers();
+                game.JumpPhase(13);
+            } else if (ph == 13) {
+                game.SqSetupAnswerResult();
+                game.SetNextPhase(14);
+                gsqc.Start();
+            } else if (ph == 14) {
+                for (var p = 1; p <= 3; p++) {
+                    if (game.player_selections[p] > 0 && game.answers[p] == game.goodanswerpos) {
+                        game.OccupyArea(game.player_selections[p], p, 200);
+                    }
+                }
+                game.JumpPhase(40);
+            } else if (ph == 40) {
+                game.HideQuestionWin();
+                game.CheckWinLoseAnims('ANY');
+                game.SqAddHideSelections();
+                game.SqAddMapChanges();
+                game.SqAddScoreChanges(0);
+                game.SqSetupRoundEnd();
+                game.SetNextPhase(41);
+                gsqc.Start();
+            } else if (ph == 41) {
+                game.gameround++;
+                game.lpnum = 0;
+                game.JumpPhase(1);
+            }
+        };
+
+        // a kérdés ablaka a harcé; a fejlécében a támadó és a védő helyén a szabály áll, a nyíl két oldalán
+        game.hfOrigDrawWarHeaderLong = game.DrawWarHeader;
+        game.DrawWarHeader = function () {
+            var w = gmap.QUESTIONWIN;
+            var war = game.state != 2;
+            w.OFFCOLOR._visible = war;
+            w.DEFCOLOR._visible = war;
+            if (war) {
+                game.hfOrigDrawWarHeaderLong();
+                return;
+            }
+            w.OFFENDER.text = 'Aki jól válaszol,';
+            w.DEFENDER.text = 'megkapja a területét';
+            w.BASESTATE._visible = false;
+            w.BASESTATE.stop();
+        };
+
+        // a terjeszkedésben mindenki válaszol, nem csak a támadó és a védő
+        game.hfOrigCalculateRobotAnswers = game.CalculateRobotAnswers;
+        game.CalculateRobotAnswers = function () {
+            if (game.state != 2) {
+                game.hfOrigCalculateRobotAnswers();
+                return;
+            }
+            for (var p = 1; p <= 3; p++) {
+                if (p != game.IAM && game.player_selections[p] > 0) {
+                    game.CalculateRobotAnswer(p);
+                }
+            }
+        };
+
+        // a robotok a felosztás szempontjai szerint céloznak (az eredeti ezt csak a 3. állapotnál teszi)
+        game.hfOrigGetRobotSelAreaPoints = game.GetRobotSelAreaPoints;
+        game.GetRobotSelAreaPoints = function (pnum, anum) {
+            return game.state == 2 ? game.GetRobotSelAreaPointsSpr(pnum, anum) : game.hfOrigGetRobotSelAreaPoints(pnum, anum);
+        };
+
+        // A körjelző: a terjeszkedés a harcéval azonos (a 4. állapot ágai futnak le). A felosztás
+        // kijelzője itt a FREELONG (lent), azon nincs körjelző (ROUNDPB), az animációja sosem érne véget:
+        // csak a kör száma frissül.
+        game.hfOrigSqSetupRoundStart = game.SqSetupRoundStart;
+        game.SqSetupRoundStart = function () {
+            var s = game.state;
+            if (s == 3) {
+                var o = gsqc.AddObj('-ROUNDNUM');
+                o.Start = function () {
+                    game.SetupPhaseDisplay(false);
+                    gsqc.NextAnim();
+                };
+                gsqc.AddDelay(200);
+                return;
+            }
+            game.state = s == 2 ? 4 : s;
+            game.hfOrigSqSetupRoundStart();
+            game.state = s;
+        };
+
+        // A felosztásban csak a kérdés győztese választ, egy területet, és az 300 pontot ér (a régi
+        // játék III. fordulója szerint); a próbajátékban a győztes kettőt, a második egyet, 200 pontért.
+        // A győztes egyetlen választása után a körnek vége: a 10. fázis a 3. választás utánit látja.
+        game.hfOrigOccupyArea = game.OccupyArea;
+        game.OccupyArea = function (areanum, apnum, avalue) {
+            game.hfOrigOccupyArea(areanum, apnum, game.state == 3 ? 300 : avalue);
         };
 
         // a 4. állapot 1. fázisa: ki támad következőnek (az eredeti 4 körös, pontsorrendes változata helyett)
@@ -151,6 +329,13 @@
         game.HandleGamePhase = function () {
             if (game.state == 1 && baseChoice()) {
                 return;
+            }
+            if (game.state == 2) {
+                expansion();
+                return;
+            }
+            if (game.state == 3 && game.phase == 10) {
+                game.winselcount = 3;
             }
             if (game.state != 4 || game.phase != 1) {
                 game.hfOrigHandleGamePhaseLong();
@@ -203,10 +388,12 @@
             }
         };
 
-        // a harc kijelzője: a WAR4 képkocka helyett a 6 körös WARLONG (az eredeti WAR4 ága szerint)
+        // A harc és a terjeszkedés kijelzője: a WAR4 képkocka helyett a 6 körös WARLONG (az eredeti WAR4
+        // ága szerint). A felosztásé (game_rules = 0) az eredetiben a FREELONG: hogy hány kör lesz, attól
+        // függ, mennyi terület marad.
         game.hfOrigSetupPhaseDisplay = game.SetupPhaseDisplay;
         game.SetupPhaseDisplay = function (afirst) {
-            if (game.state != 4) {
+            if (game.state != 4 && game.state != 2) {
                 game.hfOrigSetupPhaseDisplay(afirst);
                 return;
             }
@@ -415,10 +602,11 @@
     };
 
     // A felosztás tippkérdésén a második akkor kap területet, ha volt mögötte harmadik (kettesben a
-    // második az utolsó), és a győztes két területe után még marad szabad terület. Csak ekkor szól a
-    // második hely hangja (és számít második helynek az eredménytáblán); különben a vesztesé.
+    // második az utolsó), és a győztes két területe után még marad szabad terület (a hosszú
+    // hadjáratban sosem). Csak ekkor szól a második hely hangja (és számít második helynek az
+    // eredménytáblán); különben a vesztesé.
     hf.secondGetsArea = function () {
-        return game.state == 3 && game.tipcount >= 3 && game.FreeAreaCount() >= 3;
+        return game.state == 3 && game.game_rules == 1 && game.tipcount >= 3 && game.FreeAreaCount() >= 3;
     };
 
     // döntetlen miatti tippkérdés jön-e (game.CalculateEqualPoints, mellékhatások nélkül)
@@ -442,7 +630,7 @@
     A.others = function (tip) {
         var list = [];
         for (var p = 1; p <= 3; p++) {
-            var inq = tip ? (game.tipplayers & (1 << (p - 1))) != 0 : (p == game.offender || p == game.defender);
+            var inq = tip ? (game.tipplayers & (1 << (p - 1))) != 0 : game.state == 2 ? game.player_selections[p] > 0 : (p == game.offender || p == game.defender);
             if (inq && p != game.IAM) {
                 list.push(p);
             }
@@ -466,8 +654,8 @@
         var t = read + (limit - read) * u * (tip ? 0.85 : 0.5);
         if (game.state == 3 && game.gameround <= 2) {
             t += 1200 - (game.gameround - 1) * 600;     // az első két tippkérdés
-        } else if (game.state == 4 && game.gameround == 1) {
-            t += 1000;                                  // az első harci kör
+        } else if ((game.state == 4 || game.state == 2) && game.gameround == 1) {
+            t += 1000;                                  // az első harci vagy terjeszkedési kör
         }
         return Math.round(Math.min(limit, t));
     };
@@ -601,7 +789,7 @@
 
     game.hfOrigAnswerPressed = game.btnAnswerPressed;
     game.btnAnswerPressed = function (ans) {
-        if (ans > 0 && game.state == 4 && game.phase == 11 && !game.warobserver) {
+        if (ans > 0 && (game.state == 4 || game.state == 2) && game.phase == 11 && !game.warobserver) {
             gsound.play('answer_pick');
         }
         game.hfOrigAnswerPressed(ans);
@@ -980,7 +1168,7 @@
         // várakozó doboz mutatja, kire várunk), mint a többjátékos játékban az élő ellenfeleket
         var s = game.state;
         var ph = game.phase;
-        if (((s == 3 && ph == 4) || (s == 4 && ph == 22) || (s == 5 && ph == 4) || (s == 4 && ph == 12)) && A.due.length > 0) {
+        if (((s == 3 && ph == 4) || (s == 4 && ph == 22) || (s == 5 && ph == 4) || ((s == 4 || s == 2) && ph == 12)) && A.due.length > 0) {
             var since = getTimer();
             if (ph != 12 && !TC.active) {
                 game.DrawQuestionWin(s == 4 ? 'WARTIPRESULT' : '3TIPRESULT');
@@ -1002,7 +1190,7 @@
         }
         // egyjátékos módban a robot is "gondolkodik" egy kicsit, mielőtt bázist (hosszú hadjárat) vagy
         // területet választ, vagy támad; addig a várakozó doboz mutatja, ki lép (src/lobby.as: hf.wait)
-        if ((game.state == 1 || game.state == 3 || game.state == 4) && game.phase == 8 && game.nextplayer != game.IAM && !robotThinking) {
+        if ((game.state == 1 || game.state == 2 || game.state == 3 || game.state == 4) && game.phase == 8 && game.nextplayer != game.IAM && !robotThinking) {
             robotThinking = true;
             hf.wait.show(hf.wait.selectMsg(game.nextplayer));
             hf.later(hf.robotThinkTime(), function () {

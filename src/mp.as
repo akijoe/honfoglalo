@@ -401,6 +401,9 @@
             gmap.playerbox[p]._visible = true;
             gmap.playerbox[p]._alpha = 100;
             gmap['SELECTION' + p]._visible = false;
+            if (game.state == 2 && game.player_selections[p] > 0) {
+                game.SetSelectAnim(p, game.player_selections[p]);   // a terjeszkedés körének jelölései
+            }
         }
         M.hideAbsent();
         game.UpdateAreas();
@@ -437,7 +440,7 @@
         return multiFadeIn.call(gsqc, keep, ms, fadein);
     };
 
-    // a tippkérdésen csak a résztvevők tippelnek (a terjeszkedésnél az eredeti mindenkit hív: 7)
+    // a tippkérdésen csak a résztvevők tippelnek (a felosztásnál az eredeti mindenkit hív: 7)
     var prepareTips = game.PrepareTips;
     game.PrepareTips = function () {
         prepareTips();
@@ -668,7 +671,7 @@
     };
 
     game.btnAreaPressed = function (anum) {
-        if (!((game.state == 1 || game.state == 3 || game.state == 4) && game.phase == 8 && game.nextplayer == game.IAM)) {
+        if (!((game.state == 1 || game.state == 2 || game.state == 3 || game.state == 4) && game.phase == 8 && game.nextplayer == game.IAM)) {
             return;
         }
         game.StopSelection();
@@ -681,7 +684,7 @@
 
     game.hfOrigBtnAnswerPressed = game.btnAnswerPressed;
     game.btnAnswerPressed = function (ans) {
-        if (!(game.state == 4 && game.phase == 11) || game.warobserver) {
+        if (!((game.state == 2 || game.state == 4) && game.phase == 11) || game.warobserver) {
             return;
         }
         M.send(game.IAM, {v: Number(ans)});
@@ -792,7 +795,7 @@
             return;
         }
 
-        // tippkérdés: terjeszkedés, döntetlen csata, végső döntetlen
+        // tippkérdés: felosztás, döntetlen csata, végső döntetlen
         if ((s == 3 && ph == 2) || (s == 4 && ph == 20) || (s == 5 && ph == 2)) {
             M.gate([{seat: 0, make: pickTip}], function (v) {
                 M.forceTip = v[0].v;
@@ -802,7 +805,7 @@
         }
 
         // feleletválasztós kérdés
-        if (s == 4 && ph == 10) {
+        if ((s == 2 || s == 4) && ph == 10) {
             M.gate([{seat: 0, make: pickQuestion}], function (v) {
                 M.forceQ = v[0];
                 orig();
@@ -847,7 +850,7 @@
 
         // bázis- (hosszú hadjárat) és területválasztás: aki soron van, maga választ (a többiek a 9.
         // fázisban várnak rá)
-        if ((s == 1 || s == 3 || s == 4) && ph == 8) {
+        if ((s == 1 || s == 2 || s == 3 || s == 4) && ph == 8) {
             if (game.nextplayer == game.IAM && !M.have(game.IAM)) {
                 M.finishCatchUp();
                 orig();
@@ -856,7 +859,7 @@
             }
             return;
         }
-        if ((s == 1 || s == 3 || s == 4) && ph == 9) {
+        if ((s == 1 || s == 2 || s == 3 || s == 4) && ph == 9) {
             var np = game.nextplayer;
             // a robot a bázisát véletlenül választja (mint az eredeti sorsolás)
             var make = s == 1 ? randomSelect(np) : robotSelect(np);
@@ -867,8 +870,8 @@
             return;
         }
 
-        // feleletválasztós válasz: a támadó és a védő
-        if (s == 4 && ph == 11) {
+        // feleletválasztós válasz: a támadó és a védő, a terjeszkedésben mindenki
+        if ((s == 2 || s == 4) && ph == 11) {
             M.openAnswers(false);
             if (!game.warobserver && M.have(game.IAM)) {
                 game.JumpPhase(12);
@@ -880,14 +883,21 @@
             orig();
             return;
         }
-        if (s == 4 && ph == 12) {
-            var off = game.offender;
-            var def = game.defender;
+        if ((s == 2 || s == 4) && ph == 12) {
+            var who = [];
+            var asked = [];
+            for (var q = 1; q <= 3; q++) {
+                if (s == 2 ? game.player_selections[q] > 0 : (q == game.offender || q == game.defender)) {
+                    who.push(q);
+                    asked.push({seat: q, make: robotAnswer, dflt: noAnswer});
+                }
+            }
             M.openAnswers(false);
-            M.gate([{seat: off, make: robotAnswer, dflt: noAnswer}, {seat: def, make: robotAnswer, dflt: noAnswer}], function (v) {
+            M.gate(asked, function (v) {
                 M.closeAnswers();
-                game.answers[off] = Number(v[0].v);
-                game.answers[def] = Number(v[1].v);
+                for (var i = 0; i < who.length; i++) {
+                    game.answers[who[i]] = Number(v[i].v);
+                }
                 orig();
             }, {limit: gcfg.TIMEOUT_ANSWER * 1000, from: M.ans.start});
             return;

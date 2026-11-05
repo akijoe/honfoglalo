@@ -102,6 +102,8 @@
     #roomList .room.here { border-color: #C89B4A; background: #6E4219; }
     #roomList .rt { color: #FFE39A; font-weight: bold; font-size: 14px; overflow-wrap: anywhere; }
     #roomList .rm { color: #C2A27A; font-size: 12px; overflow-wrap: anywhere; }
+    #roomList .rmode { font-weight: bold; }
+    #roomList .rcats { font-style: italic; }
     /* hányan vannak bent: a "Játék robotokkal" figurája, teli (foglalt) vagy üres (szabad hely) */
     #roomList .seats { display: inline-flex; gap: 2px; margin-right: 6px; vertical-align: -3px; }
     #roomList .seats svg { width: 8px; height: 15px; overflow: visible; }
@@ -246,7 +248,7 @@
         <button type="button" data-long="0"><img src="img/rules/blitz.svg" alt=""><span>Villámháború</span></button>
         <button type="button" class="info" aria-label="Mit jelent a villámháború?" aria-controls="ruleTip" aria-expanded="false">i</button>
       </div>
-      <div class="rule" data-desc="Nincs sorsolás: a játékosok véletlen sorrendben maguk választják ki a kezdőterületüket (a bázisukat). 6 harci kör, fix sorrendben: mindenki minden helyről egyszer támad, és csak az utolsó körben lehet bárhová.">
+      <div class="rule" data-desc="Nincs sorsolás: a játékosok véletlen sorrendben maguk választják ki a kezdőterületüket (a bázisukat). Terjeszkedés: legfeljebb 6 körben mindenki megjelöl egy szomszédos szabad területet, és aki jól válaszol a közös feleletválasztós kérdésre, megkapja (200 pont). A maradékot tippkérdések osztják fel: a győztes választ egy területet (300 pont). Végül 6 harci kör, fix sorrendben: mindenki minden helyről egyszer támad, és csak az utolsó körben lehet bárhová.">
         <button type="button" data-long="1"><img src="img/rules/long.svg" alt=""><span>Hosszú hadjárat</span></button>
         <button type="button" class="info" aria-label="Mit jelent a hosszú hadjárat?" aria-controls="ruleTip" aria-expanded="false">i</button>
       </div>
@@ -297,6 +299,6 @@
     </div>
   </section>
   <p id="ruleTip" role="tooltip" hidden></p>
-  <p id="foot"><span class="nowrap">v1.2.1<span class="sep">|</span><a href="https://github.com/akijoe/honfoglalo" target="_blank" rel="noopener">Source code</a></span><span class="sep msep">|</span><a class="mail" href="mailto:contact@honfoglalo.online">contact@honfoglalo.online</a><span class="na">Not affiliated with or endorsed by THX Games</span></p>
+  <p id="foot"><span class="nowrap">v1.2.2<span class="sep">|</span><a href="https://github.com/akijoe/honfoglalo" target="_blank" rel="noopener">Source code</a></span><span class="sep msep">|</span><a class="mail" href="mailto:contact@honfoglalo.online">contact@honfoglalo.online</a><span class="na">Not affiliated with or endorsed by THX Games</span></p>
 </body>
 </html>

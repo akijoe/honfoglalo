@@ -30,14 +30,18 @@ játszható. Ugyanott a szabály is (az „i” jel elmagyarázza):
 - **Villámháború** (a próbajáték szabálya): a bázisokat a gép sorsolja, 4 harci kör, az utolsóban a
   pontok sorrendjében bárhová lehet támadni.
 - **Hosszú hadjárat:** nincs sorsolás, a játékosok véletlen sorrendben maguk választják ki a
-  kezdőterületüket (a bázisukat); 6 harci kör, fix sorrendben (mindenki minden helyről egyszer
+  kezdőterületüket (a bázisukat). Utána terjeszkedés: legfeljebb 6 körben mindenki megjelöl egy
+  szomszédos szabad területet (amit más már megjelölt, azt nem lehet), és aki jól válaszol a közös
+  feleletválasztós kérdésre, megkapja (200 pont). A maradék területeket tippkérdések osztják fel: a
+  győztes választ egyet (300 pont). Végül 6 harci kör, fix sorrendben (mindenki minden helyről egyszer
   támad), és csak az utolsó körben lehet bárhová támadni.
 
 A szabály a robotos és a többjátékos játékra vonatkozik, a bemutató mindig villámháború. A **Témakörök**
-alatt az is beállítható, miből kérdezzen a játék (pl. csak sport és természettudomány): a kiválasztott
-témakörök ki-be kapcsolhatók, legalább egynek maradnia kell, a „Mind” mindet visszakapcsolja. Ez minden
-módban számít, a bemutatóban is; a szobában a főnök választja, és a Várók listája is mutatja. A játék végén
-egy eredményablak mutatja a helyezéseket és a saját statisztikádat.
+alatt az is beállítható, miből kérdezzen a játék (pl. csak sport és természettudomány): a témakörök
+ki-be kapcsolhatók, legalább egynek maradnia kell; ha mind ki van választva, az első kattintás csak azt
+az egyet hagyja meg, a „Mind” pedig mindet visszakapcsolja. Ez minden módban számít, a bemutatóban is; a
+szobában a főnök választja, és a Várók listája is mutatja. A játék végén egy eredményablak mutatja a
+helyezéseket és a saját statisztikádat.
 
 ## Többjátékos játék
 
